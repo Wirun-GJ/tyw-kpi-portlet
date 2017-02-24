@@ -1,0 +1,85 @@
+body{
+	background-color: #f3f3f4;
+}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+	color: black;
+	
+}
+
+.table-fixed {
+  max-height: 70px;
+  overflow-y: scroll;
+  width: 100%;
+  position: absolute;
+}
+
+
+
+.w-95-p{
+	width: 95%;
+}
+.countPagination {
+    width: 92%;
+}
+
+.p-t-xxs{
+ padding-top :5px;
+}
+.p-t-xs{
+ padding-top :10px;
+}
+.p-b-xxs{
+ padding-bottom :5px;
+}
+.btn-primary {
+    background-color: #1ab394;
+    border-color: #1ab394;
+    color: #ffffff;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary,
+.btn-primary:active:focus,
+.btn-primary:active:hover,
+.btn-primary.active:hover,
+.btn-primary.active:focus {
+  background-color: #1da58a;
+  border-color: #1da58a;
+  color: #FFFFFF;
+}
+.table-tr-bg{
+ background-color: #ffcc33;
+}
+th,td{
+	border-style:none;
+}
+.ibox-content-radius{
+border: 1px solid #ffcc33;
+border-radius: 0px 0px 7px 8px;
+
+}
+.ibox-sub-content-radius{
+	border: 1px solid #ffcc33;
+	border-radius: 0px 0px 4px 5px;
+	
+}
+.ibox-sub-content-radius{
+	border: 1px solid #ffcc33;
+	border-radius: 0px 0px 4px 5px;
+	
+}
+.ibox-title-radius{
+	border: 1px solid #ffcc33;
+	border-radius: 6px 7px 0px 0px;
+	
+}
+.input-xs {
+    border-radius: 3px;
+    font-size: 12px;
+    height: 24px;
+    line-height: 1.5;
+    padding: 5px 10px;
+    width: 50px;
+}
