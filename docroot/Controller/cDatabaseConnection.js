@@ -6,8 +6,8 @@
 
     	var options={
     			"colunms":[
-    			           {"colunmsDisplayName":"Connection Name","width":"20%","id":"connection_name","colunmsType":"text"},
-    			           {"colunmsDisplayName":"Database Type","width":"65%","id":"database_type","colunmsType":"text"},
+    			           {"colunmsDisplayName":"Connection Name","width":"20%","id":"appraisal_level_id","colunmsType":"text"},
+    			           {"colunmsDisplayName":"Database Type","width":"65%","id":"appraisal_level_name","colunmsType":"text"},
     			          ],
     			"form":[{
     					"label":"Connection Name","inputType":"text","placeholder":"DefultText",
@@ -56,9 +56,9 @@
  					}],
  					
     			 "formDetail":{"formSize":"modal-dialog","formName":"Database Connection","id":"databaseConnection","pk_id":"connection_id"},       
-    			 "serviceName":[restfulURL+"/tyw_api/public/database_connection"],
+    			 "serviceName":[restfulURL+"/tyw_api/public/appraisal_grade"],
     			 "tokenID":tokenID,
-    			 "pagignation":false,
+    			 "pagignation":true,
     			 "expressSearch":false,
     			 "advanceSearchSet":true,
     			 "btnManageOption":{"id":"BtnID","name":"BtnName"},
