@@ -1,52 +1,85 @@
+
 //Global variable
 var galbalDataCDS=[];
 //IP Server : 171.96.201.146
 var tempCdsId ="";
 var tempCdsName ="";
+var pageNumberDefault=1;
 var restfulPathCDS="/tyw_api/public/cds";
 var restfulPathDropDownAppraisalLevel="/tyw_api/public/cds/al_list";
 var restfulPathDropDownConnection="/tyw_api/public/cds/connection_list";
 var restfulPathAutocomplete="/tyw_api/public/cds/auto_cds";
 
 
-
+ 
 
 
 	//Check Validation
 var validationFn = function(data){
-		var validate="";
-		if(data['data']['cds_name']!=undefined){
-			validate+="<font color='red'>*</font> "+data['data']['cds_name']+"<br>";
+	var validate = "";
+	var count = 0;
+	$.each(data['data'], function(index, indexEntry) {
+
+		if (index != undefined) {
+			if (count == 0) {
+				validate += "<font color='red'>* </font>" + indexEntry + "";
+			} else {
+				validate += "<br><font color='red'>* </font> " + indexEntry + " ";
+			}
 		}
-		if(data['data']['appraisal_level_id']!=undefined){
-			validate+="<font color='red'>*</font> "+data['data']['appraisal_level_id']+"<br>";
-		}
-		if(data['data']['connection_id']!=undefined){
-			validate+="<font color='red'>*</font> "+data['data']['connection_id']+"<br>";
-		}
-		if(data['data']['cds_sql']!=undefined){
-			validate+="<font color='red'>*</font> "+data['data']['cds_sql']+"<br>";
-		}
-		callFlashSlideInModal(validate);
+
+		count++;
+	});
+	
+	callFlashSlideInModal(validate,"#information","error");
 };	
+
+var validationSqlFn = function (data) {
+	
+	//alert(data);
+	var validate ="";
+	if( data instanceof Array ){
+		for ( var obj in data) {
+			if (data.hasOwnProperty(obj)) {
+				for ( var prop in data[obj]) {
+					if (data[obj].hasOwnProperty(prop)) {
+						validate+="<font color='red'>*</font> "+prop + ':' + data[obj][prop]+"<br>";
+						//console.log(prop + ':' + data[obj][prop]);
+						
+					}
+				}
+				
+			}
+		}
+	}else{
+		if(data !=undefined){
+			validate+="<font color='red'>*</font> "+data+"<br>";
+		}		
+	}
+	callFlashSlideInModal(validate,"#information","error");
+}
+
 	
 	
 	
 // --------  Clear Start 
 var clearFn = function() {
+	
 	$("#modalTitleRole").html("Common Data Set");
 	$("#modalDescription").html("Add Common Data Set");
 	$("#f_cds_name").val("");
 	$("#f_cds_description").val("");
 	$("#txt_sql").val("");
-	$("#txt_sample_data").val("");
+	$("#table_Sql").html("");
+	$("#table_Sql").hide();
 	$("#txt_sample_data").removeAttr("disabled");
 	
-	$("#btn_execute").removeAttr("disabled");
+	$("#btn_Execute").removeAttr("disabled");
 	
 	$("#checkbox_is_sql").prop("checked",false);
 	$("#checkbox_is_active").prop("checked",false);
 	
+	$(".btnModalClose").click();
 	
 	
 	$("#action").val("add");
@@ -70,7 +103,7 @@ var getDataFn = function(page,rpp){
 		headers:{Authorization:"Bearer "+tokenID.token},
 		async:false,// w8 data 
 		success : function(data) {
-			
+			//alert("Get Data -->  page : " +page+" rpp :"+rpp);
 			listCommonDataSetFn(data['data']);
 			//total
 			galbalDataCDS=data;
@@ -92,8 +125,8 @@ var searchAdvanceFn = function (AppraisalLv,cdsId) {
 	$(".param_Embed").remove();
 	$("body").append(htmlParam);
 	//embed parameter end
-	
-	getDataFn($("#pageNumber").val(),$("#rpp").val());
+	//alert("search Data --> page : 1 rpp :"+$("#rpp").val());
+	getDataFn(pageNumberDefault,$("#rpp").val());
 	
 }
 // -------- Search End
@@ -121,10 +154,10 @@ var findOneFn = function(id) {
 			//IsSQL
 			if(data['is_sql']==1){
 				$('#checkbox_is_sql').prop('checked', true);
-				$("#btn_execute").removeAttr("disabled");
+				$("#btn_Execute").removeAttr("disabled");
 			}else{
 				$('#checkbox_is_sql').prop('checked', false);
-				$("#btn_execute").attr("disabled","disabled");
+				$("#btn_Execute").attr("disabled","disabled");
 			}
 			
 			//IsAction
@@ -154,24 +187,30 @@ var listCommonDataSetFn = function(data) {
 	var IsSQL ="";
 	var IsActive ="";
 	$.each(data,function(index,indexEntry) {
+		
 		//console.log(indexEntry["cdsName"]+indexEntry["appraisalLevel"]+indexEntry["isSql"]+indexEntry["isActive"]);
 		if (indexEntry["is_sql"]== "1"){
-			IsSQL = "<input disabled type='checkbox' name='is_sql' id='is_sql' checked value='1'>";
+			//IsSQL = "<div class=\"checkbox m-n \"><input disabled value=\"1\" type=\"checkbox\" checked><label> </label></div>";
+			IsSQL ="<input disabled type=\"checkbox\"  value=\"1\" checked>";
 		}else if (indexEntry["is_sql"]== "0"){
-			IsSQL = "<input disabled type='checkbox' name='is_sql' id='is_sql'  value='0'>";
+			//IsSQL = "<div class=\"checkbox m-n \"><input disabled value=\"0\" type=\"checkbox\" ><label> </label></div>";
+			IsSQL ="<input disabled type=\"checkbox\"  value=\"0\">";
 		}
 		if (indexEntry["is_active"]=="1"){
-			IsActive = "<input disabled type='checkbox' name='is_active' id='is_active' checked value='1'>";
+			//IsActive = "<div class=\"checkbox m-n \"><input disabled value=\"1\" type=\"checkbox\" checked><label> </label></div>";
+			
+			IsActive ="<input disabled type=\"checkbox\"  value=\"1\" checked>";
 		}else if (indexEntry["is_active"]=="0"){
-			IsActive = "<input disabled type='checkbox' name='is_active' id='is_active'  value='0'>";
+			//IsActive = "<div class=\"checkbox m-n \"><input disabled value=\"0\" type=\"checkbox\" ><label> </label></div>";
+			IsActive ="<input disabled type=\"checkbox\"  value=\"0\" >";
 		}
 		htmlTable += "<tr class='rowSearch'>";
-		htmlTable += "<td class='columnSearch'>"+ indexEntry["cds_name"]+ "</td>";
-		htmlTable += "<td class='columnSearch'>"+ indexEntry["appraisal_level_name"]+ "</td>";
-		htmlTable += "<td class='objectCenter'>"+IsSQL+"</td>";
-		htmlTable += "<td class='objectCenter'>"+IsActive+"</td>";
+		htmlTable += "<td class='columnSearch' style=\"vertical-align: middle;\">"+ indexEntry["cds_name"]+ "</td>";
+		htmlTable += "<td class='columnSearch' style=\"vertical-align: middle;\">"+ indexEntry["appraisal_level_name"]+ "</td>";
+		htmlTable += "<td id=\"objectCenter\" >"+IsSQL+"</td>";
+		htmlTable += "<td id=\"objectCenter\" >"+IsActive+"</td>";
 		
-		htmlTable += "<td class='objectCenter'><i class=\"fa fa-cog font-gear popover-edit-del\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-trigger=\"focus\" tabindex=\""+index+"\" data-content=\"<button class='btn btn-warning btn-xs edit' id="+ indexEntry["cds_id"]+ " data-target=#ModalCommonData data-toggle='modal'>Edit</button>&nbsp;" ;
+		htmlTable += "<td id=\"objectCenter\" style=\"vertical-align: middle;\"><i class=\"fa fa-cog font-gear popover-edit-del\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-trigger=\"focus\" tabindex=\""+index+"\" data-content=\"<button class='btn btn-warning btn-xs edit' id="+ indexEntry["cds_id"]+ " data-target=#ModalCommonData data-toggle='modal'>Edit</button>&nbsp;" ;
 		htmlTable += "<button id="+indexEntry["cds_id"]+" class='btn btn-danger btn-xs del'>Delete</button>\"></i></td>";
 		htmlTable += "</tr>";
 	});
@@ -230,7 +269,10 @@ var listCommonDataSetFn = function(data) {
 					       clearFn();
 					       $("#confrimModal").modal('hide');
 					       
-					     }
+					     }else if (data['status'] == "400"){
+					    	 $("#confrimModal").modal('hide');
+					    	 callFlashSlide(data['data'],"error");
+					    	}
 					 }
 				});
 				
@@ -286,8 +328,8 @@ var updateFn = function () {
 				callFlashSlide("Update Successfully.");
 				
 			}else if (data['status'] == "400") {
-				alert("Error ?");
-				//validationFn(data);
+				//alert("Error ?");
+				validationFn(data);
 			}
 		}
 	});
@@ -328,25 +370,24 @@ var insertFn = function (param) {
 		//headers:{Authorization:"Bearer "+tokenID.token},
 		headers:{Authorization:"Bearer "+tokenID.token},
 		success : function(data) {
-			
 			if (data['status'] == "200") {
 				 
 				   if(param !="saveAndAnother"){
 					   //alert("!saveAndAnother" );
 					   callFlashSlide("Insert Successfully.");
-				       getDataFn($("#pageNumber").val(),$("#rpp").val());
+				       getDataFn($(".pagination .active").attr( "data-lp" ),$("#rpp").val());
 				       clearFn();
 				 	   $('#ModalCommonData').modal('hide');
 					}else{
 						//alert("saveAndAnother" );
-						getDataFn($("#pageNumber").val(),$("#rpp").val());
+						getDataFn($(".pagination .active").attr( "data-lp" ),$("#rpp").val());
 						clearFn();
 						$("#checkbox_is_sql").prop("checked",true);
 						$("#checkbox_is_active").prop("checked",true);
 						callFlashSlideInModal("Insert Data is Successfully.");
 					}
 			}else if (data['status'] == "400") {
-				alert("Error ?");
+				//alert("Error ?");
 				validationFn(data);
 			}  
 				   
@@ -367,8 +408,8 @@ var dropDownListAppraisalLevel = function(id,inputId){
 	//id = f_app_lv
 	//id = app_lv
 	var html="";
-	html+="<select data-toggle=\"tooltip\" title=\"Appraisal Level\" class=\"input form-control input-sm\" id=\""+inputId+"\" name=\""+inputId+"\">";
-	//html+="<option selected value=''>All</option>";
+	html+="<select data-toggle=\"tooltip\" title=\"Appraisal Level\" class=\"input span12 m-b-n\" id=\""+inputId+"\" name=\""+inputId+"\">";
+	if(inputId == "app_lv"){html+="<option selected value=''>All</option>";}
 	$.ajax ({
 		url:restfulURL+restfulPathDropDownAppraisalLevel,
 		type:"get" ,
@@ -396,7 +437,7 @@ var dropDownListAppraisalLevel = function(id,inputId){
 var dropDownListConnection = function(id){
 	var html="";
 	
-	html+="<select data-toggle=\"tooltip\" title=\"Connection\" class=\"input form-control input-sm\" id=\"f_connection\" name=\"f_connection\">";
+	html+="<select data-toggle=\"tooltip\" title=\"Connection\" class=\"input span12 m-b-n\" id=\"f_connection\" name=\"f_connection\">";
 	//html+="<option  value=''>All</option>";
 	$.ajax ({
 		url:restfulURL+restfulPathDropDownConnection ,
@@ -420,50 +461,98 @@ var dropDownListConnection = function(id){
 	return html;
 };
 
-var executeFn = function (txtSQL) {
+var executeSQLFn = function (txtSQL) {
+	
+
 	$.ajax({
-		url : restfulURL + "...............",
-		type : "put",
+		url : restfulURL + restfulPathCDS+"/test_sql",
+		type : "POST",
 		dataType : "json",
+		data : {"connection_id":$("#f_connection").val(),
+		"sql":txtSQL},
 		headers:{Authorization:"Bearer "+tokenID.token},
 		async : false,
 		success : function(data) {
-			// galbalDqsRoleObj=data;
 			if (data['status'] == "200") {
-				$("#txt_sample_data").val(data['txtExecute']);
-
+				listSqlFn(data['data']);
+				
 			} else if (data['status'] == "400") {
-
-				validationFn(data);
+				$("#table_Sql").hide();
+				$("#table_Sql").html("");
+				validationSqlFn(data['data']);
 			}
 		}
 	});
 }
 
+var listSqlFn = function (data) {
+	var tableSql = "";
+	var tableSqlHead = "";
+	var tableSqlBody = "";
+	tableSqlHead+="<thead><tr>";
+	tableSqlBody+="<tbody id=\"listSqlData\">";
+   
+	for ( var obj in data) {
+		if (data.hasOwnProperty(obj)) {
+			
+			tableSqlBody+="<tr class='rowSearch'>";
+			for ( var prop in data[obj]) {
+				
+				if (data[obj].hasOwnProperty(prop)) {
+					if(obj == 0){
+						tableSqlHead+="<th>"+prop+"</th>";
+					}
+					tableSqlBody += "<td class='columnSearch'>"+ data[obj][prop]+ "</td>";
+					//console.log(prop + ':' + data[obj][prop]);
+					
+				}
+			}
+			tableSqlBody+="</tr>";
+		}
+	}
+	
+	tableSqlHead+="</tr></thead>";
+	tableSqlBody+="</tbody>";
+	tableSql=tableSqlHead+tableSqlBody;
+	$("#table_Sql").show();
+	$("#table_Sql").html(tableSql);
+	
+}
+
+
 
 $(document).ready(function() {
 	
+
 	// ------------------- Common Data Set -------------------
-	
+	$("#cds_list_content").hide();
+	$(".sr-only").hide();
 	$("#drop_down_list_appraisal_level").html(dropDownListAppraisalLevel("","app_lv"));
 	$("#drop_down_list_from_appraisal_level").html(dropDownListAppraisalLevel("","f_app_lv"));
 	$("#drop_down_list_connection").html(dropDownListConnection());
 	
+	
 	$("#cds_name").val("");
 	$("#cds_id").val("");
+	$("#countPaginationTop").val( $("#countPaginationTop option:first-child").val());
+	$("#countPaginationBottom").val( $("#countPaginationBottom option:first-child").val());
+	
 	$("#btn_search_advance").click(function(){
 		///alert($("#cds_name").val().split("-", 1));
-		searchAdvanceFn($("#app_lv").val(),$("#cds_id").val());
 		
+		searchAdvanceFn($("#app_lv").val(),$("#cds_id").val());
+		$("#cds_list_content").show();
 		return false;
 	});
-	$("#btn_search_advance").click();
+	//$("#btn_search_advance").click();
 	
 	
 	
 	
 	$("#btnAddCommonDataSet").click(function(){
 		clearFn();
+		$("#f_app_lv").val( $("#f_app_lv option:first-child").val());
+		$("#f_connection").val( $("#f_connection option:first-child").val());
 		$("#btnAddAnother").show();
 		$("#checkbox_is_sql").prop("checked",true);
 		$("#checkbox_is_active").prop("checked",true);
@@ -496,16 +585,21 @@ $(document).ready(function() {
 		}
 	});
 	
-//	$("#btn_execute").attr("disabled","disabled");
-//	 $("#btn_execute").click(function () {
-//		if ($("#checkbox_is_sql:checked").is(":checked")) {
-//			alert("Execute");
-//			//executeFn();
-//		} else {
-//			alert("กรุณาคลิกเลือก \"IsSQL\" ");
-//		}		
-//		 
-//	});
+	
+	
+
+
+	            
+	            
+	
+	
+	
+	
+	 $("#btn_Execute").click(function () {
+		 executeSQLFn($("#txt_sql").val());
+		 
+		 //buildHtmlTable('#excelDataTable');
+	});
 	
 
 	
@@ -570,5 +664,5 @@ $(document).ready(function() {
 	
 	// ------------------- Common Data Set END -------------------
 	
-	
+
 });
