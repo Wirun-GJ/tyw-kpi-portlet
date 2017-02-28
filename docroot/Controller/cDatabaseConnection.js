@@ -1,40 +1,43 @@
  $(document).ready(function(){
-    	
-    	
-    	
-    	//alert(createTableFn());
-
+   
+	 var username = $('#user_portlet').val();
+	 var password = $('#pass_portlet').val();
+	 if(username!="" && username!=null & username!=[] && username!=undefined ){
+	 	
+	 	if(connectionServiceFn(username,password)==true){
+	 
+	 		
     	var options={
     			"colunms":[
-    			           {"colunmsDisplayName":"Connection Name","width":"20%","id":"appraisal_level_id","colunmsType":"text"},
-    			           {"colunmsDisplayName":"Database Type","width":"65%","id":"appraisal_level_name","colunmsType":"text"},
+    			           {"colunmsDisplayName":"Connection Name","width":"20%","id":"connection_name","colunmsType":"text"},
+    			           {"colunmsDisplayName":"Database Type","width":"65%","id":"database_type","colunmsType":"text"},
     			          ],
     			"form":[{
-    					"label":"Connection Name","inputType":"text","placeholder":"DefultText",
+    					"label":"Connection Name","inputType":"text","placeholder":"Connection Name",
     					"id":"connection_name","width":"350px","required":true
     					},
     			        {
-    					"label":"Database Type","inputType":"dropdown","default":"All",
-    					"id":"database_type_id","width":"250px","url":""+restfulURL+"/tyw_api/public/database_connection/db_type_list","required":true
+    					"label":"Database Type","inputType":"dropdown","default":"checked",
+    					"id":"database_type_id","width":"250px","url":""+restfulURL+"/tyw_api/public/database_connection/db_type_list",
     					},
     			        {
-    					"label":"IP Address","inputType":"text","placeholder":"DefultText",
-    					"id":"ip_address","width":"350px","dataTypeInput":"number"
+    					"label":"IP Address","inputType":"text","placeholder":"IP Address",
+    					"id":"ip_address","width":"350px","dataTypeInput":"number","required":true
     					},
     			        {
-    					"label":"Port","inputType":"text","placeholder":"DefultText",
-    					"id":"port","width":"250px","dataTypeInput":"number"
+    					"label":"Port","inputType":"text","placeholder":"Port",
+    					"id":"port","width":"250px","dataTypeInput":"number","required":true
     					},
     			        {
-    					"label":"Database Name","inputType":"text","placeholder":"DefultText",
-    					"id":"database_name","width":"350px"
+    					"label":"Database Name","inputType":"text","placeholder":"Database Name",
+    					"id":"database_name","width":"350px","required":true
     					},
     			        {
-    					"label":"User","inputType":"text","placeholder":"DefultText",
-    					"id":"user_name","width":"250px"
+    					"label":"User","inputType":"text","placeholder":"User",
+    					"id":"user_name","width":"250px","required":true
     					},
     			        {
-    					"label":"Password","inputType":"password","placeholder":"DefultText",
+    					"label":"Password","inputType":"password","placeholder":"Password",
     					"id":"password","width":"250px"
     					}
     					
@@ -56,17 +59,18 @@
  					}],
  					
     			 "formDetail":{"formSize":"modal-dialog","formName":"Database Connection","id":"databaseConnection","pk_id":"connection_id"},       
-    			 "serviceName":[restfulURL+"/tyw_api/public/appraisal_grade"],
+    			 "serviceName":[restfulURL+"/tyw_api/public/database_connection"],
     			 "tokenID":tokenID,
-    			 "pagignation":true,
+    			 "pagignation":false,
     			 "expressSearch":false,
-    			 "advanceSearchSet":true,
-    			 "btnManageOption":{"id":"BtnID","name":"BtnName"},
-    			 "btnAdvanceSearchOption":{"id":"BtnID","name":"<i class=\"fa fa-plus-square\"></i>&nbsp;Btn"}
+    			 "advanceSearchSet":false,
+    			 //"btnManageOption":{"id":"BtnID","name":"BtnName"},
+    			 //"btnAdvanceSearchOption":{"id":"BtnID","name":"<i class=\"fa fa-plus-square\"></i>&nbsp;Btn"}
     	}
     	
     	createDataTableFn(options);
     	
-   
-    	
+		}
+	 }
     });
+ 
