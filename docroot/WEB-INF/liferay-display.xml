@@ -8,9 +8,8 @@
 		<portlet id="appraisal-item"></portlet>
 		<portlet id="appraisal-assignment"></portlet>
 
-		<portlet id="new"></portlet>
 		<portlet id="database-connection"></portlet>
-		<portlet id="common Data Set"></portlet>
 		<portlet id="common-data-set"></portlet>
+		<portlet id="threshould"></portlet>
 	</category>
 </display>

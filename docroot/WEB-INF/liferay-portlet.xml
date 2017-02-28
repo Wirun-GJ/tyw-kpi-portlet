@@ -107,15 +107,7 @@
 		 
 	</portlet>
 	
-	<portlet>
-		<portlet-name>new</portlet-name>
-		<icon>/icon.png</icon>
-		<header-portlet-css>/css/main.css</header-portlet-css>
-		<footer-portlet-javascript>
-			/js/main.js
-		</footer-portlet-javascript>
-		<css-class-wrapper>new-portlet</css-class-wrapper>
-	</portlet>
+	
 	<portlet>
 		<portlet-name>database-connection</portlet-name>
 		<icon>/icon.png</icon>
@@ -163,15 +155,7 @@
 			database-connection-portlet
 		</css-class-wrapper>
 	</portlet>
-	<portlet>
-		<portlet-name>common Data Set</portlet-name>
-		<icon>/icon.png</icon>
-		<header-portlet-css>/css/main.css</header-portlet-css>
-		<footer-portlet-javascript>
-			/js/main.js
-		</footer-portlet-javascript>
-		<css-class-wrapper>common data set-portlet</css-class-wrapper>
-	</portlet>
+	
 	<portlet>
 		<portlet-name>common-data-set</portlet-name>
 		<icon>/icon.png</icon>
@@ -180,6 +164,16 @@
 			/js/main.js
 		</footer-portlet-javascript>
 		<css-class-wrapper>common-data-set-portlet</css-class-wrapper>
+	</portlet>
+	
+	<portlet>
+		<portlet-name>threshould</portlet-name>
+		<icon>/icon.png</icon>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		<footer-portlet-javascript>
+			/js/main.js
+		</footer-portlet-javascript>
+		<css-class-wrapper>threshould-portlet</css-class-wrapper>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
@@ -197,5 +191,5 @@
 	<role-mapper>
 		<role-name>user</role-name>
 		<role-link>User</role-link>
-	</role-mapper>
+	</role-mapper> 
 </liferay-portlet-app>
