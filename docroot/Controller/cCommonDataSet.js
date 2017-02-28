@@ -74,6 +74,7 @@ var clearFn = function() {
 	$("#table_Sql").hide();
 	$("#txt_sample_data").removeAttr("disabled");
 	
+	$("#f_connection").removeAttr("disabled");
 	$("#btn_Execute").removeAttr("disabled");
 	
 	$("#checkbox_is_sql").prop("checked",false);
@@ -155,9 +156,11 @@ var findOneFn = function(id) {
 			if(data['is_sql']==1){
 				$('#checkbox_is_sql').prop('checked', true);
 				$("#btn_Execute").removeAttr("disabled");
+				$("#f_connection").removeAttr("disabled");
 			}else{
 				$('#checkbox_is_sql').prop('checked', false);
 				$("#btn_Execute").attr("disabled","disabled");
+				$("#f_connection").attr("disabled","disabled");
 			}
 			
 			//IsAction
@@ -205,6 +208,7 @@ var listCommonDataSetFn = function(data) {
 			IsActive ="<input disabled type=\"checkbox\"  value=\"0\" >";
 		}
 		htmlTable += "<tr class='rowSearch'>";
+		htmlTable += "<td id=\"objectCenter\" class='objectCenter 'style=\"\">"+"<input  style=\"margin-bottom: 3px;\"type=\"checkbox\"  class='selectCdsCheckbox' id=kpiCheckbox-"+indexEntry["cds_id"]+" value=\""+indexEntry["cds_id"]+"\">"+ "</td>";
 		htmlTable += "<td class='columnSearch' style=\"vertical-align: middle;\">"+ indexEntry["cds_name"]+ "</td>";
 		htmlTable += "<td class='columnSearch' style=\"vertical-align: middle;\">"+ indexEntry["appraisal_level_name"]+ "</td>";
 		htmlTable += "<td id=\"objectCenter\" >"+IsSQL+"</td>";
@@ -408,8 +412,10 @@ var dropDownListAppraisalLevel = function(id,inputId){
 	//id = f_app_lv
 	//id = app_lv
 	var html="";
-	html+="<select data-toggle=\"tooltip\" title=\"Appraisal Level\" class=\"input span12 m-b-n\" id=\""+inputId+"\" name=\""+inputId+"\">";
-	if(inputId == "app_lv"){html+="<option selected value=''>All</option>";}
+	html+="<select  data-toggle=\"tooltip\" title=\"Appraisal Level\" class=\"input span12 m-b-n\" id=\""+inputId+"\" name=\""+inputId+"\">";
+	if(inputId == "app_lv"){
+		html+="<option selected value=''>All</option>";}
+
 	$.ajax ({
 		url:restfulURL+restfulPathDropDownAppraisalLevel,
 		type:"get" ,
@@ -518,7 +524,12 @@ var listSqlFn = function (data) {
 	$("#table_Sql").html(tableSql);
 	
 }
-
+var backToTopFn = function(){
+	$('body,html').animate({
+		scrollTop: 0
+	}, 800);
+	return false;
+}
 
 
 $(document).ready(function() {
@@ -579,9 +590,11 @@ $(document).ready(function() {
 	$("#checkbox_is_sql").change(function name() {
 		if($("#checkbox_is_sql:checked").is(":checked")){
 			$("#btn_Execute").removeAttr("disabled");
+			$("#f_connection").removeAttr("disabled");
 			//executeFn();
 		}else{
 			$("#btn_Execute").attr("disabled","disabled");
+			$("#f_connection").attr("disabled","disabled");
 		}
 	});
 	
@@ -655,8 +668,15 @@ $(document).ready(function() {
    
 	//Autocomplete Search End
 	
-	
-	
+	$("#btn_copy").click(function(){
+		listAppraisalLevel();
+	});
+	$("#btnCopySubmit").click(function(){
+
+		copyCdsFn();
+
+		return false;
+	});
 	
 	
 	
@@ -666,3 +686,68 @@ $(document).ready(function() {
 	
 
 });
+var listAppraisalLevel = function() {
+	var htmlTable="";
+	$.ajax ({
+		url:restfulURL+restfulPathDropDownAppraisalLevel ,
+		type:"get" ,
+		dataType:"json" ,
+		headers:{Authorization:"Bearer "+tokenID.token},
+		async:false,
+		success:function(data){
+//			console.log(data);
+//			console.log(data.length);
+			$.each(data,function(index,indexEntry){
+				htmlTable+="<tr>";
+//				if(index == 0){
+//					htmlTable+="<td rowspan='"+data.length+"'>Appraisal Level:</td>";
+//				}
+				htmlTable+="<td>";
+				htmlTable+="<input  style=\"margin-bottom: 2px;\" id=\"form_copy_item-"+indexEntry["appraisal_level_id"]+"\" class=\"from_data_copy\"";
+				htmlTable+="type='checkbox' value=\""+indexEntry["appraisal_level_id"]+"\">";
+				htmlTable+="</td>";
+				htmlTable+="<td style=\"vertical-align:middle\">"+indexEntry["appraisal_level_name"]+"</td>";
+				htmlTable+="</tr>";
+					
+//				}		
+			});	
+
+		}
+	});	
+	$("#formListCopy").html(htmlTable);
+}
+var copyCdsFn = function () {
+	var cds =[];
+	var appraisal = [];
+	$.each($(".selectCdsCheckbox").get(),function(index,indexEntry){
+		if($(indexEntry).is(":checked")){
+			cds.push($(indexEntry).val());
+		}
+	});
+	console.log($(".from_data_copy").get());
+	$.each($(".from_data_copy").get(),function(index,indexEntry){
+		if($(indexEntry).is(":checked")){
+			appraisal.push($(indexEntry).val());
+		}
+	});
+	console.log(cds);
+	console.log(appraisal);
+		$.ajax({
+			url : restfulURL+restfulPathCDS+"/copy",
+			type : "POST",
+			dataType : "json",
+			headers:{Authorization:"Bearer "+tokenID.token},
+			async:false,
+			data:{"cds":cds,"appraisal_level":appraisal},
+			success : function(data) {
+				if(data['status']==200){
+					callFlashSlide("Copy Successfully.");
+					getDataFn($("#pageNumber").val(),$("#rpp").val());
+					$('#ModalCopy').modal('hide');
+					
+				}
+			}
+		});
+	
+	return false;
+}

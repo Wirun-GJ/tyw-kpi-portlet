@@ -2,4 +2,4 @@
 
 <portlet:defineObjects />
 
-This is the <b>New</b> portlet in View mode.
+This is the <b>Perspective</b> portlet in View mode.

@@ -7,7 +7,7 @@ var getNewSessionFn = function(){
 			url:restfulURL+"/tyw_api/public/session",
 			type:"POST",
 			dataType:"text",
-			data:{"username":"tyw","password":"P@ssw0rd"},
+			data:{"username":"joe","password":"test"},
 			error: function(jqXHR, textStatus, errorThrown) {
 				$("#information").html("<font color='red'>***</font> invalid credentials.").show();
 			},

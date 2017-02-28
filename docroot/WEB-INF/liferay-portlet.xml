@@ -1,24 +1,24 @@
-<?xml version="1.0"?>
+	<?xml version="1.0"?>
 <!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.2.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_6_2_0.dtd">
- 
-<liferay-portlet-app>
-	<portlet>
+    
+<liferay-portlet-app>        
+	<portlet>   
 		<portlet-name>tyw-kpi</portlet-name>
 		<icon>/icon.png</icon>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 		<css-class-wrapper>tyw-kpi-portlet</css-class-wrapper> 
-	</portlet> 
-	<portlet>  
+	</portlet>    
+	<portlet>    
 		<portlet-name>appraisal</portlet-name>
-		<icon>/icon.png</icon>
+		<icon>/icon.png</icon>  
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>
 			/js/main.js
 		</footer-portlet-javascript>
 		<css-class-wrapper>appraisal-portlet</css-class-wrapper>
-	</portlet>   
-	<portlet>  
+	</portlet>     
+	<portlet>   
 		<portlet-name>appraisal-item</portlet-name>
 		<icon>/icon.png</icon> 
 	 
@@ -99,7 +99,7 @@
 		 -->
 		<footer-portlet-javascript>
 			/js/main.js
-		</footer-portlet-javascript>
+		</footer-portlet-javascript>           
 		<css-class-wrapper>
 			appraisal-assignment-portlet
 		</css-class-wrapper>
@@ -156,15 +156,27 @@
 		</css-class-wrapper>
 	</portlet>
 	
-	<portlet>
-		<portlet-name>common-data-set</portlet-name>
-		<icon>/icon.png</icon>
-		<header-portlet-css>/css/main.css</header-portlet-css>
-		<footer-portlet-javascript>
-			/js/main.js
-		</footer-portlet-javascript>
-		<css-class-wrapper>common-data-set-portlet</css-class-wrapper>
-	</portlet>
+	<portlet> 
+		<portlet-name>common-data-set</portlet-name> 
+		<icon>/icon.png</icon> 
+		<header-portlet-css>/js/bootstrap2.3.2/css/bootstrap.min.css</header-portlet-css>
+		<header-portlet-css>/js/bootstrap2.3.2/css/bootstrap-responsive.min.css</header-portlet-css>
+		<header-portlet-css>/css/plugins/iCheck/custom.css</header-portlet-css>
+		<header-portlet-css>/font-awesome/css/font-awesome.css</header-portlet-css>
+		<header-portlet-css>/css/jquery-ui.css</header-portlet-css>
+		<header-portlet-css>/css/jquery.mloading.css</header-portlet-css>
+		<header-portlet-css>/css/tywMain.css</header-portlet-css>
+	    <footer-portlet-javascript>/js/jquery-2.1.1.js</footer-portlet-javascript>
+	    <footer-portlet-javascript>/js/bootstrap.min.2.3.2.js</footer-portlet-javascript>
+	    <footer-portlet-javascript>/js/jquery.bootpag.min.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery-ui-1.10.4.min.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery.mloading.js</footer-portlet-javascript>	     
+	    <footer-portlet-javascript>/Controller/cConfig.js</footer-portlet-javascript>  
+	    <footer-portlet-javascript>/Controller/cMain.js</footer-portlet-javascript>
+	    <footer-portlet-javascript>/Controller/cCommonDataSet.js</footer-portlet-javascript>
+		<css-class-wrapper>common-data-set-portlet</css-class-wrapper> 
+
+</portlet>
 	
 	<portlet>
 		<portlet-name>threshould</portlet-name>
@@ -174,6 +186,136 @@
 			/js/main.js
 		</footer-portlet-javascript>
 		<css-class-wrapper>threshould-portlet</css-class-wrapper>
+	</portlet>
+	<portlet>
+		<portlet-name>appraisal-level</portlet-name>
+		<icon>/icon.png</icon>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		<footer-portlet-javascript>
+			/js/main.js
+		</footer-portlet-javascript>
+		<css-class-wrapper>appraisal-level-portlet</css-class-wrapper>
+	</portlet>
+	<portlet>
+		<portlet-name>appraisal-grade</portlet-name>
+		<icon>/icon.png</icon>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		<footer-portlet-javascript>
+			/js/main.js
+		</footer-portlet-javascript>
+		<css-class-wrapper>appraisal-grade-portlet</css-class-wrapper>
+	</portlet>
+	<portlet>
+		<portlet-name>appraisal-period</portlet-name>
+		<icon>/icon.png</icon>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		<footer-portlet-javascript>
+			/js/main.js
+		</footer-portlet-javascript>
+		<css-class-wrapper>appraisal-period-portlet</css-class-wrapper>
+	</portlet>
+	<portlet>
+		<portlet-name>System-Configurations</portlet-name>
+		<icon>/icon.png</icon>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		<footer-portlet-javascript>
+			/js/main.js
+		</footer-portlet-javascript>
+		<css-class-wrapper>
+			system-configurations-portlet
+		</css-class-wrapper>
+	</portlet>
+	<portlet>
+		<portlet-name>Perspective</portlet-name>
+		<icon>/icon.png</icon>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		<footer-portlet-javascript>
+			/js/main.js
+		</footer-portlet-javascript>
+		<css-class-wrapper>perspective-portlet</css-class-wrapper>
+	</portlet>
+	<portlet>     
+		<portlet-name>UOM</portlet-name>
+		<icon>/icon.png</icon>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		<footer-portlet-javascript>
+			/js/main.js
+		</footer-portlet-javascript>
+		<css-class-wrapper>uom-portlet</css-class-wrapper>
+	</portlet>
+	<portlet>
+		<portlet-name>Appraisal-Structure</portlet-name>
+		<icon>/icon.png</icon>
+		<header-portlet-css>/css/main.css</header-portlet-css>
+		<footer-portlet-javascript>
+			/js/main.js
+		</footer-portlet-javascript>
+		<css-class-wrapper>
+			appraisal-structure-portlet
+		</css-class-wrapper>
+	</portlet>
+	<portlet>
+		<portlet-name>import-employee</portlet-name>
+		<icon>/icon.png</icon>
+		<header-portlet-css>/js/bootstrap2.3.2/css/bootstrap.min.css</header-portlet-css>
+		<header-portlet-css>/js/bootstrap2.3.2/css/bootstrap-responsive.min.css</header-portlet-css>
+		<header-portlet-css>/css/plugins/iCheck/custom.css</header-portlet-css>
+		<header-portlet-css>/font-awesome/css/font-awesome.css</header-portlet-css>
+		<header-portlet-css>/css/jquery-ui.css</header-portlet-css>
+		<header-portlet-css>/css/jquery.mloading.css</header-portlet-css>
+	    <header-portlet-css>/css/tywMain.css</header-portlet-css>
+        <footer-portlet-javascript>/js/jquery3.1.1.js</footer-portlet-javascript>
+	    <footer-portlet-javascript>/js/jquery-2.1.1.js</footer-portlet-javascript>
+	    <footer-portlet-javascript>/js/bootstrap.min.2.3.2.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery.bootpag.min.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery-ui-1.10.4.min.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery.mloading.js</footer-portlet-javascript>	     
+	    <footer-portlet-javascript>/Controller/cConfig.js</footer-portlet-javascript>  
+	    <footer-portlet-javascript>/Controller/cMain.js</footer-portlet-javascript>  
+	    <footer-portlet-javascript>/Controller/cImportEmployee.js</footer-portlet-javascript>
+		<css-class-wrapper>import-employee-portlet</css-class-wrapper>
+	</portlet>       
+	<portlet>
+		<portlet-name>cds-result</portlet-name>
+		<icon>/icon.png</icon>
+		<header-portlet-css>/js/bootstrap2.3.2/css/bootstrap.min.css</header-portlet-css>
+		<header-portlet-css>/js/bootstrap2.3.2/css/bootstrap-responsive.min.css</header-portlet-css>
+		<header-portlet-css>/css/plugins/iCheck/custom.css</header-portlet-css>
+		<header-portlet-css>/font-awesome/css/font-awesome.css</header-portlet-css>
+		<header-portlet-css>/css/jquery-ui.css</header-portlet-css>
+		<header-portlet-css>/css/jquery.mloading.css</header-portlet-css>
+	    <header-portlet-css>/css/tywMain.css</header-portlet-css>
+        <footer-portlet-javascript>/js/jquery3.1.1.js</footer-portlet-javascript>
+	    <footer-portlet-javascript>/js/jquery-2.1.1.js</footer-portlet-javascript>
+	    <footer-portlet-javascript>/js/bootstrap.min.2.3.2.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery.bootpag.min.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery-ui-1.10.4.min.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery.mloading.js</footer-portlet-javascript>	     
+	    <footer-portlet-javascript>/Controller/cConfig.js</footer-portlet-javascript>  
+	    <footer-portlet-javascript>/Controller/cMain.js</footer-portlet-javascript>  
+	    <footer-portlet-javascript>/Controller/cCdsResult.js</footer-portlet-javascript>
+		<css-class-wrapper>cds-result-portlet</css-class-wrapper>
+	</portlet> 
+	<portlet>
+		<portlet-name>appraisal-data</portlet-name>
+		<icon>/icon.png</icon>
+		<header-portlet-css>/js/bootstrap2.3.2/css/bootstrap.min.css</header-portlet-css>
+		<header-portlet-css>/js/bootstrap2.3.2/css/bootstrap-responsive.min.css</header-portlet-css>
+		<header-portlet-css>/css/plugins/iCheck/custom.css</header-portlet-css>
+		<header-portlet-css>/font-awesome/css/font-awesome.css</header-portlet-css>
+		<header-portlet-css>/css/jquery-ui.css</header-portlet-css>
+		<header-portlet-css>/css/jquery.mloading.css</header-portlet-css>
+	    <header-portlet-css>/css/tywMain.css</header-portlet-css>
+        <footer-portlet-javascript>/js/jquery3.1.1.js</footer-portlet-javascript>
+	    <footer-portlet-javascript>/js/jquery-2.1.1.js</footer-portlet-javascript>
+	    <footer-portlet-javascript>/js/bootstrap.min.2.3.2.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery.bootpag.min.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery-ui-1.10.4.min.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery.mloading.js</footer-portlet-javascript>	     
+	    <footer-portlet-javascript>/Controller/cConfig.js</footer-portlet-javascript>  
+	    <footer-portlet-javascript>/Controller/cMain.js</footer-portlet-javascript>  
+	    <footer-portlet-javascript>/Controller/cAppraisalData.js</footer-portlet-javascript>
+		<css-class-wrapper>appraisal-data-portlet</css-class-wrapper>      
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

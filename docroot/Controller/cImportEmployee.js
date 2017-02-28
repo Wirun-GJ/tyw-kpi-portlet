@@ -1,9 +1,11 @@
 //Global variable
 var galbalDataImportEmp=[];
+
 var tempEmpName="";
 var tempEmpID="";
 var tempPosiName="";
 var tempPosiID="";
+var pageNumberDefault=1;
 var restfulPathImportEmployee="/tyw_api/public/import_employee";
 var restfulPathRole="/tyw_api/public/import_employee/role_list";
 
@@ -15,66 +17,73 @@ var restfulPathEmployeeAutocomplete="/tyw_api/public/import_employee/auto_employ
 
 //Check Validation Start
 var validationFn = function(data){
+
+	var validate = "";
+	var count = 0;
+	$.each(data['data'], function(index, indexEntry) {
+
+		if (index != undefined) {
+			if (count == 0) {
+				validate += "<font color='red'>* </font>" + indexEntry + "";
+			} else {
+				validate += "<br><font color='red'>* </font> " + indexEntry + " ";
+			}
+		}
+
+		count++;
+	});
 	
-	var validate="";
-	if(data['data']['emp_code']!=undefined){
-		
-		validate+="<font color='red'>*</font> "+data['data']['emp_code']+"<br>";
-	}
-	if(data['data']['emp_name']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['emp_name']+"<br>";
-	}
-	if(data['data']['working_start_date']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['working_start_date']+"<br>";
-	}
-	if(data['data']['probation_end_date']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['probation_end_date']+"<br>";
-	}
-	if(data['data']['acting_end_date']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['acting_end_date']+"<br>";
-	}
-	if(data['data']['department_code']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['department_code']+"<br>";
-	}
-	if(data['data']['department_name']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['department_name']+"<br>";
-	}
-	if(data['data']['section_code']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['section_code']+"<br>";
-	}
-	if(data['data']['section_name']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['section_name']+"<br>";
-	}
-	if(data['data']['position_code']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['position_code']+"<br>";
-	}
-	if(data['data']['position_name']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['position_name']+"<br>";
-	}
-	if(data['data']['position_group']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['position_group']+"<br>";
-	}
-	if(data['data']['chief_emp_code']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['chief_emp_code']+"<br>";
-	}
-	if(data['data']['s_amount']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['s_amount']+"<br>";
-	}
-	if(data['data']['erp_user']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['erp_user']+"<br>";
-	}
-	if(data['data']['email']!=undefined){
-		validate+="<font color='red'>*</font> "+data['data']['email']+"<br>";
-	}
-	
-	
-	
-	callFlashSlideInModal(validate);
+	callFlashSlideInModal(validate,"#information2","error");
+	//callFlashSlideInModal(validate);
 };
+
 //Check Validation Edd
+
+var listErrorFn =function(data){
+	var errorData="";
+	
+	$.each(data,function(index,indexEntry){
+
+		
+		if(data[index]['employee_code']!= undefined || data[index]['employee_code']==null){
+			if(data[index]['employee_code']== null){//The employee code field is null
+				errorData+="<font color='red'>*</font> employee code : null ↓<br>";
+			}else{
+				errorData+="<font color='red'>*</font> employee code : "+data[index]['employee_code']+"  ↓<br>";}
+		}
+		if(data[index]['errors']['working_start_date_yyyy_mm_dd']!=undefined){
+			errorData+="<font color='red'>*</font> "+data[index]['errors']['working_start_date_yyyy_mm_dd']+"<br>";
+		}
+		if(data[index]['errors']['probation_end_date_yyyy_mm_dd']!=undefined){
+			errorData+="<font color='red'>*</font> "+data[index]['errors']['probation_end_date_yyyy_mm_dd']+"<br>";
+		}
+		if(data[index]['errors']['acting_end_date_yyyy_mm_dd']!=undefined){
+			errorData+="<font color='red'>*</font> "+data[index]['errors']['probation_end_date_yyyy_mm_dd']+"<br>";
+		}
+		if(data[index]['errors']['salary_amount']!=undefined){
+			errorData+="<font color='red'>*</font> "+data[index]['errors']['salary_amount']+"<br>";
+		}
+		if(data[index]['errors']['email']!=undefined){
+			errorData+="<font color='red'>*</font> "+data[index]['errors']['email']+"<br>";
+		}
+		
+		
+
+	});
+	
+	
+	
+	//alert(errorData);
+	callFlashSlideInModal(errorData,"#information","error");
+	//callFlashSlideInModal(errorData);
+	/*return errorData;*/
+}
 
 //--------  Clear Start 
 var clearFn = function() {
+	
+	
+	
 	$("#from_emp_code").val("");
 	$("#from_emp_name").val("");
 	$("#from_emp_wsd").val("");
@@ -96,6 +105,8 @@ var clearFn = function() {
 	$("#from_checkboxIs_active").prop("checked",false);
 	
 	 $(".from_data_role").prop('checked', false); 
+	 
+	 $('#file').val("");
 
 //	$("#txtSampleData").removeAttr("disabled");
 	
@@ -164,7 +175,7 @@ var findOneFn = function(id) {
 				$("#from_emp_email").val(data['email']);
 				$("#from_emp_salary").val(data['s_amount']);
 				$("#from_emp_erp_user").val(data['erp_user']);
-
+				$("#from_emp_type").val(data['emp_type']);
 				
 				//isCorporateKPI
 				if(data['is_coporate_kpi']==1){
@@ -226,7 +237,7 @@ var searchAdvanceFn = function (Department,Section,Position,EmployeeName) {
 	$(".paramEmbed").remove();
 	$("body").append(htmlParam);
 	//embed parameter end
-	getDataFn($("#pageNumber").val(),$("#rpp").val());
+	getDataFn(pageNumberDefault,$("#rpp").val());
 	
 	
 }
@@ -239,7 +250,7 @@ var listImportEmployeeFn = function(data) {
 	//alert("listCommonDataSetFn");
 	//clear ฟังก์ชัน  data ข้อมูลเก่าทิ้ง 
 	$("#listEmployee").empty();
-	
+	var htmlAppraisalLevel= "";
 	var htmlTable = "";
 //	var IsSQL ="";
 //	var IsActive ="";
@@ -250,23 +261,29 @@ var listImportEmployeeFn = function(data) {
 //		}else if (indexEntry["IsActive"]=="0"){
 //			IsActive = "<input disabled type='checkbox' name='is_active' id='is_active'  value='0'>";
 //		}
+		$.each(indexEntry["appraisal_level"],function(index,indexEntry){
+			htmlAppraisalLevel+=indexEntry["appraisal_level_name"]+"<br>";
+		});
 		htmlTable += "<tr class='rowSearch'>";
-		htmlTable += "<td class='objectCenter '>"+"<div class='checkbox m-n '><input  style=\"margin-top:1px;\" type=\"checkbox\" class='selectEmpCheckbox' id=kpiCheckbox-"+indexEntry["emp_code"]+" value=\""+indexEntry["emp_code"]+"\"><label> </label></div>"+ "</td>";
-		htmlTable += "<td class='columnSearch'>"+ indexEntry["emp_code"]+ "</td>";
-		htmlTable += "<td class='columnSearch'>"+ indexEntry["emp_name"]+ "</td>";
-		htmlTable += "<td class='columnSearch'>"+indexEntry["department_name"]+"</td>";
-		htmlTable += "<td class='columnSearch'>"+indexEntry["section_name"]+"</td>";
-		htmlTable += "<td class='columnSearch'>"+indexEntry["position_name"]+"</td>";
-		htmlTable += "<td class='columnSearch'>"+indexEntry["position_group"]+"</td>";
-		htmlTable += "<td class='columnSearch'>"+indexEntry["chief_emp_code"]+"</td>";
+		htmlTable += "<td id=\"objectCenter\" class='objectCenter 'style=\"\">"+"<input  style=\"margin-bottom: 3px;\"type=\"checkbox\"  class='selectEmpCheckbox' id=kpiCheckbox-"+indexEntry["emp_code"]+" value=\""+indexEntry["emp_code"]+"\">"+ "</td>";
+		htmlTable += "<td class='columnSearch' style=\"vertical-align: middle;\">"+ indexEntry["emp_code"]+ "</td>";
+		htmlTable += "<td class='columnSearch' style=\"vertical-align: middle;\">"+ indexEntry["emp_name"]+ "</td>";
+		htmlTable += "<td class='columnSearch' style=\"vertical-align: middle;\">"+indexEntry["department_name"]+"</td>";
+		htmlTable += "<td class='columnSearch' style=\"vertical-align: middle;\">"+indexEntry["section_name"]+"</td>";
+		htmlTable += "<td class='columnSearch' style=\"vertical-align: middle;\">"+indexEntry["position_name"]+"</td>";
+		htmlTable += "<td class='columnSearch' style=\"vertical-align: middle;\">"+indexEntry["position_group"]+"</td>";
+		htmlTable += "<td class='columnSearch' style=\"vertical-align: middle;\">"+indexEntry["chief_emp_code"]+"</td>";
+		htmlTable += "<td class='columnSearch' style=\"vertical-align: middle;\">"+htmlAppraisalLevel+"</td>";
 		//htmlTable += "<td class='objectCenter'>"+IsActive+"</td>";
 		//<button class='btn btn-primary btn-xs btn-gear role' id="+ indexEntry["_id"]+ " data-target=#ModalRole data-toggle='modal'>Ruld</button>&nbsp;
 		//&lt;button class='btn btn-primary btn-xs btn-gear add' id=1 data-target=#ModalRole data-toggle='modal'&gt;Role&lt;/button&gt;
-		htmlTable += "<td class='objectCenter'><i class=\"fa fa-cog font-gear popover-edit-del\" data-trigger=\"focus\" tabindex=\""+index+"\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-content=\" " +
+		htmlTable += "<td id=\"objectCenter\" style=\"vertical-align: middle;\"><i class=\"fa fa-cog font-gear popover-edit-del\" data-trigger=\"focus\" tabindex=\""+index+"\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-content=\" " +
 				"<button class='btn btn-primary btn-xs btn-gear role' id="+ indexEntry["emp_code"]+ " data-target=#ModalRole data-toggle='modal'>Role</button>&nbsp;" +
 				"<button class='btn btn-warning btn-xs btn-gear edit' id="+ indexEntry["emp_code"]+ " data-target=#ModalEditEmp data-toggle='modal'>Edit</button>&nbsp;" +
 		        "<button id="+indexEntry["emp_code"]+" class='btn btn-danger btn-xs btn-gear del'>Delete</button>\"></i></td>";
 		htmlTable += "</tr>";
+		
+		htmlAppraisalLevel="";
 	});
 	
 	//alert("ผ่าน");
@@ -281,7 +298,7 @@ var listImportEmployeeFn = function(data) {
 			$(".role").on("click",function(){
 				$("#txtAssignEmpName").show();
 				$(this).parent().parent().parent().children().click();
-				$("#from_role_emp_name").html($(this).parent().parent().parent().prev().prev().prev().prev().prev().prev().text());
+				$("#from_role_emp_name").html($(this).parent().parent().parent().prev().prev().prev().prev().prev().prev().prev().text());
 				//listAppraisalLevel();
 				findOneRoleFn(this.id);
 				$("#id").val(this.id);
@@ -293,17 +310,10 @@ var listImportEmployeeFn = function(data) {
 				
 			});
 			$(".edit").on("click",function() {
-			
-//			$("#modalTitleRole").html("Common Data Set");
-//			$("#modalDescription").html("Edit Common Data Set");
-			
+			$(".btnModalClose").click();
 			$(this).parent().parent().parent().children().click();
-			//alert($(this).parent().parent().parent().children().click());
-			//$("#btnAddAnother").hide();
-			//$("#txtSampleData").attr("disabled","disabled"); 
-			
+			dropDownEmpType();
 			findOneFn(this.id);
-			//alert($("#checkboxIsSQL:checked").is(":checked"));
 			
 			$("#from_emp_wsd").datepicker();
 		    $("#from_emp_wsd").datepicker( "option", "dateFormat", "yy-mm-dd" );
@@ -333,6 +343,7 @@ var listImportEmployeeFn = function(data) {
 					 url:restfulURL+restfulPathImportEmployee+"/"+id,
 					 type : "delete",
 					 dataType:"json",
+					 async:false,
 					 headers:{Authorization:"Bearer "+tokenID.token},
 				     success:function(data){    
 				    	 
@@ -343,7 +354,12 @@ var listImportEmployeeFn = function(data) {
 					       clearFn();
 					       $("#confrimModal").modal('hide');
 					       
-					     }else{alert("Error");}
+					     }else if (data['status'] == "400"){
+					    	 $("#confrimModal").modal('hide');
+					    	 callFlashSlide(data['data'],"error");
+					    	 //backToTopFn();
+					    	}
+					     	  
 					 }
 				});
 				
@@ -370,10 +386,8 @@ var listAppraisalLevel = function() {
 			$.each(data,function(index,indexEntry){
 				htmlTable+="<tr>";
 				htmlTable+="<td>";
-				htmlTable+="<div class=\"checkbox m-n \">";
-				htmlTable+="<input style=\"margin-top:1px;\" id=\"form_role_item-"+indexEntry["appraisal_level_id"]+"\" class=\"from_data_role\"";
-				htmlTable+="type='checkbox' value=\""+indexEntry["appraisal_level_id"]+"\"> <label> </label>";
-				htmlTable+="</div>";
+				htmlTable+="<input  style=\"margin-bottom: 2px;\" id=\"form_role_item-"+indexEntry["appraisal_level_id"]+"\" class=\"from_data_role\"";
+				htmlTable+="type='checkbox' value=\""+indexEntry["appraisal_level_id"]+"\">";
 				htmlTable+="</td>";
 				htmlTable+="<td style=\"vertical-align:middle\">"+indexEntry["appraisal_level_name"]+"</td>";
 				htmlTable+="</tr>";
@@ -440,6 +454,7 @@ var updateFn = function () {
 			"email":$("#from_emp_email").val(),
 			"s_amount":$("#from_emp_salary").val(),
 			"erp_user":$("#erp_user").val(),
+			"emp_type":$("#from_emp_type").val(),
 			"is_coporate_kpi":isCorporateKpi ,
 			"is_active":isActive
 		},	
@@ -486,6 +501,7 @@ var insertRoleFn = function () {
 			success : function(data) {
 				if(data['status']==200){
 					callFlashSlide("Add Role Successfully.");
+					getDataFn($("#pageNumber").val(),$("#rpp").val());
 					$('#ModalRole').modal('hide');
 					
 				}
@@ -519,6 +535,7 @@ var updateRoleFn = function () {
 					if(data['status']==200){
 						clearFn();
 						callFlashSlide("Update Role Successfully.");
+						getDataFn($("#pageNumber").val(),$("#rpp").val());
 						$('#ModalRole').modal('hide');
 						
 					}
@@ -536,7 +553,7 @@ var updateRoleFn = function () {
 //DropDownList Department
 var dropDownListDepartment = function(){
 	var html="";
-	html+="<select data-toggle=\"tooltip\" title=\"Department\" class=\"input form-control input-sm\" id=\"search_department\" name=\"search_department\" >";
+	html+="<select data-toggle=\"tooltip\" title=\"Department\" class=\"input span12 m-b-n\" id=\"search_department\" name=\"search_department\" >";
 	html+="<option  selected value=''>All</option>";
 	$.ajax ({
 		url:restfulURL+restfulPathDropDownDepartment ,
@@ -562,7 +579,7 @@ var dropDownListDepartment = function(){
 //DropDownList Section
 var dropDownListSection = function(id){
 	var html="";
-	html+="<select data-toggle=\"tooltip\" title=\"Section\" class=\"input form-control input-sm\" id=\"search_section\" name=\"search_section\" >";
+	html+="<select data-toggle=\"tooltip\" title=\"Section\" class=\"input span12 m-b-n\" id=\"search_section\" name=\"search_section\" >";
 	
 	html+="<option  selected value=''>All</option>";
 	$.ajax ({
@@ -587,20 +604,45 @@ var dropDownListSection = function(id){
 	html+="</select>";
 	return html;
 };
-
-
+//DropDownList Emp Type
+var dropDownEmpType = function(){
+	var html="";
+	html+="<select data-toggle=\"tooltip\" title=\"Employee Type\" class=\"input span12 m-b-n\" id=\"from_emp_type\" name=\"from_emp_type\" >";
+	
+	
+	html+="<option value=\"รายวัน\" selected>รายวัน</option>";
+	html+="<option value=\"รายเดือน\">รายเดือน</option>";
+	html+="</select>";
+	$("#drop_down_emp_typy").html(html);
+};
+var backToTopFn = function(){
+	$('body,html').animate({
+		scrollTop: 0
+	}, 800);
+	return false;
+}
 
 $(document).ready(function() {
-	//paginationSetUpFn(1,1,1);
+
+	$("#search_position").val("");
+	$("#search_position_id").val("");
+	$("#search_emp_name").val("");
+	$("#search_emp_id").val("");
+	
+
+	$("#countPaginationTop").val( $("#countPaginationTop option:first-child").val());
+	$("#countPaginationBottom").val( $("#countPaginationBottom option:first-child").val());
+	
+	$("#employee_list_content").hide();
+	$(".sr-only").hide();
 	$("#drop_down_department").html(dropDownListDepartment());
 	$("#drop_down_section").html(dropDownListSection($("#search_department").val()));
 	$("#drop_down_department").change(function () {
 		$("#drop_down_section").html(dropDownListSection($("#search_department").val()));
 	});
-	$("#search_position").val("");
-	$("#search_emp_name").val("");
+	
 	$("#btnSearchAdvance").click(function(){
-		//alert("2");
+		
 		searchAdvanceFn(
 				$("#search_department").val(),
 				$("#search_section").val(),
@@ -609,14 +651,17 @@ $(document).ready(function() {
 				//$("#search_emp_name").val().split("-", 1)search_emp_id
 				$("#search_emp_id").val()
 				);
-
+		$("#employee_list_content").show();
+		
 		return false;
 	});
 	listAppraisalLevel();
-	$("#btnSearchAdvance").click();
+	//$("#btnSearchAdvance").click();
+	
 	$("#btn_add_role").click(function() {
 		clearFn();
 		$("#txtAssignEmpName").hide();
+
 		//listAppraisalLevel();
 		
 //		$("#form_role_item_all").change(function(){  //"select all" change 
@@ -633,9 +678,15 @@ $(document).ready(function() {
 //		    if ($('.from_data_role:checked').length == $('.from_data_role').length ){
 //		        $("#form_role_item_all").prop('checked', true);
 //		    }
-//		});
-		
-	});
+//		});   
+		 
+	});  
+    $(".from_data_role").click(function(){  // เมื่อคลิก checkbox  ใดๆ  
+        if($(this).prop("checked")==true){ // ตรวจสอบ property  การ ของ   
+            var indexObj=$(this).index(".from_data_role"); //   
+            $(".from_data_role").not(":eq("+indexObj+")").prop( "checked", false ); // ยกเลิกการคลิก รายการอื่น  
+        }  
+    });  
 	$("#btnEmpSubmit").click(function(){
 		if ($("#action").val() == "add"|| $("#action").val() == "") {
 			//insertFn();
@@ -779,7 +830,7 @@ $(document).ready(function() {
   //Auto Complete Employee Name end
 	
 	$("#exportToExcel").click(function(){
-		$("form#formExportToExcel").attr("action","../file/eimport_employee_template.xlsx");
+		$("form#formExportToExcel").attr("action",$("#url_portlet").val()+"/file/import_employee_template.xlsx");
 	});
 	
 	//#### Call Export User Function Start ####
@@ -820,8 +871,15 @@ $(document).ready(function() {
 	
 	
 	//FILE IMPORT MOBILE START
+	$("#btn_import").click(function () {
+		$('#file').val("");
+		$(".btnModalClose").click();
+	});
+//	$("#importFileMobile").click(function () {
+//		$('#file').val("");
+//	});
 	// Variable to store your files
-	var files2;
+	var files;
 	// Add events
 	$('#file').on('change', prepareUpload2);
 
@@ -835,7 +893,7 @@ $(document).ready(function() {
 	// Catch the form submit and upload the files
 	function uploadFiles(event)
 	{
-		alert("Upload");
+		
 		event.stopPropagation(); // Stop stuff happening
 		event.preventDefault(); // Totally stop stuff happening
 
@@ -843,12 +901,12 @@ $(document).ready(function() {
 
 		// Create a formdata object and add the files
 		var data = new FormData();
-		jQuery_1_1_3.each(files, function(key, value)
+		$.each(files, function(key, value)
 		{
 			data.append(key, value);
 		});
 		$("body").mLoading();
-		jQuery_1_1_3.ajax({
+		$.ajax({
 			url:restfulURL+restfulPathImportEmployee,
 			type: 'POST',
 			data: data,
@@ -862,14 +920,15 @@ $(document).ready(function() {
 				
 				console.log(data);
 				if(data['status']==200 && data['errors'].length==0){
-
+							
 					callFlashSlide("Import Employee Successfully");
-					$('#file').val("");
+					getDataFn($(".pagination .active").attr( "data-lp" ),$("#rpp").val());
 					$("body").mLoading('hide');
+					$('#ModalImport').modal('hide');
 					
 				}else{
-					
-					callFlashSlide(listErrorFn(data['errors']),"error");
+					listErrorFn(data['errors']);
+					getDataFn($(".pagination .active").attr( "data-lp" ),$("#rpp").val());
 					$("body").mLoading('hide');
 				}
 			},
