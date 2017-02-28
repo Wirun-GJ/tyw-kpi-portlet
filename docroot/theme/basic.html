@@ -29,6 +29,90 @@ display:none;
     padding-left: 15px;
     padding-right: 15px;
 }
+
+
+#btnAdd{
+margin-bottom:5px
+}
+
+.pagingText{
+ 	/*display:none;*/
+ 	}
+ 	#btnPaginationTop{
+ 		width:300px;
+ 		float:left;
+ 	}
+	/*
+	#dropdownPaginationTop{
+		width:100px;
+ 		float:right;
+	}
+	#dropdownPaginationBottom{
+		width:100px;
+ 		float:right;
+	}
+	*/
+	
+	#btnPaginationBottom{
+ 		width:300px;
+ 		float:left;
+ 	}
+	
+	.pagingText{
+	padding-top: 5px;
+	}
+	.aui .pagination ul{
+	margin: 0
+	}
+	
+	.aui form {
+    margin: 0;
+}
+.aui .table td{
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+#countPaginationTop{
+	width:60px;
+}
+#countPaginationBottom{
+	width:60px;
+}
+
+.aui #breadcrumbs {
+    margin-bottom: 0px;
+}
+
+.aui .breadcrumb {
+    background-color: #f5f5f5;
+    border-radius: 2px;
+    list-style: outside none none;
+    margin: 0 0 0px;
+    padding: 0px 15px;
+}
+
+.aui .portlet-content, .aui .portlet-minimized .portlet-content-container {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #eaeaea;
+    border-image: none;
+    border-style: solid;
+    border-width: 0 1px 1px;
+    padding: 10px 5px 5px;
+}
+
+.aui .portlet-content, .aui .portlet-minimized .portlet-content-container {
+  background-color: #fafafa;
+}
+
+.aui .form-group {
+    margin-bottom: 7px;
+}
+
+
 /* Css by Au Start */
 .gray-bg {
 	background-color: #f3f3f4;
@@ -52,8 +136,18 @@ form {
     width: 70px;
 
 }
+.aui .popover-content {
+    padding: 5px 5px 5px 5px;
+}
+
+
+
 .modal{top:3%;}
 #confrimModal{width: 400px;}
+
+.aui .modal-footer{
+	border-radius: 0;
+}
 
 /* Large desktop */
 @media ( min-width : 1200px) {
@@ -100,7 +194,8 @@ form {
 		position: relative;
 		top: -40px;
 		}
-	@media ( min-width : 481px) and (max-width: 615px) {
+}		
+@media ( min-width : 481px) and (max-width: 615px) {
 	
 	#confrimModal{left: 16.5%;}
 	.ResultsPerPageTop{
@@ -112,7 +207,7 @@ form {
 		position: static;
 	}
 	
-	}
+	
 }
 
 /* Landscape phones and down */
@@ -127,7 +222,8 @@ form {
 	.ResultsPerPageBottom{
 		position: static;
 	}
-	@media ( min-width : 0px) and (max-width: 468px) {
+}
+@media ( min-width : 0px) and (max-width: 468px) {
 		.ResultsPerPageTop{
 		position: absolute;
 		left: -20;
@@ -137,12 +233,12 @@ form {
 			margin-top: 44px;
 		}
 	
-		}
+		
 }
-/* Css by Au End */
+/* Css by Au End1 */
 
 </style>
-<div class="container">
+<div class="gray-bg">
 	<div class='row-fluid'>
 		<div class='col-xs-12'>
 			<div id="slide_status">
@@ -151,10 +247,10 @@ form {
 			</div>
 		</div>
 	</div>
-	
+	<!-- 
 	<div class="row-fluid">
 		<div class="col-lg-12">
-			<div class="span12" style="padding: 0px 10px; height:65px;">
+			<div class="span12" style="padding: 0px 10px;">
 				<h1>
 					<i class="fa fa fa-pencil-square-o icon-title"></i>
 					<small style=" position:absolute;top:37px;left:85px" id="titilePage">Common Data Set</small>
@@ -162,6 +258,7 @@ form {
 				</div>
 			</div>
 	</div>
+	 -->
 	
 <div id='advanceSearchArea'>
 
@@ -175,9 +272,9 @@ form {
                                   <div class='titlePanel'>Advance Search</div> 
          					</div>
          					
-         						<div class="ibox-content"> 
+         						<div class="ibox-content breadcrumb"> 
          							<div class="row-fluid p-t-xxs">
-										<div class='span10'>
+										<div class='span9'>
 																				
 												<div id='advanceSearchParamArea'>
 
@@ -187,7 +284,7 @@ form {
 											
 										</div>
 										
-										<div class='span2 ' align="right">
+										<div class='span3 ' align="right">
 										
 												
 												
@@ -195,8 +292,10 @@ form {
 			                                     	
 		                                         	<div class="input-group" >
 				                                     	<div id="btnSearchArea">
+				                                     	<!-- 
 				                                     		<span id='btnAdvanceSearchOption'>
 				                                     		</span>
+				                                     	-->
 			                                         		<button style="margin-bottom: 5px;" type="submit" class="btn btn-info input-sm" name="btnSearchAdvance" id="btnSearchAdvance"><i class="fa fa-search"></i>&nbsp;Search</button>
 			                                         	</div>
 		                                         	</div>
@@ -229,7 +328,8 @@ form {
 
          							<div class="row-fluid ">
          								<div class="spen9">
-	                    					<button type="button" class="btn btn-success" id="btnAdd" data-target="#modal-databaseConnection" data-toggle="modal" ><i class="fa fa-plus-square"></i>&nbsp;Add&nbsp;<span id='btnAddData'></span></button>	 
+	                    					<button type="button" class="btn btn-success" id="btnAdd" data-target="#modal-databaseConnection" data-toggle="modal" ><i class="fa fa-plus-square"></i>&nbsp;Add&nbsp;<span id='btnAddData'></span></button>
+	                    					<span id='btnAdvanceSearchOption'></span>
                                      	</div>
                                      	
                                      	<div class="spen3" id="expressSearchArea">
@@ -243,7 +343,7 @@ form {
                                     	<!-- start table -->
                                     	<!-- pagination start -->
                                     	<div class="row-fluid paginationControl">
-	                                    	<div class="span9 m-b-xs" id="paginationTop">
+	                                    	<div class="span9 " id="paginationTop">
 												<span class="pagination_top pagination">
 												<!-- Test -->
 												<!-- 
@@ -254,7 +354,7 @@ form {
 	                                    	</div>
 		                                    <div class="span3 object-right ResultsPerPageTop">
 		                                    
-			                                    <div class='pagingDropdown'>
+			                                    <div id='dropdownPaginationTop' class='pagingDropdown'>
 		                                 			<select  id='countPaginationTop'  class="form-control input-sm countPagination">
 					                                     <option>10</option>
 					                                     <option>20</option>
@@ -310,7 +410,7 @@ form {
                                         </div>
                                        
                                     	<div class="row-fluid paginationControl">
-	                                    	<div class="span9 m-b-xs">
+	                                    	<div class="span9 ">
 												<span class="pagination_bottom pagination">
 												<!-- Test -->
 												<!-- 
@@ -321,7 +421,7 @@ form {
 												</span>
 	                                    	</div>
 	                                    
-		                                    <div class="span3 object-right ResultsPerPageBottom">
+		                                    <div id='dropdownPaginationBottom' class="span3 object-right ResultsPerPageBottom">
 		                                    
 		                                    	<div class='pagingDropdown'>
 		                                 			<select  id='countPaginationBottom'  class="form-control input-sm countPagination">
@@ -453,6 +553,7 @@ form {
 	                <div class="form-kpi-label" align="center">
 	                
 	                 		<label>Confirm to Delete Data?</label>
+	                 		<div id="inform_on_confirm" class='information'></div>
 	                </div>
                 </div>
                                
@@ -475,6 +576,6 @@ form {
 
  <!--  #####################Content data here ######################-->
 		
-	
+	 
 
 

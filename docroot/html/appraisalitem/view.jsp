@@ -1,9 +1,31 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 <%@ taglib uri="http://alloy.liferay.com/tld/aui" prefix="aui"%>
 <%@ page import="javax.portlet.*"%>
-
-
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
+<%@ page import="com.liferay.portal.kernel.util.WebKeys" %>
+<liferay-theme:defineObjects />
 <portlet:defineObjects />
+<%
+/*
+PortletSession portletSession1 = renderRequest.getPortletSession();
+portletSession1.setAttribute("password", "authenticated", PortletSession.APPLICATION_SCOPE);
+String pwd = (String) portletSession1.getAttribute("password", PortletSession.APPLICATION_SCOPE);
+out.print(pwd);
+String password=PortalUtil.getUser(request).getPassword();
+*/
+
+String username = themeDisplay.getUser().getScreenName();
+String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWORD);
+//out.print(username);
+//out.print("password2="+password);
+%>
+<input type="hidden" id="user_portlet" name="user_portlet" value="<%=username%>">
+<input type="hidden" id="pass_portlet" name="pass_portlet" value="<%=password%>">
+<input type="hidden" id="url_portlet" name="url_portlet" value="<%= renderRequest.getContextPath() %>">
+
+
+
 <style>
 
 
@@ -34,6 +56,7 @@
  
  /* Landscape phone to portrait tablet Start################*/
  @media (max-width: 767px) { 
+ 
  	.pagingText{
  		display:none;
  	}
@@ -219,6 +242,15 @@
 .control-label{
 	font-weight:bold;
 }
+
+.breadcrumbs2{
+
+	background: rgba(0, 0, 0, 0) linear-gradient(to bottom, #fff 0px, #f6f6f6 47%, #ededed 100%) repeat scroll 0 0;
+    border-radius: 0;
+    margin-bottom: 0;
+  	padding-bottom: 0px
+
+}
 /*local end*/
 	
 	
@@ -226,36 +258,45 @@
 </style>
 
 
-<input type="hidden" id="url_portlet" name="url_portlet" value="<%= renderRequest.getContextPath() %>">
-<!--  #####################Content data here ######################-->
-<div class="container1">
+<body class=" gray-bg ">
 
-<div class='row-fluid display-none'>
+
+<!--  #####################Content data here ######################-->
+<div class="wrapper wrapper-content">
+<div class="container1">
+<div class='row'>
 
 	<div class='span12'>
 		<div id="slide_status">
-			<div id="btnCloseSlide">x</div>
+			<div id="btnCloseSlide">×</div>
 			<div id="slide_status_area"></div>
 		</div>
 	</div>
 
 </div>
-
+<!-- 
 <h2><i class="fa fa fa-pencil-square-o icon-title"></i> <span id="modalDescription"> Appraisal Item</span> </h2>
+ -->   
 
+
+				<div class="row"><!-- start--row -->
+
+                    <div class="span12">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                  <div class='titlePanelSearch'>Advance Search2</div> 
+                               
+                                  <div class='titlePanelSearch'>Advance Search</div> 
          					</div>
-         						<div class="ibox-content"> 
-
-											<div class='row-fluid'>
+         					
+         						<div class="ibox-content breadcrumbs2"> 
+         							<div class="row">
+										
+										
 												
-				                                    <div class="span5 m-b-xs">
-					                                    <div class="form-group">
-					                                    
-					                                    	<label class="span4 control-label">Appraisal Level</label>
-						                                    <div class="span6" id="appraisalLevelArea">
+				                                    <div class="span4 m-b-xs">
+					                                    <div class="form-group"><label class="span5 control-label">Appraisal Level</label>
+			
+						                                    <div class="span7" id="appraisalLevelArea">
 						                                    
 							                                    <select data-toggle="tooltip" title="Appraisal Level" class="input form-control input-sm"  id="appraisalLevel" name="appraisalLevel">
 							                                    	
@@ -267,11 +308,10 @@
 						                                    </div>
 						                                </div>
 													</div>
-													<div class="span5 m-b-xs">
-					                                    <div class="form-group">
-					                                    
-					                                    	<label class="span4 control-label">Perspective</label>
-						                                    <div class="span6" id="perspectiveArea">
+													<div class="span4 m-b-xs">
+					                                    <div class="form-group"><label class="span5 control-label">Perspective</label>
+			
+						                                    <div class="span7" id="perspectiveArea">
 						                                    
 							                                    <select data-toggle="tooltip" title="Perspective" class="input form-control input-sm"  id="perspective" name="perspective">
 							                                    	
@@ -282,12 +322,10 @@
 						                                    </div>
 						                                </div>
 													</div>
-											</div>
-											<div class='row-fluid'>
-													<div class="span5 m-b-xs">
-					                                    <div class="form-group"><label class="span4 control-label">Structure </label>
+													<div class="span4 m-b-xs">
+					                                    <div class="form-group"><label class="span5 control-label">Structure </label>
 			
-						                                    <div class="span6" id='structureArea'>
+						                                    <div class="span7" id='structureArea'>
 						                                    
 							                                    <select data-toggle="tooltip" title="Structure" class="input form-control input-sm"  id="structure" name="structure">
 							                                    	
@@ -299,51 +337,82 @@
 						                                </div>
 													</div>
 													
-													<div class="span5 m-b-xs">
-					                                    <div class="form-group"><label class="span4 control-label">Appraisal Item Name</label>
+													<div class="span4 m-b-xs">
+					                                    <div class="form-group"><label class="span5 control-label">Department</label>
 			
-						                                    <div class="span6" id='appraisalItemNameArea'>
+						                                    <div class="span7" id='DepartmentArea'>
 						                                    
-																<input data-toggle="tooltip" title="Appraisal Item Name" type='text' name='appraisalItemName' class='input form-control input-sm' placeholder="Appraisal Item Name" id='appraisalItemName'>
-															 </div>
-						                                    
+							                                    <select data-toggle="tooltip" title="Flag 2" class="input form-control input-sm"  id="department" name="department">
+							                                    	
+							                                   
+																	
+																	
+																</select>
+																
+						                                    </div>
 						                                </div>
 													</div>
-													<div class="span2 m-b-xs object-right">
-														<button type="button" class="btn btn-info input-sm" name="btnSearchAdvance" id="btnSearchAdvance"><i class="fa fa-search"></i>&nbsp;Search</button>
-				                                         	
+													
+													<div class="span4 m-b-xs">
+					                                    <div class="form-group"><label class="span5 control-label">Appraisal Item Name</label>
+			
+						                                    <div class="span7" id='appraisalItemNameArea'>
+						                                    
+																<input data-toggle="tooltip" title="Appraisal Item Name" placeholder="Appraisal Item Name" type='text' name='appraisalItemName' class='input form-control input-sm' id='appraisalItemName'>
+																
+						                                    </div>
+						                                </div>
 													</div>
 													
-											</div>
+													<div class="span4" style='text-align:right;'>
+					                                    
+					                                    
+					                                     <div class="form-group"><label class="span5 control-label">&nbsp;</label>
+			
+						                                    <div class="span7" id='appraisalItemNameArea'>
+						                                    
+																<button type="button" class="btn btn-info input-sm" name="btnSearchAdvance" id="btnSearchAdvance"><i class="fa fa-search"></i>&nbsp;Search</button>
+																
+						                                    </div>
+						                                </div>
+						                                
+					                                  
+													</div>
+													
+													
+													
+										
+										
 										<!-- 
-										<div class='row-fluid'>
-											<div class='span12' align="right">
-											
-													
-													
-				                                     	<div class="input-group" >
-					                                     	<div id="btnSearchArea">
-				                                         		<button type="button" class="btn btn-info input-sm" name="btnSearchAdvance" id="btnSearchAdvance"><i class="fa fa-search"></i>&nbsp;Search</button>
-				                                         	</div>
+										<div class='span1' align="right">
+										
+												
+												
+			                                     	<div class="input-group" >
+				                                     	<div id="btnSearchArea">
+			                                         		<button type="button" class="btn btn-info input-sm" name="btnSearchAdvance" id="btnSearchAdvance"><i class="fa fa-search"></i>&nbsp;Search</button>
 			                                         	</div>
-			                                     	
-	                                     	
-											</div>
+		                                         	</div>
+		                                     	
+                                     	
 										</div>
 										 -->
 										
 
 	                                    
                                     
-                                    
+                                     	 
+                             		</div>
 				         		</div><!-- content end -->
 				         		</div>
 				         		
-         			
-         			<div class="row-fluid result_area" style='display:none;'>
+         				</div>
+	
+         			</div><!-- end--row -->
+         			<div class="row result_area">
 				         		<div class="span12">
 					         	<div class="ibox-title">
-	                               <div class="titlePanelSearch">Appraisal Item Result</div>
+	                                <div class='titlePanelSearch'>Appraisal Item Result</div>
 	         					</div>
 	         					
 	         					
@@ -351,18 +420,18 @@
 	         					
                                     	<!-- start table -->
                                     	<!-- pagination start -->
-                                    	<div class="row-fluid">
-	                                    	<div id='btnPaginationTop' class="span9">
+                                    	<div class="row">
+	                                    	<div class="span9 ">
 												
-												<div class="pagination_top pagination"></div>
+												<div class="pagination_top"></div>
 												
 												 <!-- 
 												<ul class="pagination bootpag"><li class="first disabled" data-lp="1"><a href="javascript:void(0);">←</a></li><li class="prev disabled" data-lp="1"><a href="javascript:void(0);">prev</a></li><li data-lp="1" class="active"><a href="javascript:void(0);">1</a></li><li data-lp="2"><a href="javascript:void(0);">2</a></li><li class="next" data-lp="2"><a href="javascript:void(0);">next</a></li><li class="last" data-lp="2"><a href="javascript:void(0);">→</a></li></ul>
 												 -->
 	                   
 	                                    	</div>
-	                                    
-		                                    <div id='dropdownPaginationTop' class="span3 object-right paging-text ">
+	                                   <!-- 
+		                                    <div class="span3 object-right paging-text">
 		                                    
 		                                    	 <div class='pagingDropdown'>
 		                                 			<select  id='countPaginationTop'  class="form-control input-sm countPagination">
@@ -376,6 +445,7 @@
 												<div class='pagingText'>Results per page</div>
 		                                    
 		                                    </div>
+		                                     -->
 		                                    <!-- 
 		                                    <div class="span1">
 	                                     
@@ -397,16 +467,16 @@
                                     	
                                     	<!-- mian content end -->
                                         <!-- row start -->
-                                    	<div class="row-fluid">
-	                                    	<div id='btnPaginationBottom' class="span9 ">
+                                    	<div class="row">
+	                                    	<div class="span9 ">
 	
-											    <div class="pagination_bottom pagination"></div>
+											    <div class="pagination_bottom"></div>
 											    <!-- 
 												<ul class="pagination bootpag"><li class="first disabled" data-lp="1"><a href="javascript:void(0);">←</a></li><li class="prev disabled" data-lp="1"><a href="javascript:void(0);">prev</a></li><li data-lp="1" class="active"><a href="javascript:void(0);">1</a></li><li data-lp="2"><a href="javascript:void(0);">2</a></li><li class="next" data-lp="2"><a href="javascript:void(0);">next</a></li><li class="last" data-lp="2"><a href="javascript:void(0);">→</a></li></ul>
 	                   							 -->
 	                                    	</div>
-	                                    
-		                                    <div id='dropdownPaginationBottom' class="span3 object-right paging-text">
+	                                      <!-- 
+		                                    <div class="span3 object-right paging-text">
 		                                    
 		                                    	<div class='pagingDropdown'>
 		                                 			<select  id='countPaginationBottom'  class="form-control input-sm countPagination">
@@ -419,6 +489,7 @@
 												<div class='pagingText'>Results per page</div>
 		                                    
 		                                    </div>
+		                                    -->
 		                                  <!-- 
 		                                    <div class="span1">
 	                                    
@@ -439,7 +510,7 @@
          					</div>
          					</div>
   </div>       					
-         					
+</div>         					
 
 
 
@@ -452,9 +523,9 @@
 
 
 <!-- Modal Confirm Start -->
-<div aria-hidden="true" role="dialog" tabindex="-1" id="confrimModal" class="modal fade" style="display: none;">
+<div aria-hidden="true" role="dialog" tabindex="-1" id="confrimModal" class="modal inmodal in" style="display: none;">
     <div class="modal-dialog">
-    <div class="modal-content  bounceInRight">
+    <div class="modal-content animated bounceInRight">
             <div class="modal-header">
                 <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
                 <h5 class="modal-title">Confirm Dialog</h5>
@@ -489,8 +560,6 @@
 </div>
 <div id='embedParamSearch'></div>
 <div id='embedParamSearchQuantity'></div>
-<!-- Modal Confirm End -->
-
- <!--  #####################Content data here ######################-->
-		
+<!--  #####################Content data here ######################-->
+</body>
 
