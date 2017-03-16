@@ -1,28 +1,166 @@
 /* for portlet*/
-var tokenID=[];
-tokenID= eval("("+sessionStorage.getItem("tokenID")+")");
-var getNewSessionFn = function(){
+var tokenID= [];
+var is_hr = [];
+
+//tokenID= eval("("+sessionStorage.getItem("tokenID")+")");
+
+var checkSession = function(paramTokenID){
+	var check=true;
+	var tokenID =(paramTokenID == undefined || paramTokenID == ""  ? tokenID : paramTokenID);
+	console.log(tokenID);
+	tokenID = eval("("+tokenID+")");
+	if(tokenID==null){
+		//alert("login failed");
+		callFlashSlide("login failed.");  
+		return false;
+	}
 	$.ajax({
-			
-			url:restfulURL+"/tyw_api/public/session",
-			type:"POST",
-			dataType:"text",
-			data:{"username":"joe","password":"test"},
-			error: function(jqXHR, textStatus, errorThrown) {
-				$("#information").html("<font color='red'>***</font> invalid credentials.").show();
-			},
-			success:function(data){
-				//console.log(data);
-				sessionStorage.setItem("tokenID",data);
-				//alert("Login is Success");
-				
+		url:restfulURL+"/tyw_api/public/session",
+		type:"GET",
+		dataType:"json",
+		headers:{Authorization:"Bearer "+tokenID.token},
+		async:false,
+		success:function(data){
+			// sessionStorage.setItem('is_hr',data['is_hr']);
+			//is_hr=data['is_hr'];
+			if(data['status']!="200"){
+				//console.log("Status is "+data['status']);
+				check=false;
+				callFlashSlide("login failed."); 
+				sessionStorage.clear();
+				//window.location.href = "../login.html"; 
+			}else{
+				is_hr =(data['is_hr'] == null   ? 0 : data['is_hr']);
+				console.log("login success");
+				check=true;
+				//alert("check hr="+is_hr);
 			}
-		});			
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+		    if('error'==textStatus){
+		    	callFlashSlide("login failed."); 
+		    	check=false;
+		    	console.log("Error is "+textStatus);
+		    	//window.location.href = "../login.html"; 
+		    }
+		}
+		
+	});
+	return check;
 }
-if(tokenID==null){
+//checkSession();
+
+function getParamValue(paramName)
+{
+    var url = window.location.search.substring(1); //get rid of "?" in querystring
+    var qArray = url.split('&'); //get key-value pairs
+    for (var i = 0; i < qArray.length; i++) 
+    {
+        var pArr = qArray[i].split('='); //split key and value
+        if (pArr[0] == paramName) 
+            return pArr[1]; //return value
+    }
+}
+
+var connectionServiceFn = function(username,password){
+	var checkConnection=true;
+	$.ajax({
+		
+		url:restfulURL+"/tyw_api/public/session",
+		//url:"http://localhost/tyw_api/public/session",
+		type:"POST",
+		dataType:"text",
+		data:{"username":username,"password":password},
+		async:false,
+		//data:{"username":"2015019","password":"2015019"},
+		error: function(jqXHR, textStatus, errorThrown) {
+			 sessionStorage.clear();
+			 checkConnection=false;
+		},
+		success:function(data){
+			 sessionStorage.setItem("tokenID",data);
+			 tokenID= eval("("+ sessionStorage.getItem("tokenID")+")");
+			if(checkSession(data)==true){
+				checkConnection=true;
+			}
+			
+		}
+	});	
+	return checkConnection;
+}
+
+jQuery.fn.ForceNumericOnly =
+	function()
+	{
+	    return this.each(function()
+	    {
+	        $(this).keydown(function(e)
+	        {
+	            var key = e.charCode || e.keyCode || 0;
+	            // allow backspace, tab, delete, enter, arrows, numbers and keypad numbers ONLY
+	            // home, end, period, and numpad decimal
+	            return (
+	                key == 8 || 
+	                key == 9 ||
+	                key == 13 ||
+	                key == 46 ||
+	                key == 110 ||
+	                key == 190 ||
+	                (key >= 35 && key <= 40) ||
+	                (key >= 48 && key <= 57) ||
+	                (key >= 96 && key <= 105));
+	        });
+	    });
+	};
+
+
+function IsNumeric(sText,obj){
+
+	var ValidChars = "0123456789.";
+	var IsNumber=true;
+	var Char;
+		for (i = 0; i < sText.length && IsNumber == true; i++) { 
+			Char = sText.charAt(i); 
+			if (ValidChars.indexOf(Char) == -1) {
+				 IsNumber = false;
+			}
+		}
+		if(IsNumber==false){
+			
+			obj.value=sText.substr(0,sText.length-1);
+		}
+		
+		return IsNumber;
 	
-	getNewSessionFn();	
-}
+		
+  }
+
+
+//var getNewSessionFn = function(){
+//	
+//	var userName=$("#user_portlet").val();
+//	var password=$("#pass_portlet").val();
+//	
+//	$.ajax({
+//			
+//			url:restfulURL+"/tyw_api/public/session",
+//			type:"POST",
+//			dataType:"text",
+//			//data:{"username":"1","password":"11"},//HR
+//			async:false,
+//			data:{"username":userName,"password":password},
+//			error: function(jqXHR, textStatus, errorThrown) {
+//				$("#information").html("<font color='red'>***</font> invalid credentials.").show();
+//			},
+//			success:function(data){
+//				sessionStorage.setItem("tokenID",data);
+//			}
+//		});			
+//}
+//if(tokenID==null){
+//	getNewSessionFn();	
+//}
+//getNewSessionFn();	 
 /* for portlet*/
 
 
@@ -105,7 +243,10 @@ var notNullFn = function(data){
 	}
 	return dataNotNull;
 }
-
+//oops: isObject(Object) -> false
+function isObject(val) {
+    return (typeof val === 'object');
+}
 var validationFn = function(data){
 //	var data={"status":400,"data":{"appraisal_item_name":["The appraisal item name field is required."],"baseline_value"
 //		:["The baseline value field is required."],"formula_cds_id":["The formula cds id field is required."
@@ -114,6 +255,10 @@ var validationFn = function(data){
 	var count=0;
 	$.each(data['data'],function(index,indexEntry){
 		
+//		alert("test");
+//		if(isObject(indexEntry)==true){
+//			alert("is object");
+//		}
 		
 		if(index!=undefined){
 			if(count==0){
@@ -259,29 +404,30 @@ $( document ).ajaxStop(function() {
 	$("body").mLoading('hide');
 });
 
-var checkSession = function(){
-	$.ajax({
-		url:restfulURL+"/tyw_api/public/session",
-		type:"GET",
-		dataType:"json",
-		headers:{Authorization:"Bearer "+tokenID.token},
-		success:function(data){
-		
-			if(data['status']!="200"){
-				window.location.href = "../login.html"; 
-			}else{
-				
-			}
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-		    if('error'==textStatus){
-		    	window.location.href = "../login.html"; 
-		    }
-		}
-		
-	});
-}
-checkSession();
+
+//var checkSession = function(){
+//	$.ajax({
+//		url:restfulURL+"/tyw_api/public/session",
+//		type:"GET",
+//		dataType:"json",
+//		headers:{Authorization:"Bearer "+tokenID.token},
+//		success:function(data){
+//		
+//			if(data['status']!="200"){
+//				window.location.href = "../login.html"; 
+//			}else{
+//				sessionStorage.setItem('is_hr',data['is_hr']);
+//			}
+//		},
+//		error: function(jqXHR, textStatus, errorThrown) {
+//		    if('error'==textStatus){
+//		    	window.location.href = "../login.html"; 
+//		    }
+//		}
+//		
+//	});
+//}
+//checkSession();
 
 var logoutFn = function(){
 	$.ajax({
@@ -294,9 +440,9 @@ var logoutFn = function(){
 			
 			//console.log(data);
 			if(data['status']=="200"){
-			
+				
 				window.location.href = "../login.html"; 
-				localStorage.setItem("tokenID","{}");
+				sessionStorage.setItem("tokenID","{}");
 				
 			}
 			

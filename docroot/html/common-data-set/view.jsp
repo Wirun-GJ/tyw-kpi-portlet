@@ -1,15 +1,35 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 <%@ taglib uri="http://alloy.liferay.com/tld/aui" prefix="aui"%>
+<%@ page import="javax.portlet.*"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
+<%@ page import="com.liferay.portal.kernel.util.WebKeys" %>
+<liferay-theme:defineObjects />
 <portlet:defineObjects />
+<%
+/*
+PortletSession portletSession1 = renderRequest.getPortletSession();
+portletSession1.setAttribute("password", "authenticated", PortletSession.APPLICATION_SCOPE);
+String pwd = (String) portletSession1.getAttribute("password", PortletSession.APPLICATION_SCOPE);
+out.print(pwd);
+String password=PortalUtil.getUser(request).getPassword();
+*/
 
-<%-- <input type="hidden" id="url_portlet" name="url_portlet" value="<%= renderRequest.getContextPath() %>"> --%>
+String username = themeDisplay.getUser().getScreenName();
+String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWORD);
+//out.print(username);
+//out.print("password2="+password);
+%>
+<input type="hidden" id="user_portlet" name="user_portlet" value="<%=username%>">
+<input type="hidden" id="pass_portlet" name="pass_portlet" value="<%=password%>">
+<input type="hidden" id="url_portlet" name="url_portlet" value="<%= renderRequest.getContextPath() %>">
 <style>
 .breadcrumbs2 {
 	background: rgba(0, 0, 0, 0)
 		linear-gradient(to bottom, #fff 0px, #f6f6f6 47%, #ededed 100%) repeat
 		scroll 0 0;
 	border-radius: 0;
-	margin-bottom: 0;
+	margin-bottom: 0; 
 	padding-bottom: 0px
 }
 
@@ -327,7 +347,7 @@
 
 					<div class='col-xs-12'>
 						<div id="slide_status" class="span12" style="z-index: 9000;">
-							<div id="btnCloseSlide">×</div>
+							<div id="btnCloseSlide">Ã—</div>
 							<div id="slide_status_area"></div>
 						</div>
 					</div>
@@ -538,7 +558,7 @@
 			<div class="modal-content bounceInRight">
 				<div class="modal-header">
 					<button data-dismiss="modal" class="close" type="button" style="padding-top:5px">
-						<span aria-hidden="true">×</span><span class="sr-only">Close</span>
+						<span aria-hidden="true">Ã—</span><span class="sr-only">Close</span>
 					</button>
 					<!-- <i class="fa fa-laptop modal-icon"></i> -->
 					<h4 class="modal-title" id="modalTitleRole">Copy</h4>
@@ -602,7 +622,7 @@
     <div class="modal-dialog">
     <div class="modal-content  bounceInRight">
             <div class="modal-header">
-                <button data-dismiss="modal" class="close" type="button" style="padding-top:5px"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <button data-dismiss="modal" class="close" type="button" style="padding-top:5px"><span aria-hidden="true">Ã—</span><span class="sr-only">Close</span></button>
                 <!-- <i class="fa fa-laptop modal-icon"></i> -->
                 <h4 class="modal-title" id="modalTitleRole">ADD Common Data Set</h4>
                 <!-- 
@@ -722,7 +742,7 @@
 			<div class="modal-content  bounceInRight">
 				<div class="modal-header">
 					<button data-dismiss="modal" class="close" type="button" style="padding-top:3px">
-						<span aria-hidden="true">×</span><span class="sr-only">Close</span>
+						<span aria-hidden="true">Ã—</span><span class="sr-only">Close</span>
 					</button>
 					<h5 class="modal-title">Confirm Dialog</h5>
 				</div>

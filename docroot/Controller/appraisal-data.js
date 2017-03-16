@@ -15,7 +15,7 @@ var restfulPathDropDownPeriod=restfulPathAppData+"/period_list";
 var restfulPathAutocompleteAppraisalItem=restfulPathAppData+"/auto_appraisal_item";
 var restfulPathAutocompleteEmployeeName=restfulPathAppData+"/auto_emp_name";
 
-
+   
 //------------------- GetData FN Start ---------------------
 var getDataFn = function(page,rpp){
 	var structure= $("#param_structure").val();
@@ -177,9 +177,18 @@ var dropDownListPeriod = function(){
 };
 //-------------------  Drop Down List Appraisal Item FN END ---------------------
 
-$(document).ready(function() {
+$(document).ready(function() { 
 	// -------------------  Appraisal Data  ---------------------	
-	
+//	var username = $('#user_portlet').val();
+//	 var password = $('#pass_portlet').val();
+	 var username = 1;
+	 var password = 11;
+	 if(username!="" && username!=null & username!=[] && username!=undefined ){
+	 	
+	 	if(connectionServiceFn(username,password)==false){
+	 		return false;
+	 	}
+	 }
 	$("#drop_down_list_structure").html(dropDownListStructure());
 	$("#drop_down_list_appraisal_level").html(dropDownListAppraisalLevel());
 	$("#drop_down_list_period").html(dropDownListPeriod());

@@ -1,5 +1,6 @@
 //Global Variable
 var golbalDataCRUD =[];
+var dataSearch="";
 
 //set paginate start
 var paginationSetUpCRUDFn = function(pageIndex,pageTotal,options){
@@ -33,7 +34,7 @@ var paginationSetUpCRUDFn = function(pageIndex,pageTotal,options){
 			rpp=$("#rpp").val();
 		}
 		
-		getDataFn(num,rpp,options);
+		getDataFn(num,rpp,options,dataSearch);
 		
 	    $(".pagingNumber").remove();
 	    var htmlPageNumber= "<input type='hidden' id='pageNumber' name='pageNumber' class='pagingNumber' value='"+num+"'>";
@@ -47,7 +48,7 @@ var paginationSetUpCRUDFn = function(pageIndex,pageTotal,options){
 		$("#countPaginationTop").val($(this).val());
 		$("#countPaginationBottom").val($(this).val());
 		
-		getDataFn(1,$(this).val(),options);
+		getDataFn(1,$(this).val(),options,dataSearch);
 		
 		$(".rpp").remove();
 	    var htmlRrp= "<input type='hidden' id='rpp' name='rpp' class='rpp' value='"+$(this).val()+"'>";
@@ -55,6 +56,17 @@ var paginationSetUpCRUDFn = function(pageIndex,pageTotal,options){
 	});
 }
 //set paginate end
+
+function validateNumber(event) {
+    var key = window.event ? event.keyCode : event.which;
+    if (event.keyCode === 8 || event.keyCode === 46) {
+        return true;
+    } else if ( key < 48 || key > 57 ) {
+        return false;
+    } else {
+        return true;
+    }
+};
 var searchMultiFn=function(search,searchName){
 	var paramSearchName="";
 	 if(searchName==undefined){
@@ -100,16 +112,19 @@ var insertFn = function(data,options,param){
 				
 				  if(param !="saveAndAnother"){
 					  	callFlashSlide("Insert success.");
-						getDataFn($("#pageNumber").val(),$("#rpp").val(),options);
+					
+						getDataFn($("#pageNumber").val(),$("#rpp").val(),options,dataSearch);
 						clearFn(options);
+						
 						$("#modal-"+options['formDetail']['id']).modal('hide');
 					}else{
 						
 						//callFlashSlide("Insert success.");
 						callFlashSlideInModal("Insert success.","#information","");
-						getDataFn($("#pageNumber").val(),$("#rpp").val(),options);
-						clearFn(options);
 						
+						getDataFn($("#pageNumber").val(),$("#rpp").val(),options,dataSearch);
+						clearFn(options);
+						 
 					}
 				  
 				  
@@ -121,7 +136,7 @@ var insertFn = function(data,options,param){
 	});
 }
 var deleteFn = function(id,options){
-	
+
 	$.ajax({
 		
 		url:options['serviceName']+"/"+id,
@@ -131,23 +146,29 @@ var deleteFn = function(id,options){
 		headers:{Authorization:"Bearer "+options['tokenID'].token},
 		success : function(data) {
 			if(data['status']==200){
-			getDataFn($("#pageNumber").val(),$("#rpp").val(),options);
+				
+			getDataFn($("#pageNumber").val(),$("#rpp").val(),options,dataSearch);
 			clearFn(options);
 			$("#confrimModal").modal('hide');
+			}else if(data['status']==400){
+				
+				//inform_on_confirm
+				callFlashSlideInModal(data['data'],"#inform_on_confirm","error");
+				//$("#confrimModal").modal('hide');
 			}
 		}
-	});
+	}); 
 }
 var clearFn = function(options){
 	$("#id").val("");
 	$("#action").val("add");
-	
+	$("#information").hide();
 	$.each(options['form'],function(index,indexEntry){
-		
-		if(indexEntry['inputType']=="text"){
-			$("#"+indexEntry['id']).val("");
+
+		if(indexEntry['inputType']=="text" || indexEntry['inputType']=="date" || indexEntry['inputType']=="password"){
+			$("form#"+options['formDetail']['id']+" #"+indexEntry['id']).val("");
 		}else if(indexEntry['inputType']=="dropdown"){
-			$("#"+indexEntry['id']).val($("#"+indexEntry['id']+" option:first").val());
+			$("form#"+options['formDetail']['id']+"  #"+indexEntry['id']).val($("#"+indexEntry['id']+" option:first").val());
 		}
 	});
 	
@@ -164,8 +185,12 @@ var updateFn = function(data,options){
 				if(data['status']=="200"){
 					//alert("Update Success");
 					callFlashSlide("Update success.");
-					getDataFn($("#pageNumber").val(),$("#rpp").val(),options);
+					$("#modal-"+options['formDetail']['id']).modal('hide');
+					getDataFn($("#pageNumber").val(),$("#rpp").val(),options,dataSearch);
 					clearFn(options);
+					
+				}else if(data['status']=="400"){
+					callFlashSlideInModal(validationFn(data),"#information","error");
 				}
 				
 			}
@@ -182,12 +207,26 @@ var mapObjectToFormFn  =function(data,options){
 	
 	$.each(options['form'],function(index,indexEntry){
 
-		if(indexEntry['inputType']=="text"){
-			$("#"+indexEntry['id']).val(data[indexEntry['id']]);
+		if(indexEntry['inputType']=="text" || indexEntry['inputType']=="date"){
+			$("form#"+options['formDetail']['id']+"  #"+indexEntry['id']).val(data[indexEntry['id']]);
 		}else if(indexEntry['inputType']=="dropdown"){
-			$("#"+indexEntry['id']).val(data[indexEntry['id']]);
+			$("form#"+options['formDetail']['id']+"  #"+indexEntry['id']).val(data[indexEntry['id']]);
+			//alert("form#"+options['formDetail']['id']+" > #"+indexEntry['id']);
+			//alert(data[indexEntry['id']]);
 		}
-		//console.log(data[indexEntry['id']]);
+		else if(indexEntry['inputType']=="checkbox"){
+			
+			if(data[indexEntry['id']]==1){
+				
+				$(".checkbox-"+indexEntry['id']).prop('checked',true);
+				
+			}else{
+				$(".checkbox-"+indexEntry['id']).prop('checked',false);
+			}
+			
+		}
+		
+
 		
 	});
 		
@@ -242,28 +281,44 @@ var listDataFn = function(data,options){
 				
 				htmlTbody+="    		<td class=\"columnSearch"+options['formDetail']['id']+"\">"+indexEntry[indexEntry2['id']]+"</td>";
 			
+			}else if(indexEntry2['colunmsType']=='hidden'){
+
+				htmlTbody+="    		<td style='display:none;' class=\"hidden columnSearch"+options['formDetail']['id']+"\">"+indexEntry[indexEntry2['id']]+"</td>";
+			
 			}
 		});
 		htmlTbody+="    		<td style=\"text-align:center\">";
 		htmlTbody+="    		<i data-trigger=\"focus\" tabindex=\""+index+"\" data-content=\"";
 		
 		if(options['btnManageOption']!=undefined){
-		htmlTbody+="    		&lt;button id='"+options['btnManageOption']['id']+"-"+indexEntry[options['formDetail']['pk_id']]+"' class='btn btn-info btn-xs btn-gear "+options['btnManageOption']['id']+"'&gt;"+options['btnManageOption']['name']+"&lt;/button&gt;";
+		htmlTbody+="    		&lt;button id='"+options['btnManageOption']['id']+"-"+indexEntry[options['formDetail']['pk_id']]+"' class='btn btn-info btn-small btn-gear "+options['btnManageOption']['id']+"'&gt;"+options['btnManageOption']['name']+"&lt;/button&gt;";
 		}
 		
-		htmlTbody+="			&lt;button class='btn btn-warning btn-xs btn-gear edit' id='edit-"+indexEntry[options['formDetail']['pk_id']]+"' data-target=#addModalRule data-toggle='modal'&gt;Edit&lt;/button&gt;&nbsp;&lt;button id='del-"+indexEntry[options['formDetail']['pk_id']]+"' class='btn btn-danger btn-xs btn-gear del'&gt;Delete&lt;/button&gt;\" data-placement=\"top\" data-toggle=\"popover\" data-html=\"true\" class=\"fa fa-cog font-gear popover-edit-del\" data-original-title=\"\" title=\"\"></i>";
+		htmlTbody+="			&lt;button class='btn btn-warning btn-small btn-gear edit' id='edit-"+indexEntry[options['formDetail']['pk_id']]+"' data-target=#addModalRule data-toggle='modal'&gt;Edit&lt;/button&gt;&nbsp;&lt;button id='del-"+indexEntry[options['formDetail']['pk_id']]+"' class='btn btn-danger btn-small btn-gear del'&gt;Delete&lt;/button&gt;\" data-placement=\"top\" data-toggle=\"popover\" data-html=\"true\" class=\"fa fa-cog font-gear popover-edit-del\" data-original-title=\"\" title=\"\"></i>";
 		htmlTbody+="    		</td>";
 		htmlTbody+="    	</tr>";
-		//&lt;button id='id-"+indexEntry[options['formDetail']['pk_id']]+"' class='btn btn-danger btn-xs btn-gear del'&gt;Delete&lt;/button&gt;
+		//&lt;button id='id-"+indexEntry[options['formDetail']['pk_id']]+"' class='btn btn-danger btn-small btn-gear del'&gt;Delete&lt;/button&gt;
 	});
 	
 	$("#listData").html(htmlTbody);
 	$(".popover-edit-del").popover();
 	$("#table-"+options['formDetail']['id']).off("click",".popover-edit-del");
 	$("#table-"+options['formDetail']['id']).on("click",".popover-edit-del",function(){
+		//console.log($(this).next().find('.edit').hide());
+		//console.log($(this).parent().prev().text());
+		console.log($(this).parent().prev().text());
+		if($(this).parent().prev().text()==0 && $(this).parent().prev().text()!=""){
+			
+			$(this).next().find('.edit').attr("disabled","disabled");
+		}else{
+			
+			$(this).next().find('.edit').removeAttr("disabled");
+		}
+		
 		//Delete Start
 		$(".del").on("click",function() {
-			//alert(this.id);
+			
+			
 			var id=this.id.split("-");
 			id=id[1];
 			$("#confrimModal").modal();
@@ -276,6 +331,7 @@ var listDataFn = function(data,options){
 		//findOne Start
 		$(".edit").on("click",function() {
 			//alert(this.id);
+			$("#information").hide();
 			$(this).parent().parent().parent().children().click();
 			var id=this.id.split("-");
 			id=id[1];
@@ -341,7 +397,7 @@ var getDataFn = function(page,rpp,options,search){
 
 var createInputTypeFn  = function(object,tokenID){
 	
-	var initValue =(object['initValue'] == '' || object['initValue'] == undefined  ? false : object['initValue']);
+	var initValue =(object['initValue'] == undefined  ? false : object['initValue']);
 	
 	var inputType="";
 /*
@@ -365,20 +421,24 @@ var createInputTypeFn  = function(object,tokenID){
 				if(object['initValue']!=undefined){
 					inputType+="<option value=''>"+object['initValue']+"</option>";
 				}
+				
 				$.each(data,function(index,indexEntry){
 					
 					//console.log(Object.keys(indexEntry)[0]);
 					//inputType+="<option value="+index+">"+indexEntry+"</option>";
-					
-					inputType+="<option value="+indexEntry[Object.keys(indexEntry)[0]]+">"+indexEntry[Object.keys(indexEntry)[1]]+"</option>";
+					if(dataSearch==indexEntry[Object.keys(indexEntry)[0]]){
+						
+						inputType+="<option selected value="+indexEntry[Object.keys(indexEntry)[0]]+">"+indexEntry[Object.keys(indexEntry)[1]]+"</option>";
+					}else{
+						inputType+="<option value="+indexEntry[Object.keys(indexEntry)[0]]+">"+indexEntry[Object.keys(indexEntry)[1]]+"</option>";
+					}
 				});
 				inputType+="<select>";
 			}
 		})
 		
-	}else if(object['inputType']=="text"){
+	}else if(object['inputType']=="text" || object['inputType']=="autoComplete"){
 
-		
 		var dataTypeInput =(object['dataTypeInput'] == 'number' ? "numberOnly" : "");
 		if(object['placeholder']!=undefined){
 			
@@ -389,10 +449,25 @@ var createInputTypeFn  = function(object,tokenID){
 			
 		}
 		
-	}else if(object['inputType']=="checkbox"){
+	}else if(object['inputType']=="date"){
+
 		
+		var dataTypeInput =(object['dataTypeInput'] == 'number' ? "numberOnly" : "");
+		if(object['placeholder']!=undefined){
+			
+			inputType+="<input type=\"text\" style='width:"+object['width']+"' class=\"span12 m-b-n datepicker "+dataTypeInput+"\" placeholder=\""+object['placeholder']+"\" id=\""+object['id']+"\" name=\""+object['id']+"\">";
+			
+		}else{
+			inputType+="<input type=\"text\" style='width:"+object['width']+"' class=\"span12 datepicker m-b-n "+dataTypeInput+"\" placeholder=\"\" id=\""+object['id']+"\" name=\""+object['id']+"\">";
+			
+		}
+		
+	}else if(object['inputType']=="checkbox"){
+	
+		var checked =(object['default'] == 'checked' ? "checked" : "");
+
 		inputType+="<input type=\"hidden\"  id=\""+object['id']+"\" name=\""+object['id']+"\" value='0'>";
-		inputType+="<input type='checkbox' class=\"checkbox\" placeholder=\"\" id=\""+object['id']+"\" name=\""+object['id']+"\">";
+		inputType+="<input type='checkbox' "+checked+" class=\"checkbox checkbox-"+object['id']+"\" placeholder=\"\" id=\""+object['id']+"\" name=\""+object['id']+"\">";
 		
 		
 	}else if(object['inputType']=="radio"){
@@ -402,10 +477,10 @@ var createInputTypeFn  = function(object,tokenID){
 	}else if(object['inputType']=="password"){
 		
 		if(object['placeholder']!=undefined){
-			inputType+="<input type=\"password\" style='width:"+object['width']+"' class=\"span12 m-b-n numberOnly\" placeholder=\""+object['placeholder']+"\" id=\""+object['id']+"\" name=\""+object['id']+"\">";
+			inputType+="<input type=\"password\" style='width:"+object['width']+"' class=\"span12 m-b-n \" placeholder=\""+object['placeholder']+"\" id=\""+object['id']+"\" name=\""+object['id']+"\">";
 			
 		}else{
-			inputType+="<input type=\"password\" style='width:"+object['width']+"' class=\"span12 m-b-n numberOnly\" placeholder=\"\" id=\""+object['id']+"\" name=\""+object['id']+"\">";
+			inputType+="<input type=\"password\" style='width:"+object['width']+"' class=\"span12 m-b-n \" placeholder=\"\" id=\""+object['id']+"\" name=\""+object['id']+"\">";
 			
 		}
 	}
@@ -431,20 +506,12 @@ formHTML+="            <button style=\"padding-top:5px\" data-dismiss=\"modal\" 
 formHTML+="            <h4 class=\"modal-title\" id=\""+options['formDetail']['id']+"\">"+options['formDetail']['formName']+"</h4>";
 formHTML+="        </div>";
 formHTML+="        <div class=\"modal-body\">";
-formHTML+="            <div class=\"row-fluid\"><div class=\"col-lg-12\"><div class=\"span12\" style=\"padding: 0px 10px; height:65px;\"><h1><i class=\"fa fa fa-pencil-square-o icon-title\"></i><small id=\"modalDescription\" style=\" position:absolute;top:37px;left:85px\">Database Connection</small>";
+formHTML+="            <div class=\"row-fluid\"><div class=\"col-lg-12\"><div class=\"span12\" style=\"padding: 0px 10px; height:65px;\"><h1><i class=\"fa fa fa-pencil-square-o icon-title\"></i><small id=\"modalDescription\" style=\" position:absolute;top:37px;left:85px\">"+options['formDetail']['formName']+"</small>";
 formHTML+="           </h1></div></div></div> <hr>";
 formHTML+="           <div class=\"row-fluid\">";
 formHTML+="           <div class=\"span12 form-horizontal p-t-xxs\">";
 
-/*
-="row-fluid"
-	                		<div class="form-group p-xxs">
-								<label class="control-label">Emp Code:<span class="redFont">*</span></label>
-								<div class="controls">
-									<input class="form-control input-sm span12" placeholder="" id="from_emp_code" type="text">
-								</div>
-							</div>
- */
+
  
 $.each(options['form'],function(index,indexEntry){
 	formHTML+="           <div class=\"form-group p-xxs\">";
@@ -541,7 +608,7 @@ var createDataTableFn = function(options){
 	var expressSearch =(options['expressSearch'] == '' || options['expressSearch'] == undefined  ? false : options['expressSearch']);
 	
 	$.ajax({
-		url:"../theme/basic.html",
+		url:$("#url_portlet").val()+"/theme/basic.html",
 		dataType:"html",
 		type:"get",
 		async:false,
@@ -565,9 +632,13 @@ var createDataTableFn = function(options){
 			tableHTML+="    <thead>";
 			tableHTML+="        <tr>"
 			$.each(options['colunms'],function(index,indexEntry){
-				tableHTML+="            <th  style='width:"+indexEntry['width']+"'>"+indexEntry['colunmsDisplayName']+"</th>";
+				if(indexEntry['colunmsType']=='hidden'){
+					tableHTML+="            <th d style='width:"+indexEntry['width']+"; display:none;'><b>"+indexEntry['colunmsDisplayName']+"</b></th>";	
+				}else{
+					tableHTML+="            <th  style='width:"+indexEntry['width']+"'><b>"+indexEntry['colunmsDisplayName']+"</b></th>";
+				}
 			});
-			tableHTML+="           	 	<th style='text-align:center;'>Manage</th>";
+			tableHTML+="           	 	<th style='text-align:center;'><b>Manage</b></th>";
 			
 			tableHTML+="        </tr>";
 			tableHTML+="    </thead>";
@@ -579,6 +650,11 @@ var createDataTableFn = function(options){
 			$("#tableArea").html(tableHTML);
 			
 			$("#modalFormArea").html(createFormFn(options));
+			
+			
+			//binding date picker start
+			$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
+			//binding date picker end
 		
 		
 			if(advanceSearchSet==true){
@@ -592,24 +668,35 @@ var createDataTableFn = function(options){
 			}else{
 				$("#advanceSearchArea").hide();
 			}
+		
+			
+			jQuery('.numberOnly').keyup(function () { 
+			    this.value = this.value.replace(/[^0-9\.]/g,'');
+			});
+//			$(".numberOnly").ForceNumericOnly();
+//			$(".numberOnly").keyup(function (e) {
+//				IsNumeric($(this).val(),this);
+////				        // Allow: backspace, delete, tab, escape, enter and .
+////					
+////				        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+////				             // Allow: Ctrl+A, Command+A
+////				            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+////				             // Allow: home, end, left, right, down, up
+////				            (e.keyCode >= 35 && e.keyCode <= 40)) {
+////				                 // let it happen, don't do anything
+////				                 return;
+////				        }
+////				        // Ensure that it is a number and stop the keypress
+////				        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+////				            e.preventDefault();
+////				        }
+//				});
 			
 			
-			$(".numberOnly").keydown(function (e) {
-				        // Allow: backspace, delete, tab, escape, enter and .
-					
-				        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-				             // Allow: Ctrl+A, Command+A
-				            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
-				             // Allow: home, end, left, right, down, up
-				            (e.keyCode >= 35 && e.keyCode <= 40)) {
-				                 // let it happen, don't do anything
-				                 return;
-				        }
-				        // Ensure that it is a number and stop the keypress
-				        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-				            e.preventDefault();
-				        }
-				});
+			
+			//AutoComplete Search Start
+			
+			//AutoComplete Search End
 			
 			$("#btnSubmit").click(function(){
 				//
@@ -649,6 +736,7 @@ var createDataTableFn = function(options){
 			});
 			
 			$("#btnAdd").click(function(){
+				//$("#modalFormArea").html(createFormFn(options));
 				clearFn(options);
 				$("#btnAddAnother").show();
 				
@@ -659,14 +747,17 @@ var createDataTableFn = function(options){
 	    		
 	    		
 	    		sessionStorage.setItem("searchAdvanceForm",$(this).serialize());
-	    		var dataSearch = sessionStorage.getItem("searchAdvanceForm");
+	    		dataSearch = sessionStorage.getItem("searchAdvanceForm");
+	    		$(".countPagination").val(10);
+	    		$("#rpp").remove();
 	    		getDataFn($("#pageNumber").val(),$("#rpp").val(),options,dataSearch);
+	    		
 	    		
 	    		return false;
 	    	});
 	    	
 	    	if(advanceSearchSet==false){
-	    		getDataFn($("#pageNumber").val(),$("#rpp").val(),options);
+	    		getDataFn($("#pageNumber").val(),$("#rpp").val(),options,dataSearch);
 	    	}
 	    	//advance search end
 	

@@ -623,7 +623,14 @@ var backToTopFn = function(){
 }
 
 $(document).ready(function() {
-
+	var username = $('#user_portlet').val();
+	 var password = $('#pass_portlet').val();
+	 if(username!="" && username!=null & username!=[] && username!=undefined ){
+	 	
+	 	if(connectionServiceFn(username,password)==false){
+	 		return false;
+	 	}
+	 }
 	$("#search_position").val("");
 	$("#search_position_id").val("");
 	$("#search_emp_name").val("");

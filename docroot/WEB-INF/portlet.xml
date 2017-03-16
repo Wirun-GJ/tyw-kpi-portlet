@@ -32,8 +32,8 @@
 		</security-role-ref>
 	</portlet>
 	
-	   
-	         
+	    
+	           
 	
 	<portlet>
 		<portlet-name>appraisal</portlet-name>
@@ -197,6 +197,107 @@
 			<role-name>user</role-name>
 		</security-role-ref>
 	</portlet>
+	
+	<portlet>
+		<portlet-name>import-employee</portlet-name>
+		<display-name>Import Employee</display-name>
+		<portlet-class>
+			com.liferay.util.bridges.mvc.MVCPortlet
+		</portlet-class>
+		<init-param>
+			<name>view-jsp</name>
+			<value>/html/import-employee/view.jsp</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+		<portlet-info>
+			<title>Import Employee</title>
+			<short-title>Import Employee</short-title>
+			<keywords></keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>guest</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>power-user</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>user</role-name>
+		</security-role-ref>
+	</portlet>
+	<portlet>
+		<portlet-name>cds-result</portlet-name>
+		<display-name>CDS Result</display-name>
+		<portlet-class>
+			com.liferay.util.bridges.mvc.MVCPortlet
+		</portlet-class>
+		<init-param>
+			<name>view-jsp</name>
+			<value>/html/cds-result/view.jsp</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+		<portlet-info>
+			<title>CDS Result</title>
+			<short-title>Cds Result</short-title>
+			<keywords></keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>guest</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>power-user</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>user</role-name>
+		</security-role-ref>
+	</portlet>
+	<portlet>
+		<portlet-name>appraisal-data</portlet-name>
+		<display-name>Appraisal Data</display-name>
+		<portlet-class>
+			com.liferay.util.bridges.mvc.MVCPortlet
+		</portlet-class>
+		<init-param>
+			<name>view-jsp</name>
+			<value>/html/appraisal-data/view.jsp</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+		<portlet-info>
+			<title>Appraisal Data</title>
+			<short-title>Appraisal Data</short-title>
+			<keywords></keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>guest</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>power-user</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>user</role-name>
+		</security-role-ref>
+	</portlet>
+	
 	
 	<portlet>
 		<portlet-name>threshould</portlet-name>
@@ -416,12 +517,12 @@
 			<short-title>UOM</short-title>
 			<keywords></keywords>
 		</portlet-info>
-		<security-role-ref>
+		<security-role-ref> 
 			<role-name>administrator</role-name>
 		</security-role-ref>
 		<security-role-ref>
 			<role-name>guest</role-name>
-		</security-role-ref>
+		</security-role-ref> 
 		<security-role-ref>
 			<role-name>power-user</role-name>
 		</security-role-ref>
@@ -463,14 +564,14 @@
 		</security-role-ref>
 	</portlet>
 	<portlet>
-		<portlet-name>import-employee</portlet-name>
-		<display-name>Import Employee</display-name>
+		<portlet-name>apraisal-item-ifame</portlet-name>
+		<display-name>Apraisal Item Ifame</display-name>
 		<portlet-class>
 			com.liferay.util.bridges.mvc.MVCPortlet
 		</portlet-class>
 		<init-param>
-			<name>view-jsp</name>
-			<value>/html/import-employee/view.jsp</value>
+			<name>view-template</name>
+			<value>/html/apraisal-item-ifame/view.jsp</value>
 		</init-param>
 		<expiration-cache>0</expiration-cache>
 		<supports>
@@ -478,8 +579,43 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>Import Employee</title>
-			<short-title>Import Employee</short-title>
+			<title>Apraisal Item Ifame</title>
+			<short-title>Apraisal Item Ifame</short-title>
+			<keywords></keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>guest</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>power-user</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>user</role-name>
+		</security-role-ref>
+	</portlet>
+	
+	
+	<portlet>
+		<portlet-name>apraisal-assignment-ifame</portlet-name>
+		<display-name>Apraisal Assignment Ifame</display-name>
+		<portlet-class>
+			com.liferay.util.bridges.mvc.MVCPortlet
+		</portlet-class>
+		<init-param>
+			<name>view-template</name>
+			<value>/html/apraisal-assignment-ifame/view.jsp</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+		<portlet-info>
+			<title>Apraisal Assignment Ifame</title>
+			<short-title>Apraisal Assignment Ifame</short-title>
 			<keywords></keywords>
 		</portlet-info>
 		<security-role-ref>
@@ -496,14 +632,14 @@
 		</security-role-ref>
 	</portlet>
 	<portlet>
-		<portlet-name>cds-result</portlet-name>
-		<display-name>CDS Result</display-name>
+		<portlet-name>apprial-ifame</portlet-name>
+		<display-name>Apprial Ifame</display-name>
 		<portlet-class>
 			com.liferay.util.bridges.mvc.MVCPortlet
 		</portlet-class>
 		<init-param>
-			<name>view-jsp</name>
-			<value>/html/cds-result/view.jsp</value>
+			<name>view-template</name>
+			<value>/html/apprial-ifame/view.jsp</value>
 		</init-param>
 		<expiration-cache>0</expiration-cache>
 		<supports>
@@ -511,8 +647,8 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>CDS Result</title>
-			<short-title>Cds Result</short-title>
+			<title>Apprial Ifame</title>
+			<short-title>Apprial Ifame</short-title>
 			<keywords></keywords>
 		</portlet-info>
 		<security-role-ref>
@@ -529,14 +665,14 @@
 		</security-role-ref>
 	</portlet>
 	<portlet>
-		<portlet-name>appraisal-data</portlet-name>
-		<display-name>Appraisal Data</display-name>
+		<portlet-name>emp-result-bonus-raise-amount</portlet-name>
+		<display-name>Emp Result Bonus Raise Amount</display-name>
 		<portlet-class>
 			com.liferay.util.bridges.mvc.MVCPortlet
 		</portlet-class>
 		<init-param>
-			<name>view-jsp</name>
-			<value>/html/appraisal-data/view.jsp</value>
+			<name>view-template</name>
+			<value>/html/emp-result-bonus-raise-amount/view.jsp</value>
 		</init-param>
 		<expiration-cache>0</expiration-cache>
 		<supports>
@@ -544,8 +680,8 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>Appraisal Data</title>
-			<short-title>Appraisal Data</short-title>
+			<title>Emp Result Bonus Raise Amount</title>
+			<short-title>Emp Result Bonus Raise Amount</short-title>
 			<keywords></keywords>
 		</portlet-info>
 		<security-role-ref>

@@ -213,6 +213,14 @@ var listErrorFn =function(data){
 //-------------------  Drop Down List Appraisal Level FN END ---------------------
 
 $(document).ready(function() {
+	var username = $('#user_portlet').val();
+	 var password = $('#pass_portlet').val();
+	 if(username!="" && username!=null & username!=[] && username!=undefined ){
+	 	
+	 	if(connectionServiceFn(username,password)==false){
+	 		return false;
+	 	}
+	 }
 	$("#position").val("");
 	$("#emp_name").val("");
 	$("#position_id").val("");
