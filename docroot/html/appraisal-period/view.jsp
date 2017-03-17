@@ -62,28 +62,28 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
                 <div class="row-fluid">
                 	<div class="span12 form-horizontal p-t-xxs">
 							<div class="form-group p-xxs" style='margin-bottom: 5px;'>
-									<label class="span5 control-label">Appraisal Year:</label>
+									<label class="span5 control-label">Appraisal Year</label>
 									<div class="span7" id="dropdownAppYear" ></div>
 			                <br style="clear:both">
 							</div>
-							<!-- 
+							
 							<div class="form-group p-xxs" style='margin-bottom: 5px;'>
-									<label class="span5 control-label">Start Year:</label>
+									<label class="span5 control-label">Start Year</label>
 									<div class="span7" id="dropdownStartYear" >
 		               				</div>
 			                <br style="clear:both">
 							</div>
-							 -->
+							 
 							
 							<div class="form-group p-xxs" style='margin-bottom: 5px;'>
-								<label class="span5 control-label">Start Month:</label>
+								<label class="span5 control-label">Start Month</label>
 									<div class="span7" id="dropdownStartMonth" >
 		                			</div>
 		               		 <br style="clear:both">
 							</div>
 							
 							<div class="form-group p-xxs" style='margin-bottom: 5px;'>
-								<label class="span5 control-label">Appraisal Frequency:</label>
+								<label class="span5 control-label">Appraisal Frequency</label>
 								<div class="span7" id="dropdownAppFrequency" >
 			                	
 			               		</div>
@@ -92,16 +92,16 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 							
 							<div class='form-group' style='margin-bottom: 5px;'>
 				                <div class="span5 control-label">
-				                	Appraisal Period Description: 
+				                	Appraisal Period Description<span class="redFont ">*</span>
 				                </div>
 				                
 				                 <div class="span7">
-				                	<input data-toggle="tooltip" title="APD"  class="form-control input-sm" placeholder="????????????????????????????????" type="text" id="a_p_d" name="a_p_d">
+				                	<input data-toggle="tooltip" title="APD"  class="form-control input-sm" placeholder="การประเมินผลการปฏิบัติงานประจำปี" type="text" id="a_p_d" name="a_p_d">
 				                </div>
 				                <br style="clear:both">
 		                	</div>
 							<div class="form-group p-xxs" style='margin-bottom: 5px;'>
-									<label class="span5 control-label">Bonus Frequency: </label>
+									<label class="span5 control-label">Bonus Frequency </label>
 									<div class="span7" id="dropdownBonusFrequency" >
 			                		 </div>
 			                <br style="clear:both">
@@ -109,17 +109,17 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 							
 							<div class='form-group' style='margin-bottom: 5px;'>
 				                <div class="span5 control-label">
-				                	Bonus Period Description: 
+				                	Bonus Period Description<span class="redFont ">*</span>
 				                </div>
 				                
 				                 <div class="span7">
-				                	<input data-toggle="tooltip" title="BPD"  class="form-control input-sm" placeholder="???????????????????" type="text" id="b_p_d" name="b_p_d">
+				                	<input data-toggle="tooltip" title="BPD"  class="form-control input-sm" placeholder="รอบจ่ายโบนัสประจำปี" type="text" id="b_p_d" name="b_p_d">
 				                </div>
 			                <br style="clear:both">
 		                	</div>
 		                	
 							<div class="form-group p-xxs" style='margin-bottom: 5px;'>
-									<label class="span5 control-label">Salary Raise Frequency:</label>
+									<label class="span5 control-label">Salary Raise Frequency</label>
 									<div class="span7" id="dropdownSalaryFrequncy" >
 			                		</div>
 			                <br style="clear:both">
@@ -127,11 +127,11 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 							
 							<div class='form-group' style='margin-bottom: 5px;'>
 				                <div class="span5 control-label">
-				                	Salary Raise Description: 
+				                	Salary Raise Description<span class="redFont ">*</span>
 				                </div>
 				                
 				                 <div class="span7 ">
-				                	<input data-toggle="tooltip" title="SRD"  class="form-control input-sm" placeholder="???????????????????????" type="text" id="s_r_d" name="s_r_d">
+				                	<input data-toggle="tooltip" title="SRD"  class="form-control input-sm" placeholder="รอบขึ้นเงินเดือนประจำปี" type="text" id="s_r_d" name="s_r_d">
 				                </div>
 				                <br style="clear:both">
 		                	</div>

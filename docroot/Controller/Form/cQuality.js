@@ -6,7 +6,7 @@ var clearQualityFormFn = function(){
 	$("#appraisalItemNameQuality").val("");
 	//$("#appraisalLevelQuality").val("");
 	$("#appraisalLevelQuality option:first").attr('selected','selected');
-	$("#isActiveQuality").prop("checked",false);
+	$("#isActiveQuality").prop("checked",true);
 	//$("#structure_id_quality").val("");
 	
 }
@@ -19,6 +19,7 @@ var updateQualityFn  = function(){
 	 var appraisal_item_id=$("#appraisalItemIdQuality").val();
 	 var appraisal_level_id=$("#appraisalLevelQuality").val();
 	 var structure_id=$("#structure_id_quality").val();
+	 var department_id=$("#departmentQuality").val();
 	 
 	 var is_active="";
 	 if($('#isActiveQuality').prop('checked')==true){
@@ -37,7 +38,8 @@ var updateQualityFn  = function(){
 		 "appraisal_level_id":appraisal_level_id,
 		 "structure_id":structure_id,
 		 "is_active":is_active,
-		 "form_id":"2"
+		 "form_id":"2",
+		 "department_code":department_id
 		},
 	    success:function(data,status){
 		     if(data['status']=="200"){
@@ -59,6 +61,7 @@ var insertQualityFn = function(param) {
 	 var appraisal_item_name=$("#appraisalItemNameQuality").val();
 	 var appraisal_level_id=$("#appraisalLevelQuality").val();
 	 var structure_id=$("#structure_id_quality").val();
+	 var department_id=$("#departmentQuality").val();
 	 var is_active="";
 	 if($('#isActiveQuality').prop('checked')==true){
 		 is_active=1;
@@ -77,6 +80,7 @@ var insertQualityFn = function(param) {
 			 "appraisal_level_id":appraisal_level_id,
 			 "structure_id":structure_id,
 			 "is_active":is_active,
+			 "department_code":department_id,
 			 "form_id":"2"
 		},
 		success:function(data){
@@ -113,7 +117,8 @@ is_active
 */
 	if(action=='edit'){
 		clearQualityFormFn();
-		appraisalLevelListFn("Quality",data['appraisal_level_id']);			
+		appraisalLevelListFn("Quality",data['appraisal_level_id']);	
+		dropDrowDepartmentFn("Quality",data['department_code'],defaultAll=false);
 		$("#appraisalItemNameQuality").val(data['appraisal_item_name']);
 		$("#appraisalItemIdQuality").val(data['appraisal_item_id']);
 		
@@ -146,7 +151,9 @@ is_active
 		is_active
 		*/	
 		clearQualityFormFn();
+		$("#isActiveQuality").prop("checked",true);
 		appraisalLevelListFn("Quality",$("#embed_appraisal_level_id").val());	
+		dropDrowDepartmentFn("Quality",$("#embed_department_id").val(),defaultAll=false);
 		$("#btnAddAnotherQuality").show();
 
 		//set header
@@ -200,4 +207,8 @@ $(document).ready(function(){
 	});
 	//Submit Quality end
 	//click modal quality end.
+	
+	jQuery('.numberOnly').keyup(function () { 
+	    this.value = this.value.replace(/[^0-9\.]/g,'');
+	});
 });

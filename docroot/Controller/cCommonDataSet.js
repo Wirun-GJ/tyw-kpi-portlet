@@ -231,7 +231,7 @@ var listCommonDataSetFn = function(data) {
 	$("#tableCommonDataSet").on("click",".popover-edit-del",function(){
 		
 			$(".edit").on("click",function() {
-			
+			clearFn();
 			$("#modalTitleRole").html("Common Data Set");
 			$("#modalDescription").html("Edit Common Data Set");
 			
@@ -239,7 +239,7 @@ var listCommonDataSetFn = function(data) {
 			//alert($(this).parent().parent().parent().children().click());
 			$("#btnAddAnother").hide();
 			//$("#txt_sample_data").attr("disabled","disabled"); 
-			clearFn();
+			
 			findOneFn(this.id);
 			//alert($("#checkbox_is_sql:checked").is(":checked"));
 			

@@ -38,7 +38,7 @@
     					},
     			        {
     					"label":"Password","inputType":"password","placeholder":"Password",
-    					"id":"password","width":"250px"
+    					"id":"password","width":"250px","required":true
     					}
     					
     			     ],

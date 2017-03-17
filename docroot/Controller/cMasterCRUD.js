@@ -51,7 +51,10 @@ var paginationSetUpCRUDFn = function(pageIndex,pageTotal,options){
 		getDataFn(1,$(this).val(),options,dataSearch);
 		
 		$(".rpp").remove();
-	    var htmlRrp= "<input type='hidden' id='rpp' name='rpp' class='rpp' value='"+$(this).val()+"'>";
+		$(".pagingNumber").remove();
+		var htmlRrp=
+	    htmlRrp+= "<input type='hidden' id='rpp' name='rpp' class='rpp' value='"+$(this).val()+"'>";
+		htmlRrp+= "<input type='hidden' id='pageNumber' name='pageNumber' class='pagingNumber' value='1'>";
 	    $("body").append(htmlRrp);
 	});
 }
@@ -337,6 +340,11 @@ var listDataFn = function(data,options){
 			id=id[1];
 			fineOneFn(id,options);
 			$("#action").val("edit");
+			$(window).scrollTop(0);
+			setTimeout(function(){
+				$(".modal-body").scrollTop(0);
+
+			});
 		});
 	});	
 	
@@ -660,6 +668,8 @@ var createDataTableFn = function(options){
 			if(advanceSearchSet==true){
 				
 				$("#advanceSearchParamArea").html(createAvanceSearchFn(options));
+				
+				
 				if(options['btnAdvanceSearchOption']!=undefined){
 					$("#btnAdvanceSearchOption").html(createBtnAdvanceSearchOptionFn(options['btnAdvanceSearchOption']));
 				}
@@ -739,6 +749,12 @@ var createDataTableFn = function(options){
 				//$("#modalFormArea").html(createFormFn(options));
 				clearFn(options);
 				$("#btnAddAnother").show();
+				$("#modalFormArea select option:first").prop("selected", true);
+				
+				$(window).scrollTop(0);
+				setTimeout(function(){
+					$(".modal-body").scrollTop(0);
+				});
 				
 			});
 			

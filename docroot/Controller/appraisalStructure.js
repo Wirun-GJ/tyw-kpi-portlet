@@ -22,7 +22,7 @@
     			          ],
     			"form":[   {
 					       "label":"Seq","inputType":"text","placeholder":"Seq",
-					       "id":"seq_no","width":"250px","dataTypeInput":"number"
+					       "id":"seq_no","width":"250px","dataTypeInput":"number","required":true,
 					       },
 					       {
     					   "label":"Structure Name","inputType":"text","placeholder":"Structure Name",
@@ -30,11 +30,11 @@
     					   },
     					   {
     	    					"label":"#Target Score","inputType":"text","placeholder":"Target Score",
-    	    					"id":"nof_target_score","width":"250px","dataTypeInput":"number"
+    	    					"id":"nof_target_score","width":"250px","dataTypeInput":"number","required":true,
     					   },
     					   {
 	    					"label":"Form Type","inputType":"dropdown","default":"All",
-	    					"id":"form_id","width":"250px","url":""+restfulURL+"/tyw_api/public/appraisal_structure/form_list","required":true
+	    					"id":"form_id","width":"250px","url":""+restfulURL+"/tyw_api/public/appraisal_structure/form_list"
 	    					},                             
 	    					{
         					"label":"IsActive","inputType":"checkbox","default":"checked",

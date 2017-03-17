@@ -129,6 +129,11 @@ margin-bottom:5px
 .control-label{
 	cursor: default;
 }
+
+.aui .ibox-title .control-label{
+	text-align: right;
+}
+
 form {
     margin: 0 0 0;
 }
@@ -149,62 +154,33 @@ form {
 	border-radius: 0;
 }
 
+
 /* Large desktop */
+
 @media ( min-width : 1200px) {
-	#confrimModal{left: 55%;}
+
+
 }
 
 /* Portrait tablet to landscape and desktop */
 @media ( min-width : 980px) and (max-width: 1199px) {
-	#confrimModal{left: 57%;}
+	
+	
 }
 @media ( min-width : 768px) and (max-width: 979px) {
-	#confrimModal{left: 58.5%;}
-	.ResultsPerPageTop{
-		position: absolute;
-		left: -20px;
-		top: 78px;
-	}
-	.ResultsPerPageBottom{
-		position: relative;
-		top: -40px;
-	}
-	[class*="span"], .uneditable-input[class*="span"], .row-fluid [class*="span"] {
-    display: block;
-    float: none;
-    width: 100%;
-    margin-left: 0;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-	}
-
+	
 	
 }
 
 /* Landscape phone to portrait tablet */
 @media ( max-width : 767px) {
-	#confrimModal{left: 23.5%;}
-	.ResultsPerPageTop{
-		position: absolute;
-		left: -20px;
-		top: 78px;
-		}
-		.ResultsPerPageBottom{
-		position: relative;
-		top: -40px;
-		}
+	
+	
 }		
 @media ( min-width : 481px) and (max-width: 615px) {
 	
-	#confrimModal{left: 16.5%;}
-	.ResultsPerPageTop{
-		position: absolute;
-		left: -20px;
-		top: 42px;
-	}
-	.ResultsPerPageBottom{
-		position: static;
+	.redFont{
+		float:right;
 	}
 	
 	
@@ -213,43 +189,34 @@ form {
 /* Landscape phones and down */
 @media ( max-width : 480px) {
 
-	#confrimModal{left: 1%;}
-	.ResultsPerPageTop{
-		position: absolute;
-		left: -20px;
-		top: 42px;
-		}
-	.ResultsPerPageBottom{
-		position: static;
+	.redFont{
+		float:left;
+	}
+	.aui .ibox-title .control-label{
+		text-align: left;
 	}
 }
 @media ( min-width : 0px) and (max-width: 468px) {
-		.ResultsPerPageTop{
-		position: absolute;
-		left: -20;
-		top: 83px;
-		}
-		#paginationTop{
-			margin-top: 44px;
-		}
+		
 	
 		
 }
 /* Css by Au End1 */
 
 </style>
+
 <div class="gray-bg">
 	<div class='row-fluid'>
-		<div class='col-xs-12'>
-			<div id="slide_status">
+		
+			<div id="slide_status" class='span12'>
 				<div id="btnCloseSlide">×</div>
 				<div id="slide_status_area"></div>
 			</div>
-		</div>
+		
 	</div>
 	<!-- 
 	<div class="row-fluid">
-		<div class="col-lg-12">
+		<div class="span12">
 			<div class="span12" style="padding: 0px 10px;">
 				<h1>
 					<i class="fa fa fa-pencil-square-o icon-title"></i>
@@ -265,7 +232,7 @@ form {
 <form id='searchAdvanceForm' name='searchAdvanceForm' >
 <div class="row-fluid"><!-- start--row -->
 
-                    <div class="col-lg-12">
+                    <div class="span12">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                
@@ -320,7 +287,7 @@ form {
          			
 </div>	
          			<div class="row-fluid resultArea" style='display:none;'>
-				         		<div class="col-lg-12">
+				         		<div class="span12">
 					         	<div class="ibox-title">
 	                                <div id='titlePanel' class='titlePanel'>Database Connection List </div>
 	         					</div>
@@ -343,7 +310,7 @@ form {
                                     	<!-- start table -->
                                     	<!-- pagination start -->
                                     	<div class="row-fluid paginationControl">
-	                                    	<div class="span9 " id="paginationTop">
+	                                    	<div class="span6 " id="paginationTop">
 												<span class="pagination_top pagination">
 												<!-- Test -->
 												<!-- 
@@ -352,7 +319,7 @@ form {
 												<!-- Test -->
 												</span>
 	                                    	</div>
-		                                    <div class="span3 object-right ResultsPerPageTop">
+		                                    <div class="span6 object-right ResultsPerPageTop">
 		                                    
 			                                    <div id='dropdownPaginationTop' class='pagingDropdown'>
 		                                 			<select  id='countPaginationTop'  class="form-control input-sm countPagination">
@@ -410,7 +377,7 @@ form {
                                         </div>
                                        
                                     	<div class="row-fluid paginationControl">
-	                                    	<div class="span9 ">
+	                                    	<div class="span6 ">
 												<span class="pagination_bottom pagination">
 												<!-- Test -->
 												<!-- 
@@ -421,7 +388,7 @@ form {
 												</span>
 	                                    	</div>
 	                                    
-		                                    <div id='dropdownPaginationBottom' class="span3 object-right ResultsPerPageBottom">
+		                                    <div id='dropdownPaginationBottom' class="span6 object-right ResultsPerPageBottom">
 		                                    
 		                                    	<div class='pagingDropdown'>
 		                                 			<select  id='countPaginationBottom'  class="form-control input-sm countPagination">
@@ -540,7 +507,7 @@ form {
     <div class="modal-dialog">
     <div class="modal-content bounceInRight">
             <div class="modal-header">
-                <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">x</span><span class="sr-only" style="display: none;">Close</span></button>
+                <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only" style="display: none;">Close</span></button>
                 <h5 class="modal-title">Confirm Dialog</h5>
             </div>
             <div class="modal-body">

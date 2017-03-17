@@ -3,7 +3,7 @@
 
   <div aria-hidden="true" role="dialog" tabindex="-1" id="modal-deduct" class="modal inmodal" style="display: none;">
     <div class="modal-dialog  ">
-    <div class="modal-content  bounceInRight">
+    <div class="modal-content animated bounceInRight">
             <div class="modal-header">
                 <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only"></span></button>
              
@@ -19,11 +19,11 @@
                 	 		<!-- form start -->
 			                <div class='form-file-mangement'>
 				                <div class="form-label-customs">
-				                	Appraisal Item Name <span class='redFont '>*</span>
+				                	Appraisal Item Name1 <span class='redFont '>*</span>
 				                </div>
 				                
 				                <div class="form-input-customs">
-				                	<input type="text" class="form-control input-sm numberOnly" placeholder="Appraisal Item Name" id="appraisalItemNameDeductScore">
+				                	<input type="text" class="form-control input-sm " placeholder="Appraisal Item Name" id="appraisalItemNameDeductScore">
 				                	
 				                </div>
 				                <br style="clear:both">
@@ -45,6 +45,22 @@
 				                <br style="clear:both">
 			                </div>
 			                
+			                
+			                
+			                <div class='form-file-mangement'>
+				                <div class="form-label-customs">
+				                	Department <span class='redFont '>*</span>
+				                </div>
+				                
+				                <div class="form-input-customs" id="departmentAreaDeductScore">
+				                	<select class="form-control input-sm" id="departmentDeductScore">
+				                		<option></option>
+				                	</select>
+				                </div>
+				                <br style="clear:both">
+			                </div>
+			                
+			                
 			                <div class='form-file-mangement'>
 				                <div class="form-label-customs">
 				                
@@ -53,7 +69,7 @@
 				                
 				                <div id="maxValueAreaDeductScore" class="form-input-customs">
 				                
-				                		<input type="text" class="form-control input-sm numberOnly" placeholder="Max Value " id="maxValueDeductScore">
+				                		<input type="text" class="form-control input-sm numberOnly span12" placeholder="Max Value " id="maxValueDeductScore">
 				                	
 				                		
 				                </div>
@@ -67,7 +83,7 @@
 				                
 				                <div class="form-input-customs">
 				                
-				                		<input type="text" class="form-control input-sm numberOnly" placeholder="Deduct Score/Unit" id="DeductScoreUnitDeductScore">
+				                		<input type="text" class="form-control input-sm numberOnly span12" placeholder="Deduct Score/Unit" id="DeductScoreUnitDeductScore">
 				                	
 				                		
 				                </div>
@@ -79,7 +95,7 @@
 				                </div>
 				                <div class="input-inline-table-customs">
 				                	
-					             <input type="checkbox"   name="isActiveDeductScore" id="isActiveDeductScore" value="1">
+					             <input type="checkbox" checked   name="isActiveDeductScore" id="isActiveDeductScore" value="1">
 					              <span>Is Active</span>
 				                </div>
 				                <br style="clear:both">   		

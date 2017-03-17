@@ -24,20 +24,20 @@
 	     					},
 	     			        {
 	     					"label":"Appraisal Grade","inputType":"text","placeholder":"Appraisal Grade",
-	         				"id":"grade","width":"100px"
+	         				"id":"grade","width":"100px","required":true
 	     					
 	     					},
 	     			        {
 	     					"label":"Begin Score","inputType":"text","placeholder":"Begin Score",
-	     					"id":"begin_score","width":"250px","dataTypeInput":"number"
+	     					"id":"begin_score","width":"250px","dataTypeInput":"number","required":true
 	     					},
 	     			        {
 	     					"label":"End Score","inputType":"text","placeholder":"End Score",
-	     					"id":"end_score","width":"200px","dataTypeInput":"number"
+	     					"id":"end_score","width":"200px","dataTypeInput":"number","required":true
 	     					},
 	     					{
 	         				"label":"Salary Raise","inputType":"text","placeholder":"Salary Raise",
-	         				"id":"salary_raise_amount","width":"200px","dataTypeInput":"number"
+	         				"id":"salary_raise_amount","width":"200px","dataTypeInput":"number","required":true
 	         				},
 	     			        {
 	     					"label":"IsAtive","inputType":"checkbox","default":"checked",

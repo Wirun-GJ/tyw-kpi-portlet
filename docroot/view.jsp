@@ -18,4 +18,4 @@
 
 <portlet:defineObjects />
 
-This is the <b>TYW KPI</b> portlet.
+This is the <b>TYW KPI</b> portlet. 

@@ -38,6 +38,33 @@ var DropdownAppraisalYear = function(){
 			}
 		});
 };
+var DropdownStartYear = function(){
+	
+	// Return today's date and time
+	var currentTime = new Date()
+	var year = currentTime.getFullYear()
+	
+		var html="";
+		html+="<select data-toggle=\"tooltip\" title=\"Start Year\" class=\"input span12 m-b-n\" id=\"start_year\" name=\"start_year\">";
+		$.ajax({
+			url : restfulURL + restfulPathDpAppaisalYear,
+			type : "get",
+			dataType : "json",
+			headers:{Authorization:"Bearer "+tokenID.token},
+			async:false,
+			success : function(data) {
+				$.each(data,function(index,indexEntry){
+					if(year==indexEntry['appraisal_year']){
+						html += "<option selected value=\""+data[index]["appraisal_year"]+"\">"+data[index]["appraisal_year"]+"</option>";	
+					}else{
+						html += "<option value=\""+data[index]["appraisal_year"]+"\">"+data[index]["appraisal_year"]+"</option>";	
+					}
+				});	
+				html+="</select>";
+				$("#dropdownStartYear").html(html);							
+			}
+		});
+};
 
 var DropdowStartMonth = function(){
 	
@@ -165,6 +192,7 @@ var createAppraisalPeriodFn = function(){
 	var form_app_year = $("#form_app_year").val();
 	var start_year = $("#start_year").val();
 	var start_month = $("#start_month").val();
+	var start_year = $("#start_year").val();
 	var appraisal_frequency = $("#appraisal_frequency").val();
 	var a_p_d = $("#a_p_d").val();
 	var bonus_frequency = $("#bonus_frequency").val();
@@ -188,6 +216,7 @@ var createAppraisalPeriodFn = function(){
 		dataType : "json",
 		data:{
 			"appraisal_year":form_app_year,
+			"start_year":start_year,
 			"start_month":start_month,
 			"appraisal_frequency_id":appraisal_frequency,
 			"appraisal_period_desc":a_p_d,
@@ -244,25 +273,25 @@ $(document).ready(function(){
 		    	    				},
 		    	    				{
 		        	    				"label":"Appraisal Frequency","inputType":"dropdown",
-		        	    				"id":"appraisal_frequency_id","width":"100px","url":""+restfulURL+"/tyw_api/public/appraisal_period/add_frequency_list"
+		        	    				"id":"appraisal_frequency_id","width":"100px","url":""+restfulURL+"/tyw_api/public/appraisal_period/add_frequency_list","required":true
 		        	    				
 		    	    				},
 		    	    			    {
 		    	    				"label":"Period","inputType":"text","placeholder":"Period",
-		    	        			"id":"period_no","width":"100px","dataTypeInput":"number"
+		    	        			"id":"period_no","width":"100px","dataTypeInput":"number","required":true
 		    	    					
 		    	    				},
 		    	    			    {
 		    	    				"label":"Description","inputType":"text","placeholder":"Description",
-		    	    				"id":"appraisal_period_desc","width":"250px"
+		    	    				"id":"appraisal_period_desc","width":"250px","required":true
 		    	    				},
 		    	    			    {
 		    	    				"label":"Start Date","inputType":"date","placeholder":"Start Date",
-		    	    				"id":"start_date","width":"200px"
+		    	    				"id":"start_date","width":"200px","required":true
 		    	    				},
 		    	    			    {
 		    	    				"label":"End Date","inputType":"date","placeholder":"End Date",
-		    	    				"id":"end_date","width":"200px"
+		    	    				"id":"end_date","width":"200px","required":true
 		    	    				}
 		    	    					
 		    	    			],
@@ -340,6 +369,7 @@ $(document).ready(function(){
 		    	$(document).on('click','#btnCreate',function(){
 		    		clearAppraisalPeriodFn();
 		     		DropdownAppraisalYear();
+		     		DropdownStartYear();
 		     		DropdowStartMonth();
 		     		DropdowAppraisalFrequency();
 		     		DropdowBonusFrequency();

@@ -11,7 +11,7 @@ var clearQuantityFormFn = function(){
 	$("#perspectiveQuantity option:first").attr('selected','selected');
 	$("#baselineValueQuantity").val("");
 	$("#uomQuantity option:first").attr('selected','selected');
-	$("#isActiveQuantity").prop("checked",false);
+	$("#isActiveQuantity").prop("checked",true);
 	$("#formulaDescriptionQuantity").val("");
 	//$("#structure_id_quantity").val("");
 	$("#textarea_cds").html("");
@@ -56,7 +56,8 @@ var updateQuantityFn  = function(){
 	
 	 $(".formula_cds_id_area .cds_name_inline").remove();
 	 var formula_cds_name=$("#textarea_cds").html();
-	 var formula_cds_id=$(".formula_cds_id_area").text();
+	 var formula_cds_id=$(".formula_cds_id_area").text().replace(/\s/g,'');
+	 var department_id=$("#departmentQuantity").val();
 		
 	 var is_active="";
 	 if($('#isActiveQuantity').prop('checked')==true){
@@ -81,6 +82,7 @@ var updateQuantityFn  = function(){
 		"formula_cds_id":formula_cds_id,
 		"formula_cds_name":formula_cds_name,
 		"is_active":is_active,
+		"department_code":department_id,
 		"form_id":"1"
 		},
 	    success:function(data,status){
@@ -101,7 +103,7 @@ var insertQuantityFn = function(param) {
 	
 	$(".formula_cds_id_area .cds_name_inline").remove();
 	var formula_cds_name=$("#textarea_cds").html();
-	var formula_cds_id=$(".formula_cds_id_area").text();
+	var formula_cds_id=$(".formula_cds_id_area").text().replace(/\s/g,'');
 	
 
 	 var appraisal_item_name=$("#appraisalItemNameQuantity").val();
@@ -111,6 +113,7 @@ var insertQuantityFn = function(param) {
 	 var uom_id=$("#uomQuantity").val();
 	 var baseline_value=$("#baselineValueQuantity").val();
 	 var formula_desc=$("#formulaDescriptionQuantity").val();
+	 var department_id=$("#departmentQuantity").val();
 	 
 		
 	 var is_active="";
@@ -137,6 +140,7 @@ var insertQuantityFn = function(param) {
 			 "formula_cds_id":formula_cds_id,
 			 "formula_cds_name":formula_cds_name,
 			 "is_active":is_active,
+			 "department_code":department_id,
 			 "form_id":"1"
 		},
 		success:function(data){
@@ -170,9 +174,9 @@ var cdsListFn = function(data){
 		cdsListHTML+="<tr>";
 			cdsListHTML+="<td >"+indexEntry['cds_id']+"</td>";
 			cdsListHTML+="<td id=\"cds_name-"+indexEntry['cds_id']+"\">"+indexEntry['cds_name']+"</td>";
-			cdsListHTML+="<td style=\"text-align:center\">";
-			cdsListHTML+="<button class=\"btn btn-warning btn-small  btn-xs btn-gear sum\" id=\"sum-"+indexEntry['cds_id']+"\" >Sum</button>&nbsp;";
-			cdsListHTML+="<button  class=\"btn btn-danger btn-small  btn-xs btn-gear average\" id=\"avg-"+indexEntry['cds_id']+"\">Average</button>";
+			cdsListHTML+="<td style=\"text-align:right\">";
+			cdsListHTML+="<button class=\"btn btn-warning btn-xs btn-gear sum\" id=\"sum-"+indexEntry['cds_id']+"\" >Sum</button>&nbsp;";
+			//cdsListHTML+="<button  class=\"btn btn-danger btn-xs btn-gear average\" id=\"avg-"+indexEntry['cds_id']+"\">Average</button>";
 			cdsListHTML+="</td>";
 		cdsListHTML+="</tr>";
 	});
@@ -203,11 +207,13 @@ var cdsGetFn = function(page,rpp){
 			//console.log(data);
 			cdsListFn(data);
 			globalCDSData=data;
+			
 			paginationSetUpFn2(globalCDSData['current_page'],globalCDSData['last_page'],globalCDSData['last_page']);
 			
 		}
 	});
 }
+
 var initailQuantityFormFn = function(action,structureId,structureName,data){
 	
 /*
@@ -234,9 +240,11 @@ structure_name
 	$("#cdsNameSearchQuantity").val("");
 	if(action=='edit'){
 		clearQuantityFormFn();
-		appraisalLevelListFn("Quantity",data['appraisal_level_id']);			
-		perspectiveListFn("Quantity",data['perspective_id']);
+		appraisalLevelListFn("Quantity",data['appraisal_level_id'],defaultAll=false);			
+		perspectiveListFn("Quantity",data['perspective_id'],defaultAll=false);
 		uomListFn("Quantity",data['uom_id']);
+		
+		dropDrowDepartmentFn("Quantity",data['department_code'],defaultAll=false);
 		$("#baselineValueQuantity").val(data['baseline_value']);
 		$("#formulaDescriptionQuantity").val(data['formula_desc']);
 		$("#appraisalItemNameQuantity").val(data['appraisal_item_name']);	
@@ -261,28 +269,13 @@ structure_name
 		$("#btnAddAnotherQuantity").hide();
 		
 		
-		
-		
-		$("#baselineValueQuantity").keydown(function (e) {
-			        // Allow: backspace, delete, tab, escape, enter and .
-				
-			        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-			             // Allow: Ctrl+A, Command+A
-			            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
-			             // Allow: home, end, left, right, down, up
-			            (e.keyCode >= 35 && e.keyCode <= 40)) {
-			                 // let it happen, don't do anything
-			                 return;
-			        }
-			        // Ensure that it is a number and stop the keypress
-			        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-			            e.preventDefault();
-			        }
-			});
+		jQuery('.numberOnly').keyup(function () { 
+		    this.value = this.value.replace(/[^0-9\.]/g,'');
+		});
 		
 		//set header
 		$("#structure_id_quantity").val(structureId);
-		$("#modalQuantityDescription").html("Add "+structureName);
+		$("#modalQuantityDescription").html("Edit "+structureName);
 
 		
 		
@@ -295,7 +288,7 @@ structure_name
 					 type:"post",
 					 dataType:"json",
 					 headers:{Authorization:"Bearer "+tokenID.token},
-					 data:{"cds_name":request.term,"appraisal_level_id":$("#appraisalLevelSearchQuantity").val()},
+					 data:{"cds_name":request.term,"appraisal_level_id":$("#appraisalLevelQuantity").val()},
 					 //async:false,
 	                 error: function (xhr, textStatus, errorThrown) {
 	                        console.log('Error: ' + xhr.responseText);
@@ -318,12 +311,12 @@ structure_name
 	    });
 		$(".ui-autocomplete").css({"z-index":"10000;"});
 		//Autocomplete Search End
-		appraisalLevelListFn("SearchQuantity");
+		appraisalLevelListFn("SearchQuantity","",defaultAll=false);
 		
 		
 		//run search cds default 
 		var embedParam="" +
-		"<input type='hidden' class='param_quantity_form' id='embed_appraisal_level_quantity' name='embed_appraisal_level_quantity' value='"+$("#appraisalLevelSearchQuantity").val()+"'>" +
+		"<input type='hidden' class='param_quantity_form' id='embed_appraisal_level_quantity' name='embed_appraisal_level_quantity' value='"+$("#appraisalLevelQuantity").val()+"'>" +
 		"<input type='hidden' class='param_quantity_form' id='embed_cds_name_quantity' name='embed_cds_name_quantity' value='"+$("#cdsNameSearchQuantity").val()+"'>";
 		$(".param_quantity_form").remove();
 		$("#embedParamSearchQuantity").html(embedParam);
@@ -335,8 +328,9 @@ structure_name
 	}else if(action=='add'){
 	
 		clearQuantityFormFn();
-		appraisalLevelListFn("Quantity",$("#embed_appraisal_level_id").val());			
-		perspectiveListFn("Quantity",$("#embed_perspective_id").val());
+		appraisalLevelListFn("Quantity",$("#embed_appraisal_level_id").val(),defaultAll=false);			
+		perspectiveListFn("Quantity",$("#embed_perspective_id").val(),defaultAll=false);
+		dropDrowDepartmentFn("Quantity",$("#embed_department_id").val(),defaultAll=false);
 		uomListFn("Quantity");
 		$("#btnAddAnotherQuantity").show();
 		//SEARCH
@@ -355,7 +349,7 @@ structure_name
 					 type:"post",
 					 dataType:"json",
 					 headers:{Authorization:"Bearer "+tokenID.token},
-					 data:{"cds_name":request.term,"appraisal_level_id":$("#appraisalLevelSearchQuantity").val()},
+					 data:{"cds_name":request.term,"appraisal_level_id":$("#appraisalLevelQuantity").val()},
 					 //async:false,
 	                 error: function (xhr, textStatus, errorThrown) {
 	                        console.log('Error: ' + xhr.responseText);
@@ -376,25 +370,12 @@ structure_name
 	        }
 	    });
 		//Autocomplete Search End
-		appraisalLevelListFn("SearchQuantity");
+		//appraisalLevelListFn("SearchQuantity");
 		
-		//กำหนดค่า CIF ต้องเปนตัวเลข
-		$("#baselineValueQuantity").keydown(function (e) {
-		        // Allow: backspace, delete, tab, escape, enter and .
-			
-		        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-		             // Allow: Ctrl+A, Command+A
-		            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
-		             // Allow: home, end, left, right, down, up
-		            (e.keyCode >= 35 && e.keyCode <= 40)) {
-		                 // let it happen, don't do anything
-		                 return;
-		        }
-		        // Ensure that it is a number and stop the keypress
-		        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-		            e.preventDefault();
-		        }
+		jQuery('.numberOnly').keyup(function () { 
+		    this.value = this.value.replace(/[^0-9\.]/g,'');
 		});
+
 		
 		
 		
@@ -418,6 +399,7 @@ var formulaEngineFn = function(id){
 	$("#textarea_cds").keyup(function(){
 		//formula_cds_id_area
 		$(".formula_cds_id_area").html($(this).html());
+
 	});
 	$("#textarea_cds").keyup();
 	
@@ -425,7 +407,7 @@ var formulaEngineFn = function(id){
 $(document).ready(function(){
 //click modal quality start.
 
-
+	
 	
 	$(document).on("click","button[data-target='#modal-quantity']",function(){
 
@@ -435,11 +417,12 @@ $(document).ready(function(){
 		
 		//run search cds default 
 		var embedParam="" +
-		"<input type='hidden' class='param_quantity_form' id='embed_appraisal_level_quantity' name='embed_appraisal_level_quantity' value='"+$("#appraisalLevelSearchQuantity").val()+"'>" +
+		"<input type='hidden' class='param_quantity_form' id='embed_appraisal_level_quantity' name='embed_appraisal_level_quantity' value='"+$("#appraisalLevelQuantity").val()+"'>" +
 		"<input type='hidden' class='param_quantity_form' id='embed_cds_name_quantity' name='embed_cds_name_quantity' value='"+$("#cdsNameSearchQuantity").val()+"'>";
 		$(".param_quantity_form").remove();
 		$("#embedParamSearchQuantity").html(embedParam);
 		$(".formula_cds_id_area").empty();
+		$(".countPagination2").val(10);
 		cdsGetFn();
 	});
 	
@@ -447,10 +430,12 @@ $(document).ready(function(){
 	//Search Quantity Start
 	$(document).on("click","#SearchQuantity",function(){	
 		var embedParam="" +
-				"<input type='hidden' class='param_quantity_form' id='embed_appraisal_level_quantity' name='embed_appraisal_level_quantity' value='"+$("#appraisalLevelSearchQuantity").val()+"'>" +
+				"<input type='hidden' class='param_quantity_form' id='embed_appraisal_level_quantity' name='embed_appraisal_level_quantity' value='"+$("#appraisalLevelQuantity").val()+"'>" +
 				"<input type='hidden' class='param_quantity_form' id='embed_cds_name_quantity' name='embed_cds_name_quantity' value='"+$("#cdsNameSearchQuantity").val()+"'>";
 		$(".param_quantity_form").remove();
 		$("#embedParamSearchQuantity").html(embedParam);
+		$(".countPagination2").val(10);
+		$("#rpp").remove();
 		cdsGetFn();
 	});
 
@@ -480,7 +465,7 @@ $(document).ready(function(){
 	$(document).on("click","#btnCheckFormula",function(){
 		$(".formula_cds_id_area .cds_name_inline").remove();
 		var formula_cds_name=$("#textarea_cds").html();
-		var formula_cds_id=$(".formula_cds_id_area").text();
+		var formula_cds_id=$(".formula_cds_id_area").text().replace(/\s/g,'');
 		
 		callFlashSlideInModal("<b>Formula</b>: "+formula_cds_id,"#informationQuantity","error");
 		
@@ -498,4 +483,10 @@ $(document).ready(function(){
 		formulaEngineFn(this.id);
 	});
 	//calculation end
+	
+	
+	$("#textarea_cds").keyup(function(){
+		//console.log(IsNumericForCal($(this).text(),this));
+		//IsNumericForCal($(this).text(),this);
+	});
 });

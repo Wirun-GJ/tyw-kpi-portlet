@@ -7,8 +7,9 @@ var clearDeductScoreFormFn = function(){
 	//$("#appraisalLevelDeductScore").val("");
 	$("#appraisalLevelDeductScore option:first").attr('selected','selected');	
 	$("#maxValueDeductScore").val("");
-	$("#isActiveDeductScore").prop("checked",false);
+	$("#isActiveDeductScore").prop("checked",true);
 	$("#DeductScoreUnitDeductScore").val("");
+	
 	//$("#structure_id_deduct").val("");
 	
 }
@@ -43,6 +44,7 @@ var updateDeductScoreFn  = function(){
 	 var structure_id=$("#structure_id_deduct").val();
 	 var max_value=$("#maxValueDeductScore").val();
 	 var unit_deduct_score=$("#DeductScoreUnitDeductScore").val();
+	 var department_id=$("#departmentDeductScore").val();
 
 	 var is_active="";
 	 if($('#isActiveDeductScore').prop('checked')==true){
@@ -63,6 +65,7 @@ var updateDeductScoreFn  = function(){
 		 "max_value":max_value,
 		 "unit_deduct_score":unit_deduct_score,
 		 "is_active":is_active,
+		 "department_code":department_id,
 		 "form_id":"3"
 		},
 	    success:function(data,status){
@@ -94,6 +97,7 @@ var insertDeductScoreFn = function(param) {
 	 var structure_id=$("#structure_id_deduct").val();
 	 var max_value=$("#maxValueDeductScore").val();
 	 var unit_deduct_score=$("#DeductScoreUnitDeductScore").val();
+	 var department_id=$("#departmentDeductScore").val();
 	 var is_active="";
 	 if($('#isActiveDeductScore').prop('checked')==true){
 		 is_active=1;
@@ -114,6 +118,7 @@ var insertDeductScoreFn = function(param) {
 			 "max_value":max_value,
 			 "unit_deduct_score":unit_deduct_score,
 			 "is_active":is_active,
+			 "department_code":department_id,
 			 "form_id":"3"
 		},
 		success:function(data){
@@ -152,7 +157,8 @@ var initailDeductScoreFormFn = function(action,structureId,structureName,data){
 	*/	
 	if(action=='edit'){
 		clearDeductScoreFormFn();
-		appraisalLevelListFn("DeductScore",data['appraisal_level_id']);			
+		appraisalLevelListFn("DeductScore",data['appraisal_level_id']);	
+		dropDrowDepartmentFn("DeductScore",data['department_code'],defaultAll=false);
 		
 		$("#appraisalItemNameDeductScore").val(data['appraisal_item_name']);
 		$("#maxValueDeductScore").val(data['max_value']);
@@ -189,6 +195,7 @@ var initailDeductScoreFormFn = function(action,structureId,structureName,data){
 		*/	
 		clearDeductScoreFormFn();
 		appraisalLevelListFn("DeductScore",$("#embed_appraisal_level_id").val());	
+		dropDrowDepartmentFn("DeductScore",$("#embed_department_id").val(),defaultAll=false);
 		$("#btnAddAnotherDeductScore").show();
 
 		//set header
@@ -199,7 +206,7 @@ var initailDeductScoreFormFn = function(action,structureId,structureName,data){
 }
 $(document).ready(function(){
 //click modal deduct start.
-	
+
 	//$("button[data-target='#modal-deduct']").click(function(){
 	$(document).on("click","button[data-target='#modal-deduct']",function(){
 		
@@ -207,10 +214,16 @@ $(document).ready(function(){
 		var structureName=$(this).prev().prev().prev().get();
 		initailDeductScoreFormFn('add',$(structureId).val(),$(structureName).val());
 		
+
+		  
 	});
 	
 	
-	
+	//check text filed is number real only
+	//IsNumeric
+	$("#DeductScoreUnitDeductScore").keyup(function(){
+		console.log(IsNumeric(this.value,this));
+	});
 	
 	//Submit DeductScore Start
 	$(document).on("click","#btnSubmitDeductScore",function(){
@@ -231,4 +244,8 @@ $(document).ready(function(){
 	});
 	//Submit DeductScore end
 	//click modal deduct end.
+	
+	jQuery('.numberOnly').keyup(function () { 
+	    this.value = this.value.replace(/[^0-9\.]/g,'');
+	});
 });

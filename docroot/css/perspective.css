@@ -2,7 +2,9 @@
     background-color: #1ab394;
     border-color: #1ab394;
     color: #ffffff;
-} 
+
+}
+
 .countPagination {
     width: 90%;
 }
@@ -59,7 +61,7 @@
 }
 #ui-datepicker-div ,.ui-datepicker { z-index: 99999 !important; }
 
-.control-label{
+.aui .ibox-title .control-label{
 	margin-bottom: 0;
     padding-top: 7px;
     text-align: right;

@@ -106,7 +106,7 @@ $(document).ready(function(){
 		 	    			
 		 	    			"form":[{
 		 	    				"label":"Appraisal Level Name","inputType":"text","placeholder":"Appraisal Level Name",
-		 	        			"id":"appraisal_level_name","width":"250px"
+		 	        			"id":"appraisal_level_name","width":"250px","required":true
 		 	    					
 		 	    				},
 		 	    			    {

@@ -10,7 +10,11 @@
   "indent": 2,
   "latedef": true,
   "newcap": true,
+<<<<<<< HEAD
   "noarg": true, 
+=======
+  "noarg": true,
+>>>>>>> refs/remotes/origin/dev
   "noempty": true,
   "nonew": true,
   "plusplus": false,

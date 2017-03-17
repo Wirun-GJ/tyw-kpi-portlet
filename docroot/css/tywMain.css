@@ -14,6 +14,7 @@ body {
     border-width: 1px 0;
     margin: 0px 0;
 } 
+
 */
 .aui #breadcrumbs {
     margin-bottom: 0px;
@@ -322,12 +323,11 @@ hr {
     top: 0px;
     left: 0px;
     width: 100%;
-    z-index: 22;
+    z-index: 9000;
     text-align:center;
     display:none;
     font-weight:bold;
     color: #FFCC00; 
-   /* min-height: 67px;*/
 }
 #btnCloseSlide{
 	color: red;
@@ -380,7 +380,8 @@ hr {
 	margin-top:5px;
 }
 #confrimModal>.modal-dialog{
-	width: 400px;
+	/*width: 400px;*/
+	width: auto;
 }
 .redFont{
 	color: red;
@@ -438,6 +439,20 @@ hr {
 .ui-datepicker{
 	display:none;
 } 
+
+.aui .table-responsive{
+	overflow:auto;
+	
+}
+
+.aui .modal{
+	position: absolute;
+	top:0px;
+}
+
+.aui h2 {
+    font-size: 25px;
+}
 /* ---------- Start Css By Auu ---------- */
 @media (max-width : 480px) {
 	.width-100-persen{

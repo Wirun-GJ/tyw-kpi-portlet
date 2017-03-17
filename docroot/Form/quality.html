@@ -1,10 +1,9 @@
 <!-- Modal Quality Start Edit -->
-
   <div aria-hidden="true" role="dialog" tabindex="-1" id="modal-quality" class="modal inmodal" style="display: none;">
     <div class="modal-dialog  ">
-    <div class="modal-content  bounceInRight">
+    <div class="modal-content animated bounceInRight">
             <div class="modal-header">
-                <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only"></span></button>
+                <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
              
                 <h4 class="modal-title" id="modalTitleQuality">Appraisal Item</h4>
                
@@ -22,7 +21,7 @@
 				                </div>
 				                
 				                <div class="form-input-customs">
-				                	<input id="appraisalItemNameQuality" type="text" class="form-control input-sm numberOnly" placeholder="Appraisal Item Name" >
+				                	<input id="appraisalItemNameQuality" type="text" class="form-control input-sm " placeholder="Appraisal Item Name" >
 				                	
 				                </div>
 				                <br style="clear:both">
@@ -44,12 +43,25 @@
 				                <br style="clear:both">
 			                </div>
 			                
+			                <div class='form-file-mangement'>
+				                <div class="form-label-customs">
+				                	Department <span class='redFont '>*</span>
+				                </div>
+				                
+				                <div class="form-input-customs" id="departmentAreaQuality"">
+				                	<select class="form-control input-sm" id="departmentQuality"">
+				                		<option></option>
+				                	</select>
+				                </div>
+				                <br style="clear:both">
+			                </div>
+			                
 			                <div class='form-file-mangement-radio'>
 				                <div class="form-label-customs"> 
 				                </div>
 				                <div class="input-inline-table-customs">
 				                	
-					             <input type="checkbox"  name="isActive" id="isActiveQuality" value="1">
+					             <input type="checkbox" checked  name="isActive" id="isActiveQuality" value="1">
 					              <span>Is Active</span>
 				                </div>
 				                <br style="clear:both">   		
@@ -80,4 +92,4 @@
     </div>
 </div>                      
 <!-- Modal Quality End Edit -->
-<script src="../../tyw-kpi-portlet/Controller/Form/cQuality.js"></script>
+<script src="../Controller/Form/cQuality.js"></script>

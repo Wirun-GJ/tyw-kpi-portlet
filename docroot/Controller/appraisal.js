@@ -88,13 +88,13 @@ var assignTemplateQualityFn = function(structureName,data){
 		htmlTemplateQuality+="<div class='totalWeight'>Total Weight "+data['total_weight']+"%</div>";
 	htmlTemplateQuality+="</div>";
 	htmlTemplateQuality+="<div class=\"ibox-content\">";
-	htmlTemplateQuality+="<div class=\"table-responsive scrollbar-inner\">";
+	htmlTemplateQuality+="<div class=\"table-responsive scrollbar-inner\" style='overflow:auto;'>";
 	htmlTemplateQuality+="<table id=\"tablethreshould\" class=\"table table-striped\">";
 	htmlTemplateQuality+="<thead>";
 		htmlTemplateQuality+="<tr>";
 			htmlTemplateQuality+="<th style=\"width:35%\"><b>Appraisal Item Name</b></th>";
 			htmlTemplateQuality+="<th style=\"width:15%\"><b>Target</b></th>";
-			htmlTemplateQuality+="<th style=\"width:15%\"<b>Score</b></th>  ";      
+			htmlTemplateQuality+="<th style=\"width:15%\"><b>Score</b></th>  ";      
 			htmlTemplateQuality+="<th style=\"width:15%\"><b>%Weight</b></th>  ";   
 			htmlTemplateQuality+="<th style=\"width:15%\"><b>Weight Score</b></th>  ";   
 			htmlTemplateQuality+="</tr>";
@@ -162,7 +162,7 @@ var assignTemplateDeductFn = function(structureName,data){
 	htmlTemplateDeduct+="</div>";
 		
 		htmlTemplateDeduct+="<div class=\"ibox-content\">";
-		htmlTemplateDeduct+="<div class=\"table-responsive scrollbar-inner\">";
+		htmlTemplateDeduct+="<div class=\"table-responsive scrollbar-inner\" style='overflow:auto;'>";
 		htmlTemplateDeduct+="<table id=\"tablethreshould\" class=\"table table-striped\">";
               		
 		htmlTemplateDeduct+="<thead>";
@@ -235,7 +235,7 @@ var assignTemplateQuantityFn = function(structureName,data){
 	htmlTemplateQuantity+="      <div class='totalWeight'>Total Weight "+data['total_weight']+"%</div>";
 	htmlTemplateQuantity+="  </div>";
 	htmlTemplateQuantity+="	<div class=\"ibox-content\">";
-	htmlTemplateQuantity+=" <div class=\"table-responsive scrollbar-inner\">";
+	htmlTemplateQuantity+=" <div class=\"table-responsive scrollbar-inner\" style='overflow:auto;'>";
 	htmlTemplateQuantity+="<table id=\"tableAppraisalAssignment\" class=\"table table-striped\">";
 	htmlTemplateQuantity+="<thead>";
 		htmlTemplateQuantity+="<tr>";
@@ -269,7 +269,7 @@ var assignTemplateQuantityFn = function(structureName,data){
 				htmlTemplateQuantity+="<tr >";
 					htmlTemplateQuantity+="<td>"+indexEntry['perspective_name']+"</td>";
 					htmlTemplateQuantity+="<td>"+indexEntry['appraisal_item_name']+"</td>";
-					htmlTemplateQuantity+="<td ><div data-toggle=\"tooltip\" data-placement=\"left\" title=\""+hintHtml+"\">"+notNullFn(indexEntry['target_value'])+"</div></td>";
+					htmlTemplateQuantity+="<td ><div title=\""+hintHtml+"\" data-toggle=\"tooltip\" data-html=\"true\" data-placement=\"left\" >"+notNullFn(indexEntry['target_value'])+"</div></td>";
 					htmlTemplateQuantity+="<td>"+notNullFn(indexEntry['actual_value'])+"</td>";
 					htmlTemplateQuantity+="<td>"+notNullFn(indexEntry['score'])+"</td>";
 					htmlTemplateQuantity+="<td>"+notNullFn(indexEntry['weight_percent'])+"</td>";
@@ -458,8 +458,9 @@ var listAppraisalDetailFn = function(data){
 		}
 
 		//binding tooltip start
+		 $('[data-toggle="tooltip"]').css({"cursor":"pointer"});
 		 $('[data-toggle="tooltip"]').tooltip({
-			 "html":true
+			 html:true
 		 });
 		//binding tooltip end
 		
@@ -563,7 +564,7 @@ var listDataFn = function(data){
 		htmlHTML+="<div class=\"ibox-content\">";
 					
 					
-		htmlHTML+="<div class=\"table-responsive\">";
+		htmlHTML+="<div class=\"table-responsive\" style='overflow:auto;'>";
 		htmlHTML+="<table id=\"tablethreshould\" class=\"table table-striped\">";
            		
 		htmlHTML+=" <thead>";
@@ -919,8 +920,8 @@ $(document).ready(function() {
 	var username = $('#user_portlet').val();
 	var password = $('#pass_portlet').val();
 	/*Fixed for Test.*/
-	 username = "1";
-	 password =	"11";
+//	 username = "1";
+//	 password =	"11";
 	
 	if(username!="" && username!=null & username!=[] && username!=undefined ){
 		if(connectionServiceFn(username,password)==true){
@@ -1039,7 +1040,8 @@ $(document).ready(function() {
 //			console.log(sessionStorage.getItem("period_id"));
 //			console.log(sessionStorage.getItem("emp_code"));
 //			console.log(sessionStorage.getItem("appraisal_item_id"));
-			
+			$(window).scrollTop(0);
+			$(".modal-body").scrollTop(0);
 
 			return false;
 		});

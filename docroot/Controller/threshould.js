@@ -22,12 +22,12 @@
     	    				},
     	    			    {
     	    				"label":"Theshould Name","inputType":"text","default":"All",
-    	        			"id":"threshold_name","width":"200px","placeholder":"Theshould Name",
+    	        			"id":"threshold_name","width":"200px","placeholder":"Theshould Name","required":true,
     	    					
     	    				},
     	    			    {
     	    				"label":"Taget Score","inputType":"text","default":"All",
-    	    				"id":"target_score","width":"100px","placeholder":"Taget Score","dataTypeInput":"number"
+    	    				"id":"target_score","width":"100px","placeholder":"Taget Score","dataTypeInput":"number","required":true
     	    				},
     	    			    {
     	    				"label":"IsActive","inputType":"checkbox","default":"checked",

@@ -26,6 +26,115 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 
 <style>
 
+ /* Large desktop Start#####################################*/
+ @media (min-width: 1200px) { 
+ 
+	.modal.large {
+		    width: 90%;
+		    margin-left:-45%;  
+		    top:0px;
+		}
+		
+	.aui .modal-body{
+		max-height: 400px;	
+	}
+	
+  }
+  /* Large desktop End######################################*/
+  
+  /*  desktop Start#########################################*/
+ @media (min-width: 980px) and (max-width: 1199px) {
+ 
+ 	.modal.large {
+		    width: 90%;
+		    margin-left:-45%;  
+		    top:0px;
+		}
+		
+	.aui .modal-body{
+		max-height: 400px;	
+	}
+ 	
+  }
+ /*  desktop End############################################*/
+ 
+ /* Portrait tablet to landscape and desktop Start##########*/
+ @media (min-width: 768px) and (max-width: 979px) {
+ 
+	
+	.modal.large {
+		    width: 90%;
+		    margin-left:-45%;  
+		    top:0px;
+		}
+	.pagingText{
+		display:block;
+	}
+	.aui .p-t-xxs {
+    	text-align: right;
+	}
+	.pagianation_area{
+		position:'';
+	}
+	
+	.aui .modal-body{
+		max-height: 400px;	
+	}
+	
+  }
+ /* Portrait tablet to landscape and desktop End############*/ 
+ 
+ /* Landscape phone to portrait tablet Start################*/
+ @media (max-width: 767px) { 
+ 	
+ 	.modal.large {
+ 	
+	    width: '';
+	    top:0px;    
+	}
+	#grandTototalWeightArea{
+		position: relative;
+    	top: -385px;
+	}
+	.aui .p-t-xxs {
+    	text-align: left;
+	}
+	
+	
+		.pagianation_area{
+		/*position:absolute;*/
+	}
+	
+	.aui .modal-body{
+		max-height: 300px;	
+	}
+	
+ 
+  }
+ /* Landscape phone to portrait tablet End##################*/ 
+ 
+ /* Landscape phones and down Start#########################*/
+ @media (max-width: 480px) { 
+ 	
+ 	.pagingText{
+		display:none;
+	}
+	.aui .p-t-xxs {
+    	text-align: left;
+	}
+	.pagianation_area{
+		/*position:absolute;*/
+	}
+	.aui .modal-body{
+		max-height: 300px;	
+	}
+
+ 
+
+  }
+  /* Landscape phones and down End##########################*/
+  
+  
 
 .ibox-content {
     background-color: #fff;
@@ -74,6 +183,7 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
     border-radius: 0;
    
 }
+
 /*
 .aui .modal {
     background-clip: padding-box;
@@ -120,13 +230,19 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 
 }
 .aui .searchAdvanceText{
-	width:94%;
+	/*width:94%;*/
 }
 .aui select, .aui textarea, .aui input[type="text"], .aui input[type="password"], .aui input[type="datetime"], .aui input[type="datetime-local"], .aui input[type="date"], .aui input[type="month"], .aui input[type="time"], .aui input[type="week"], .aui input[type="number"], .aui input[type="email"], .aui input[type="url"], .aui input[type="search"], .aui input[type="tel"], .aui input[type="color"], .aui .uneditable-input{
-padding:5px;
-padding-top:0px;
+	padding:5px;
+	padding-top:0px;
+	height: 30px;
 }
 .aui .p-t-xxs{
+ padding-top: 5px;
+ /*text-align: right;
+ font-weight: bold;*/
+}
+.aui .p-t-xxsg{
  padding-top: 5px;
  text-align: right;
  font-weight: bold;
@@ -141,14 +257,15 @@ padding-top:0px;
     border-top-left-radius: 0;
 }
 .aui .table td{
-	font-size: 14px;
+	font-size: 13px;
 }
-
+/*
 .modal.large {
-    width: 90%; /* respsonsive width */
-    margin-left:-45%; /* width/2) */ 
+    width: 90%;
+    margin-left:-45%;  
     top:0px;
 }
+*/
 .aui #assignTo{
 	width:100%;
 }
@@ -173,17 +290,31 @@ margin-bottom:1px;
 .aui #btnSearchAdvance{
 	left:4px; position:relative;
 }
+.aui .textData{
+	  font-weight: bold;
+}
+
+/* Important part */
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
 	
 </style>
 
 <body class=" gray-bg ">
-<div id="slide_status">
-	<div id="btnCloseSlide">×</div>
-	<div id="slide_status_area"></div>
+<div class='row-fluid'>
+	<div id="slide_status" class='span12'>
+		<div id="btnCloseSlide">×</div>
+		<div id="slide_status_area"></div>
+	</div>
 </div>
 
 
-	<div class="wrapper wrapper-content">
+	<div class="">
 		<div class="container1">
 			<div id="includePage" class="ng-view ng-scope">
 			<!-- 
@@ -202,7 +333,7 @@ margin-bottom:1px;
 									<div class="row-fluid">
 										<div class="span4">
 											<div class="form-group p-xxs">
-												<label class="span5 p-t-xxs"><b>Appraisal Year</b></label>
+												<label class="span5 p-t-xxs">Appraisal Year</label>
 												<div class="span7">
 													<select data-toggle="tooltip" title=""
 														class="input form-control input-sm span12" id="AppraisalYear"
@@ -216,7 +347,7 @@ margin-bottom:1px;
 	
 										<div class="span4">
 											<div class="form-group p-xxs">
-												<label class="span5 p-t-xxs"><b>Appraisal Period</b></label>
+												<label class="span5 p-t-xxs">Appraisal Period</label>
 												<div class="span7">
 													<select data-toggle="tooltip" title=""
 														class="input form-control input-sm span12"
@@ -230,7 +361,7 @@ margin-bottom:1px;
 										</div>
 										<div class="span4">
 											<div class="form-group p-xxs">
-												<label class="span5 p-t-xxs"><b>Appraisal Level</b></label>
+												<label class="span5 p-t-xxs">Appraisal Level</label>
 												<div class="span7">
 													<select data-toggle="tooltip" title=""
 														class="input form-control input-sm span12"
@@ -250,7 +381,7 @@ margin-bottom:1px;
 								<div class="row-fluid">
 										<div class="span4">
 											<div class="form-group p-xxs">
-												<label class="span5 p-t-xxs"><b>Department</b></label>
+												<label class="span5 p-t-xxs">Department</label>
 												<div class="span7">
 													<select data-toggle="tooltip" title=""
 														class="input form-control input-sm span12"
@@ -263,7 +394,7 @@ margin-bottom:1px;
 										</div>
 										<div class="span4">
 											<div class="form-group p-xxs">
-												<label class="span5 p-t-xxs"><b>Section</b></label>
+												<label class="span5 p-t-xxs">Section</label>
 												<div class="span7">
 													<select data-toggle="tooltip" title=""
 														class="input form-control input-sm span12"
@@ -277,10 +408,10 @@ margin-bottom:1px;
 	
 										<div class="span4">
 											<div class="form-group p-xxs">
-												<label class="span5 p-t-xxs"><b>Position</b></label>
+												<label class="span5 p-t-xxs">Position</label>
 												<div class="span7">
 													<input data-toggle="tooltip" title=""
-														class="form-control input-sm searchAdvanceText" placeholder="Position"
+														class="form-control input-sm searchAdvanceText span12" placeholder="Position"
 														type="text" id="Position" name="Position">
 												</div>
 	
@@ -290,10 +421,10 @@ margin-bottom:1px;
 							<div class="row-fluid">
 										<div class="span4">
 											<div class="form-group p-xxs m-b-none">
-												<label class="span5 p-t-xxs"><b>Employee Name</b></label>
+												<label class="span5 p-t-xxs">Employee Name</label>
 												<div class="span7">
 													<input data-toggle="tooltip" title=""
-														class="form-control input-sm searchAdvanceText" placeholder="Employee Name"
+														class="form-control input-sm searchAdvanceText span12" placeholder="Employee Name"
 														type="text" id="EmpName" name="EmpName">
 												</div>
 	
@@ -301,7 +432,7 @@ margin-bottom:1px;
 										</div>
 										<div class="span4">
 											<div class="form-group p-xxs m-b-none">
-												<label class="span5 p-t-xxs"><b>Appraisal Type</b></label>
+												<label class="span5 p-t-xxs">Appraisal Type</label>
 												<div class="span7">
 													
 													<select data-toggle="tooltip" title=""
@@ -356,11 +487,11 @@ margin-bottom:1px;
 							<!-- start table -->
 							<!-- pagination start -->
                                     	<div class="row-fluid">
-	                                    	<div class="span9">
+	                                    	<div class="span6 pagianation_area" >
 												<div class="pagination_top pagination"></div>
 	                                    	</div>
 	                                    
-		                                    <div class="span3 object-right paging-text">
+		                                    <div class="span6 object-right paging-text">
 		                                    
 		                                    	<div class='pagingDropdown'>
 		                                 			<select  id='countPaginationTop'  class="form-control input-sm countPagination">
@@ -387,13 +518,13 @@ margin-bottom:1px;
 
 							<!-- pagination start -->
 							<div class="row-fluid">
-	                                    	<div class="span9">
+	                                    	<div class="span6 pagianation_area">
 	
 												  <p class="pagination_bottom pagination"></p>
 												
 	                                    	</div>
 	                                    
-		                                    <div class="span3 object-right paging-text">
+		                                    <div class="span6 object-right paging-text">
 		                                    	<div class='pagingDropdown'>
 		                                 			<select  id='countPaginationBottom'  class="form-control input-sm countPagination">
 					                                     <option>10</option>
@@ -455,39 +586,40 @@ margin-bottom:1px;
 							<div class="ibox-content ">
 								<div class="container-fluid">
 									<div class="span10 ">
+											
 											<div class="row-fluid">
 											
 												<label class="span3 textInfo">Employee code:</label>
-												<label class="span3 textInfo" id="txtEmpCode"></label>
+												<label class="span3 textInfo textData" id="txtEmpCode"></label>
 												<label class="span3 textInfo">Employee Name:</label>
-												<label class="span3 textInfo" id="txtEmpName"></label>
+												<label class="span3 textInfo textData" id="txtEmpName"></label>
 											</div>
 											<div class="row-fluid">
 												<label class="span3 textInfo">Position:</label>
-												<label class="span3 textInfo" id="txtPosition"></label>
+												<label class="span3 textInfo textData" id="txtPosition"></label>
 												<label class="span3 textInfo">Department:</label>
-												<label class="span3 textInfo" id="txtDepartment"></label>
+												<label class="span3 textInfo textData" id="txtDepartment"></label>
 											</div>
 											<div class="row-fluid">
 												<label class="span3 textInfo">Section:</label>
-												<label class="span3 textInfo" id="txtSection"></label>
+												<label class="span3 textInfo textData" id="txtSection"></label>
 												<label class="span3 textInfo">Chief Employee Code:</label>
-												<label class="span3 textInfo" id="txtChiefEmpCode"></label>
+												<label class="span3 textInfo textData" id="txtChiefEmpCode"></label>
 											</div>
 											<div class="row-fluid">
 												<label class="span3 textInfo">Chief Employee Name:</label>
-												<label class="span3 textInfo" id="txtChiefEmpName"></label>
+												<label class="span3 textInfo textData" id="txtChiefEmpName"></label>
 												<label class="span3 textInfo">Appraisal Type:</label>
-												<label class="span3 textInfo" id="txtAppraisalType"></label>
+												<label class="span3 textInfo textData" id="txtAppraisalType"></label>
 											</div>
 											<div class="row-fluid">
 												<label class="span3 textInfo">Period:</label>
-												<label class="span3 textInfo" id="txtPeriod"></label>
+												<label class="span3 textInfo textData"  id="txtPeriod"></label>
 											</div>
 									</div>
-									<div class="span2">
-											<label class="span12 p-t-xxs text-center ">Grand Total Weigh %</label>
-											<label class="span12 p-t-xxs text-center " id="txtGrandTotalWeigh" style="font-size: 300%;"></label>
+									<div class="span2" id='grandTototalWeightArea'>
+											<label class="span12 p-t-xxsg text-center ">Grand Total Weight %</label>
+											<label class="span12 p-t-xxsg text-center " id="txtGrandTotalWeigh" style="font-size: 300%;"></label>
 									
 									</div>
 									
@@ -533,9 +665,10 @@ margin-bottom:1px;
 				</div>
 				<div class="modal-footer">
 				
+					
 					<div class='row-fluid'>
-						<div class="span4"></div>
-						<div class="span3">
+					
+						<div class="span3 ">
 							 <div class="form-group p-xxs"> 
 								 <label class="span5 p-t-xxs"><b>Assign to:</b></label> 
 								 <div class="span7"> 
@@ -546,10 +679,10 @@ margin-bottom:1px;
 							 </div> 
 						 </div>
 						 
-						 <div class="span3">
+						 <div class="span3 ">
 							 <div class="form-group p-xxs"> 
-								 <label class="span5 p-t-xxs"><b>Action:</b></label> 
-								 <div class="span7"> 
+								 <label class="span4 p-t-xxs"><b>Action:</b></label> 
+								 <div class="span8"> 
 									<select data-toggle="tooltip" title="" class="input form-control input-sm" id="actionToAssign" name="actionToAssign">
 								
 									</select>
@@ -557,9 +690,9 @@ margin-bottom:1px;
 							 </div> 
 						 </div>
 						 
-						  <div class="span2">
+						  <div class="span4 offset2">
 						  
-							  	<button class="btn btn-success" type="button" id="btnSubmit">Save</button>
+							  	<button class="btn btn-success" type="button" id="btnSubmit">Submit</button>
 								<input type='hidden' id='emp_result_id' name='emp_result_id' value=''>
 								<button data-dismiss="modal" class="btn btn-danger btnCancle" type="button">Cancel</button>
 						  
@@ -568,29 +701,6 @@ margin-bottom:1px;
 					</div>
 					
 					
-					<!--
-					<div class="form-inline">
-						<div class="form-group text-left p-xxs">
-							<label class="">Assign to:</label> 
-							<select data-toggle="tooltip" title="" class="input form-control input-sm" id="assignTo" name="assignTo">
-							
-							</select>
-						</div>
-						<div class="form-group text-left p-xxs">
-						
-							<label class="">Action:</label> 
-							<select data-toggle="tooltip" title="" class="input form-control input-sm" id="actionToAssign" name="actionToAssign">
-								
-							</select>
-						</div>
-						
-							<button class="btn btn-success" type="button" id="btnSubmit">Save</button>
-							<input type='hidden' id='emp_result_id' name='emp_result_id' value=''>
-							<button data-dismiss="modal" class="btn btn-danger btnCancle" type="button">Cancel</button>
-						
-					</div>
-					 -->
-
 
 					<div class="alert alert-warning" id="information"
 						style="display: none;"></div>
@@ -628,6 +738,16 @@ margin-bottom:1px;
 	<div id="embedParamSearch"></div>
 	
 </body>
+	
+	
+
+
+
+
+
+
+
+
 	
 
     

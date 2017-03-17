@@ -440,14 +440,14 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 										<div class="pull-right ">
 											<button id="btn_add_role" type="submit" data-target="#ModalRole"
 											data-toggle="modal" class="btn btn-primary btn-sm "
-											style="margin-left: 5px">
+											style="margin-left: 5px;margin-bottom: 5px;">
 											&nbsp;<i class="fa fa-plus-square"></i>&nbsp;Role&nbsp;&nbsp;
 											</button>
 										</div>
 										<div class="pull-right ">
 											<button id="btn_import" type="button" data-target="#ModalImport"
 											data-toggle="modal" class="btn btn-success btn-sm "
-											style="margin-left: 5px">
+											style="margin-left: 5px;margin-bottom: 5px;">
 											<i class="fa fa-upload"></i>&nbsp;Import
 											</button>
 										</div> 
@@ -461,7 +461,7 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 										<div class="pull-right ">
 											<button type="button" name="btnSearchAdvance"
 											id="btnSearchAdvance" class="btn btn-info input-sm "
-											style="margin-left: 5px">
+											style="margin-left: 5px;margin-bottom: 5px;">
 											<i class="fa fa-search"></i>&nbsp;Search
 											</button>
 										</div>

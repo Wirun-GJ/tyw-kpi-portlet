@@ -7,7 +7,7 @@ var is_hr = [];
 var checkSession = function(paramTokenID){
 	var check=true;
 	var tokenID =(paramTokenID == undefined || paramTokenID == ""  ? tokenID : paramTokenID);
-	console.log(tokenID);
+	//console.log(tokenID);
 	tokenID = eval("("+tokenID+")");
 	if(tokenID==null){
 		//alert("login failed");
@@ -134,7 +134,18 @@ function IsNumeric(sText,obj){
 	
 		
   }
-
+function addCommas(nStr)
+{
+    nStr += '';
+    x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
+}
 
 //var getNewSessionFn = function(){
 //	
@@ -162,6 +173,7 @@ function IsNumeric(sText,obj){
 //}
 //getNewSessionFn();	 
 /* for portlet*/
+
 
 
 
@@ -236,12 +248,12 @@ var callFlashSlideInModal =function(text,id,flashType){
 //check value not null
 var notNullFn = function(data){
 	var dataNotNull="";
-	if((data == '' || data == 'undefinided' || data == null  )){
-		dataNotNull="";
+	if((data == '' || data == 'undefinided' || data == null )){
+		dataNotNull="0.00";
 	}else{
 		dataNotNull=data;
 	}
-	return dataNotNull;
+	return parseFloat(dataNotNull).toFixed(2);
 }
 //oops: isObject(Object) -> false
 function isObject(val) {
@@ -514,7 +526,10 @@ var paginationSetUpFn = function(pageIndex,pageButton,pageTotal){
 		getDataFn(1,$(this).val());
 		
 		$(".rpp").remove();
-	    var htmlRrp= "<input type='hidden' id='rpp' name='rpp' class='rpp' value='"+$(this).val()+"'>";
+		$(".pagingNumber").remove();
+		var htmlRrp="";
+			htmlRrp+= "<input type='hidden' id='rpp' name='rpp' class='rpp' value='"+$(this).val()+"'>";
+	        htmlRrp+="<input type='hidden' id='pageNumber' name='pageNumber' class='pagingNumber' value='1'>";
 	    $("body").append(htmlRrp);
 	});
 }

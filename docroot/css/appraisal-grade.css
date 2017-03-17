@@ -7,7 +7,9 @@
 	float:left;
 	padding-top: 1px;
 	width:120px;
-} 
+
+}
+
 .font-gear{
 	font-size: 25px;
 	cursor:pointer;
@@ -38,7 +40,7 @@
 }
 #ui-datepicker-div ,.ui-datepicker { z-index: 99999 !important; }
 
-.control-label{
+.aui .ibox-title .control-label{
 	margin-bottom: 0;
     padding-top: 7px;
     text-align: right;

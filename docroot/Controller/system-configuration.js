@@ -90,7 +90,7 @@ var clearFn = function() {
 var dropDownListMonth = function(id){
 	var html="";
 	
-	html+="<select id=\"month\" class=\"input form-control input-sm col-lg-9\" data-toggle=\"tooltip\" title=\"Month\" name=\"month\">";
+	html+="<select id=\"month\" class=\"input form-control input-sm span12\" data-toggle=\"tooltip\" title=\"Month\" name=\"month\">";
 	//html+="<option  selected value=''>All</option>";
 	$.ajax ({
 		url:restfulURL+restfulPathDropDownMonth,
@@ -120,7 +120,7 @@ var dropDownListMonth = function(id){
 var dropDownListAppraisalFrequency = function(id){
 	var html="";
 	
-	html+="<select id=\"appraisalFrequency\" class=\"input form-control input-sm col-lg-9\" data-toggle=\"tooltip\" title=\"Frequency\" name=\"appraisalFrequency\">";
+	html+="<select id=\"appraisalFrequency\" class=\"input form-control input-sm span12\" data-toggle=\"tooltip\" title=\"Frequency\" name=\"appraisalFrequency\">";
 	//html+="<option  selected value=''>All</option>";
 	$.ajax ({
 		url:restfulURL+restfulPathDropDownFrequency,
@@ -147,7 +147,7 @@ var dropDownListAppraisalFrequency = function(id){
 var dropDownListBonusfrequency = function(id){
 	var html="";
 	
-	html+="<select id=\"bonusFrequency\" class=\"input form-control input-sm col-lg-9\" data-toggle=\"tooltip\" title=\"Frequency\" name=\"bonusFrequency\">";
+	html+="<select id=\"bonusFrequency\" class=\"input form-control input-sm span12\" data-toggle=\"tooltip\" title=\"Frequency\" name=\"bonusFrequency\">";
 	//html+="<option  selected value=''>All</option>";
 	$.ajax ({
 		url:restfulURL+restfulPathDropDownFrequency,
@@ -173,7 +173,7 @@ var dropDownListBonusfrequency = function(id){
 var dropDownListSalaryRaisefrequency = function(id){
 	var html="";
 	
-	html+="<select id=\"salaryRaiseFrequency\" class=\"input form-control input-sm col-lg-9\" data-toggle=\"tooltip\" title=\"Frequency\" name=\"salaryRaiseFrequency\">";
+	html+="<select id=\"salaryRaiseFrequency\" class=\"input form-control input-sm span12\" data-toggle=\"tooltip\" title=\"Frequency\" name=\"salaryRaiseFrequency\">";
 	//html+="<option  selected value=''>All</option>";
 	$.ajax ({
 		url:restfulURL+restfulPathDropDownFrequency,

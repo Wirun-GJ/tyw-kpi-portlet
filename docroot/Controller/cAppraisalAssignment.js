@@ -6,36 +6,60 @@ var empldoyees_code = [];
 
 
 
+//var is_hr = 0;
+var clearFn = function(){
+	$(':input')
+	  .not(':button, :submit, :reset, :hidden')
+	  .val('')
+	  .removeAttr('checked')
+	  .removeAttr('selected');
+	  $(".checkWeigthOver").html("");
+	  $(".grandTotalWeight").html("");
+	  $("#information").html("");
+}
+var stripJsonToString= function(json)
+{
+    return JSON.stringify(json).replace(',', ', ').replace('[', '').replace(']', '');
+}
+
 var validationAssignmentFn = function(data){
 
 	var errorData="";
 	var count=0;
-	$.each(data['data'],function(index,indexEntry){
+	
+	
+	errorData=stripJsonToString(data['data']);
+	
+	//$.each(data['data'],function(index,indexEntry){
 		
-		if(index==0){
 		
-			errorData+="<b>"+indexEntry['appraisal_item_id']+" ";
-			errorData+=indexEntry['appraisal_item_name']+"</b> ";
-			
-			$.each(indexEntry['data'],function(index2,indexEntry2){
-				//errorData+=" "+index2;
-				errorData+=" "+indexEntry2;
-			});
-
-		}else{
-			errorData+="<br><b>"+indexEntry['appraisal_item_id']+"-";
-			errorData+=indexEntry['appraisal_item_name']+"</b> ";
-			
-			$.each(indexEntry['data'],function(index2,indexEntry2){
-				//errorData+=" "+index2;
-				errorData+=" "+indexEntry2;
-			});
-		}
+		
+//		if(index==0){
+//		
+//			errorData+="<b>"+indexEntry['appraisal_item_id']+" ";
+//			errorData+=indexEntry['appraisal_item_name']+"</b> ";
+//			
+//			$.each(indexEntry['data'],function(index2,indexEntry2){
+//				//errorData+=" "+index2;
+//				errorData+=" "+indexEntry2;
+//			});
+//
+//		}
+//		
+//		else{
+//			errorData+="<br><b>"+indexEntry['appraisal_item_id']+"-";
+//			errorData+=indexEntry['appraisal_item_name']+"</b> ";
+//			
+//			$.each(indexEntry['data'],function(index2,indexEntry2){
+//				//errorData+=" "+index2;
+//				errorData+=" "+indexEntry2;
+//			});
+//		}
 
 
 		
 	
-	});
+	//});
 	
 	return errorData;
 	
@@ -110,7 +134,7 @@ var setDataToTemplateFn = function(data,actionType){
 	$("#appraisal_type").html(head['appraisal_type_name']);
 	$("#employee_name").html(head['emp_name']);
 	$("#department").html(head['department_name']);
-	$("#period").html(head['period_id']);
+	$("#period_label").html(head['appraisal_period_desc']);
 	$("#start_working_date").html(head['working_start_date']);
 	$("#chief_employee_code").html(head['chief_emp_code']);
 	$("#position").html(head['position_name']);
@@ -135,32 +159,27 @@ var setDataToTemplateFn = function(data,actionType){
 	
 	//set premission button management start
 	//alert(head['stage_id']);
-	if(    head['stage_id']==17
-		|| head['stage_id']==18
-		|| head['stage_id']==19
-		|| head['stage_id']==20
-		|| head['stage_id']==21
-		|| head['stage_id']==22
-		|| head['stage_id']==23
-		|| head['stage_id']==24
-	    || head['stage_id']==25 
-	    || head['stage_id']==27
-	    || head['stage_id']==28
-	    || head['stage_id']==29
-	    || actionType=='view'
-			
-			){
-		//alert(head['stage_id']);
-		$(".btnAssignment").hide();
-		$("#btnSubmit").hide();
+	if(   head['status']=='Accepted' || actionType=='view'){
+//		$(".btnAssignment").hide();
+//		$("#btnSubmit").hide();
 		$("#ModalAssignment").find('input[type="text"]').attr('disabled', 'disabled'); 
 		$("#ModalAssignment").find('input[type="checkbox"]').attr('disabled', 'disabled'); 
 	}else{
-		$(".btnAssignment").show();
-		$("#btnSubmit").show();
+//		$(".btnAssignment").show();
+//		$("#btnSubmit").show();
 		$("#ModalAssignment").find('input[type="text"]').removeAttr('disabled'); 
 		$("#ModalAssignment").find('input[type="checkbox"]').removeAttr('disabled'); 
+		
+		if(sessionStorage.getItem("is_coporate_kpi")==1){
+			//total_weigth_quantity
+			$(".total_weigth_quantity").prop("disabled",true);
+		}else{
+			$(".total_weigth_quantity").removeAttr('disabled'); 
+		}
 	}
+	
+	
+	
 	//set premission button management end		
 	
 	
@@ -234,7 +253,9 @@ weight_percent
 		$("#id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_start-5").val(indexEntry['score5_target_start']);
 		$("#id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_end-5").val(indexEntry['score5_target_end']);
 		
+		
 		$("#id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-weight").val(indexEntry['weight_percent']);
+		
 		//form2
 		
 		//form3
@@ -311,6 +332,10 @@ var getDataFn = function(page,rpp) {
 	var period_id= $("#embed_period_id").val();
 	var position_code= $("#embed_position_code").val();
 	var emp_code= $("#embed_emp_code").val();
+	var embed_year_list =$("#embed_year_list").val();
+	var embed_period_frequency =$("#embed_period_frequency").val();
+	var department_id =$("#embed_department_list").val();
+	
 	$.ajax({
 		url:restfulURL+"/tyw_api/public/appraisal_assignment",
 		type:"get",
@@ -320,11 +345,15 @@ var getDataFn = function(page,rpp) {
 		data:{
 			"page":page,
 			"rpp":rpp,
-						
+//			"appraisal_year":"",
+//			"frequency_id":"",
 			"appraisal_level_id":appraisal_level_id,
 			"appraisal_type_id":appraisal_type_id,
 			"period_id":period_id,
 			"position_code":position_code,
+			"appraisal_year":embed_year_list,
+			"frequency_id":embed_period_frequency,
+			"department_code":department_id,
 			"emp_code":emp_code	
 			
 		},
@@ -332,13 +361,34 @@ var getDataFn = function(page,rpp) {
 			
 			//console.log(data);
 			
-			listDataFn(data['data']);
+			listDataFn(data);
 			globalData=data;
 			paginationSetUpFn(globalData['current_page'],globalData['last_page'],globalData['last_page']);
 		}
 	})
 };
-
+//Delete
+var deleteFn = function(id) {
+	 $.ajax({
+      url:restfulURL+"/tyw_api/public/appraisal_assignment/"+id,
+      type:"DELETE",
+      dataType:"json",
+	  headers:{Authorization:"Bearer "+tokenID.token},
+	  success:function(data){ 
+		if(data['status']==200){
+			
+			   callFlashSlide("Delete Successfully.");       
+		       getDataFn($("#pageNumber").val(),$("#rpp").val());
+			   $("#confrimModal").modal('hide');
+			   
+		}else if(data['status']=="400"){
+			
+			callFlashSlide(validationFn(data),"error");  
+			
+		}
+     }
+   });
+};
 //Embed Parameter 
 var embedParam = function(id){
 	
@@ -347,11 +397,103 @@ var embedParam = function(id){
 //List Data
 var listDataFn = function(data) {
 
-	var is_hr = sessionStorage.getItem("is_hr");
+
 
 	htmlHTML="";
-	$.each(data,function(index,indexEntry){
-		//alert(index);
+	$.each(data['group'],function(index,indexEntry){
+		//console.log(index);
+//	console.log(indexEntry['items']);
+//	console.log(indexEntry['appraisal_period_desc']);
+	
+	htmlHTML+="<div class=\"row-fluid\">";
+	htmlHTML+="<div class=\"span12\">";
+	htmlHTML+="<div class=\"ibox-title2\">";
+	htmlHTML+="<div class=\"titlePanel2\">"+indexEntry['appraisal_period_desc']+" </div> ";
+            
+	htmlHTML+="</div>";
+			
+		htmlHTML+="<div class=\"ibox-content\">";
+					
+					
+		htmlHTML+="<div class=\"table-responsive\" style='overflow:auto;'>";
+		htmlHTML+="<table id=\"tableListAppraisalUser\" class=\"table table-striped\">";
+           		
+		htmlHTML+=" <thead>";
+			htmlHTML+=" <tr>";
+			if(index!='p0'){
+				htmlHTML+=" <th style=\"width:5%\" class=\"object-center\"></th>";
+			}else{
+				htmlHTML+=" <th style=\"width:5%\" class=\"object-center\">Select</th>";
+			}
+				htmlHTML+=" <th style=\"width:8%\">Status</th>";
+				htmlHTML+=" <th style=\"width:8%\">Emp Code</th>";
+				htmlHTML+=" <th style=\"width:15%\">Emp Name</th>";
+				htmlHTML+=" <th style=\"width:10%\">Department</th>";
+				htmlHTML+=" <th style=\"width:15%\">Section</th>";
+				htmlHTML+=" <th style=\"width:15%\">Appraisal Type</th>";
+				htmlHTML+=" <th style=\"width:15%\">Position</th>";
+			if(index!='p0'){
+				htmlHTML+=" <th style=\"width:7%; text-align:center;\">Manage</th>";
+			}else{
+				htmlHTML+=" <th style=\"width:7%; text-align:center;\"></th>";
+			}
+	htmlHTML+=" </tr>";
+		htmlHTML+=" </thead>";
+			htmlHTML+=" <tbody>";
+			$.each(indexEntry['items'],function(index2,itemEntry){	
+				
+		
+
+				htmlHTML+="<tr>";
+				if(index!='p0'){
+					htmlHTML+="	<td class='object-center'></td>";
+						
+				}else{
+					htmlHTML+="	<td class='object-center' style='text-align:center;'><input class='asign_emp' id='id-"+itemEntry['emp_code']+"' type='checkbox' value="+itemEntry['emp_code']+"></td>";
+					
+				}
+				htmlHTML+="  <td id='status-"+itemEntry['emp_code']+"'>"+itemEntry['status']+"";
+				htmlHTML+="  <input type='hidden' id='emp_result_id-"+itemEntry['emp_code']+"' name='emp_result_id-"+itemEntry['emp_code']+"' value='"+itemEntry['emp_result_id']+"'>";
+				htmlHTML+="  <input type='hidden' id='is_coporate_kpi-"+itemEntry['emp_code']+"' name='is_coporate_kpi-"+itemEntry['emp_code']+"' value='"+itemEntry['is_coporate_kpi']+"'>";
+				
+				htmlHTML+="  </td>";
+				htmlHTML+="  <td>"+itemEntry['emp_code']+"";
+				htmlHTML+="  <input type='hidden' id='period_id-"+itemEntry['emp_code']+"' name='period_id-"+itemEntry['emp_code']+"' value='"+itemEntry['period_id']+"'>";
+				htmlHTML+=" </td>";
+				htmlHTML+="  <td>"+itemEntry['emp_name']+"</td>";
+				htmlHTML+="  <td>"+itemEntry['department_name']+"</td>";
+				htmlHTML+="	<td>"+itemEntry['section_name']+"</td>";
+				htmlHTML+="	<td>"+itemEntry['appraisal_type_name']+"</td>";
+				htmlHTML+="	<td>"+itemEntry['position_name']+"</td>";
+				htmlHTML+="  <td style=\"text-align:center\">";
+				
+				if(index!='p0'){
+					//itemEntry['status']
+					if(is_hr==1 &&  itemEntry['status']=='Accepted'){
+						//htmlHTML+="  <i title=\"\" data-original-title=\"\" class=\"fa fa-cog font-gear popover-edit-del\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-content=\" &lt;button class='btn btn-info btn-small btn-gear view' id='view-"+itemEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;View&lt;/button&gt;   &lt;button class='btn btn-warning btn-small btn-gear edit' id='edit-"+itemEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;Edit&lt;/button&gt;&nbsp;&lt;button id='del-"+itemEntry['emp_code']+"' class='btn btn-danger btn-small btn-gear del'&gt;Delete&lt;/button&gt;\"></i>";
+						htmlHTML+="  <i data-trigger=\"focus\" tabindex=\""+index2+"\" title=\"\" data-original-title=\"\" class=\"fa fa-cog font-gear popover-edit-del\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\"  data-content=\" &lt;button class='btn btn-info btn-small btn-gear view' id='view-"+itemEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;View\"></i>";
+					}else if(is_hr==1 &&  itemEntry['status']!='Accepted'){
+						htmlHTML+="  <i data-trigger=\"focus\" tabindex=\""+index2+"\" title=\"\" data-original-title=\"\" class=\"fa fa-cog font-gear popover-edit-del\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-content=\" &lt;button class='btn btn-warning btn-small btn-gear edit' id='edit-"+itemEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;Edit&lt;/button&gt;&nbsp;&lt;button id='del-"+itemEntry['emp_code']+"' class='btn btn-danger btn-small btn-gear del'&gt;Delete&lt;/button&gt;\"></i>";
+						
+						
+					}else if(is_hr==0){
+						htmlHTML+="  <i data-trigger=\"focus\" tabindex=\""+index2+"\" title=\"\" data-original-title=\"\" class=\"fa fa-cog font-gear popover-edit-del\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-content=\" &lt;button class='btn btn-info btn-small btn-gear view' id='view-"+itemEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;View\"></i>";
+						
+					}
+				}
+				
+				htmlHTML+="  </td>";
+				htmlHTML+="</tr>";
+					
+			
+			});
+			htmlHTML+=" </tbody>";
+			htmlHTML+="  </table>";
+			
+			htmlHTML+=" </div>";
+			htmlHTML+="</div>";
+		htmlHTML+="</div>";
+	htmlHTML+="</div>";
 		/*
 		appraisal_type_name
 		department_name
@@ -362,29 +504,29 @@ var listDataFn = function(data) {
 		section_name
 		status
 		*/
-		
-		htmlHTML+="<tr>";
-		htmlHTML+="	<td class='object-center' style='text-align:center;'><input class='asign_emp' id='id-"+indexEntry['emp_code']+"' type='checkbox' value="+indexEntry['emp_code']+"></td>";
-		htmlHTML+="  <td id='status-"+indexEntry['emp_code']+"'>"+indexEntry['status']+"";
-		htmlHTML+="  <input type='hidden' id='emp_result_id-"+indexEntry['emp_code']+"' name='emp_result_id-"+indexEntry['emp_code']+"' value='"+indexEntry['emp_result_id']+"'>";
-		htmlHTML+="  </td>";
-		htmlHTML+="  <td>"+indexEntry['emp_code']+"</td>";
-		htmlHTML+="  <td>"+indexEntry['emp_name']+"</td>";
-		htmlHTML+="  <td>"+indexEntry['department_name']+"</td>";
-		htmlHTML+="	<td>"+indexEntry['section_name']+"</td>";
-		htmlHTML+="	<td>"+indexEntry['appraisal_type_name']+"</td>";
-		htmlHTML+="	<td>"+indexEntry['position_name']+"</td>";
-		htmlHTML+="  <td style=\"text-align:center\">";
-		
-		if(is_hr==1){
-			//htmlHTML+="  <i title=\"\" data-original-title=\"\" class=\"fa fa-cog font-gear popover-edit-del\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-content=\" &lt;button class='btn btn-info btn-xs btn-gear view' id='view-"+indexEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;View&lt;/button&gt;   &lt;button class='btn btn-warning btn-xs btn-gear edit' id='edit-"+indexEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;Edit&lt;/button&gt;&nbsp;&lt;button id='del-"+indexEntry['emp_code']+"' class='btn btn-danger btn-xs btn-gear del'&gt;Delete&lt;/button&gt;\"></i>";
-			htmlHTML+="  <i title=\"\" data-original-title=\"\" class=\"fa fa-cog font-gear popover-edit-del\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-content=\" &lt;button class='btn btn-warning btn-xs btn-gear edit' id='edit-"+indexEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;Edit&lt;/button&gt;&nbsp;&lt;button id='del-"+indexEntry['emp_code']+"' class='btn btn-danger btn-xs btn-gear del'&gt;Delete&lt;/button&gt;\"></i>";
-		}else if(is_hr==0){
-			htmlHTML+="  <i title=\"\" data-original-title=\"\" class=\"fa fa-cog font-gear popover-edit-del\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-content=\" &lt;button class='btn btn-info btn-xs btn-gear view' id='view-"+indexEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;View&lt;/button&gt;&nbsp;&lt;button id='del-"+indexEntry['emp_code']+"' class='btn btn-danger btn-xs btn-gear del'&gt;Delete&lt;/button&gt;\"></i>";
-		}
-		
-		htmlHTML+="  </td>";
-		htmlHTML+="</tr>";
+//		
+//		htmlHTML+="<tr>";
+//		htmlHTML+="	<td class='object-center'><input class='asign_emp' id='id-"+indexEntry['emp_code']+"' type='checkbox' value="+indexEntry['emp_code']+"></td>";
+//		htmlHTML+="  <td id='status-"+indexEntry['emp_code']+"'>"+indexEntry['status']+"";
+//		htmlHTML+="  <input type='hidden' id='emp_result_id-"+indexEntry['emp_code']+"' name='emp_result_id-"+indexEntry['emp_code']+"' value='"+indexEntry['emp_result_id']+"'>";
+//		htmlHTML+="  </td>";
+//		htmlHTML+="  <td>"+indexEntry['emp_code']+"</td>";
+//		htmlHTML+="  <td>"+indexEntry['emp_name']+"</td>";
+//		htmlHTML+="  <td>"+indexEntry['department_name']+"</td>";
+//		htmlHTML+="	<td>"+indexEntry['section_name']+"</td>";
+//		htmlHTML+="	<td>"+indexEntry['appraisal_type_name']+"</td>";
+//		htmlHTML+="	<td>"+indexEntry['position_name']+"</td>";
+//		htmlHTML+="  <td style=\"text-align:center\">";
+//		
+//		if(is_hr==1){
+//			//htmlHTML+="  <i title=\"\" data-original-title=\"\" class=\"fa fa-cog font-gear popover-edit-del\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-content=\" &lt;button class='btn btn-info btn-small btn-gear view' id='view-"+indexEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;View&lt;/button&gt;   &lt;button class='btn btn-warning btn-small btn-gear edit' id='edit-"+indexEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;Edit&lt;/button&gt;&nbsp;&lt;button id='del-"+indexEntry['emp_code']+"' class='btn btn-danger btn-small btn-gear del'&gt;Delete&lt;/button&gt;\"></i>";
+//			htmlHTML+="  <i title=\"\" data-original-title=\"\" class=\"fa fa-cog font-gear popover-edit-del\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-content=\" &lt;button class='btn btn-warning btn-small btn-gear edit' id='edit-"+indexEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;Edit&lt;/button&gt;&nbsp;&lt;button id='del-"+indexEntry['emp_code']+"' class='btn btn-danger btn-small btn-gear del'&gt;Delete&lt;/button&gt;\"></i>";
+//		}else if(is_hr==0){
+//			htmlHTML+="  <i title=\"\" data-original-title=\"\" class=\"fa fa-cog font-gear popover-edit-del\" data-html=\"true\" data-toggle=\"popover\" data-placement=\"top\" data-content=\" &lt;button class='btn btn-info btn-small btn-gear view' id='view-"+indexEntry['emp_code']+"' data-target=#addModalRule data-toggle='modal'&gt;View&lt;/button&gt;&nbsp;&lt;button id='del-"+indexEntry['emp_code']+"' class='btn btn-danger btn-small btn-gear del'&gt;Delete&lt;/button&gt;\"></i>";
+//		}
+//		
+//		htmlHTML+="  </td>";
+//		htmlHTML+="</tr>";
 		
 	});
 	
@@ -398,12 +540,15 @@ var listDataFn = function(data) {
 			
 			var id=this.id.split("-");
 			id=id[1];
+			
+			var emp_result_id= $(this).parent().parent().parent().parent().children().eq(1).children().val();
+			
 			$("#confrimModal").modal();
 			$(this).parent().parent().parent().children().click();
 			$(document).off("click","#btnConfirmOK");
 			$(document).on("click","#btnConfirmOK",function(){
-				//alert(id);
-				deleteFn(id);
+				
+				deleteFn(emp_result_id);
 				
 			});
 			
@@ -415,30 +560,44 @@ var listDataFn = function(data) {
 			
 			var edit=this.id.split("-");
 			var id=edit[1];
-			$(".information").hide();
 			
-			if($("#status-"+id).text().trim()=="Unassigned"){
+			sessionStorage.setItem('is_coporate_kpi',$("#is_coporate_kpi-"+id).val());
+			
+			$(".information").hide();
+			var status= $(this).parent().parent().parent().parent().children().eq(1).text();
+			if(status.trim()=="Unassigned"){
 				callFlashSlide("Can't edit. because unassigned status.","error");
 				$(this).parent().parent().parent().children().click();
 			}else{
-				var emp_result_id = $("#emp_result_id-"+id).val();
+				//var emp_result_id = $("#emp_result_id-"+id).val();
+				var emp_result_id= $(this).parent().parent().parent().parent().children().eq(1).children().val();
+				var period_id = $(this).parent().parent().parent().parent().children().eq(2).children().val();
+				$("#period_id_edit").val(period_id);
 				findOneFn(emp_result_id);
 				$(this).parent().parent().parent().children().click();
+				$(window).scrollTop(0);
+				$(".modal-body").scrollTop(0);
+				$(".fht-tbody").scrollTop(0);
 
 			}
 		});
 		$(".view").on("click",function() {
-			var view=this.id.split("-");
-			var id=view[1];
-			if($("#status-"+id).text().trim()=="Unassigned"){
-				callFlashSlide("Can't edit. because unassigned status.","error");
-				$(this).parent().parent().parent().children().click();
-			}else{
-				var emp_result_id = $("#emp_result_id-"+id).val();
+//			var view=this.id.split("-");
+//			var id=view[1];
+//			if($("#status-"+id).text().trim()=="Unassigned"){
+//				callFlashSlide("Can't edit. because unassigned status.","error");
+//				$(this).parent().parent().parent().children().click();
+//			}else{
+				//console.log($(this).parent().parent().parent().parent().children().eq(1).children().val());
+				var emp_result_id= $(this).parent().parent().parent().parent().children().eq(1).children().val();
+				var period_id = $(this).parent().parent().parent().parent().children().eq(2).children().val();
+				$("#period_id_edit").val(period_id);
 				findOneFn(emp_result_id,"view");
 				$(this).parent().parent().parent().children().click();
-
-			}
+				$(window).scrollTop(0);
+				$(".modal-body").scrollTop(0);
+				$(".fht-tbody").scrollTop(0);
+			//}
 		});
 		
 	});	
@@ -462,7 +621,9 @@ var actionUpdateAssignmentFn = function(){
 
 		if($("#form-"+$(structureEntry).val()).val()=="form1"){
 
-			$.each($(".embed_appraisal_id-"+$(structureEntry).val()).get(),function(index2,appraisalItemEntry){
+			//$.each($(".embed_appraisal_id-"+$(structureEntry).val()).get(),function(index2,appraisalItemEntry){
+			$.each($(".appraisalItem-checkbox-"+$(structureEntry).val()).get(),function(index2,appraisalItemEntry){
+
 				
 				if(countAppraisalItem==0){
 					appraisal_items+="{";	
@@ -487,7 +648,14 @@ var actionUpdateAssignmentFn = function(){
 				appraisal_items+="\"score4_target_end\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-score_end-4").val()+"\",";
 				appraisal_items+="\"score5_target_start\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-score_start-5").val()+"\",";
 				appraisal_items+="\"score5_target_end\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-score_end-5").val()+"\",";
-				appraisal_items+="\"weight_percent\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-weight").val()+"\"";
+				appraisal_items+="\"weight_percent\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-weight").val()+"\",";
+
+				if($(this).prop("checked")==true){
+					appraisal_items+="\"select_flag\":\"1\"";	
+				}else{
+					appraisal_items+="\"select_flag\":\"0\"";	
+				}
+				
 				appraisal_items+="}";
 				countAppraisalItem++;
 			
@@ -497,7 +665,9 @@ var actionUpdateAssignmentFn = function(){
 			
 		}else if($("#form-"+$(structureEntry).val()).val()=="form2"){
 
-			$.each($(".embed_appraisal_id-"+$(structureEntry).val()).get(),function(index2,appraisalItemEntry){
+			//$.each($(".embed_appraisal_id-"+$(structureEntry).val()).get(),function(index2,appraisalItemEntry){
+			$.each($(".appraisalItem-checkbox-"+$(structureEntry).val()).get(),function(index2,appraisalItemEntry){
+
 				if(countAppraisalItem==0){
 					appraisal_items+="{";	
 				}else{
@@ -509,16 +679,24 @@ var actionUpdateAssignmentFn = function(){
 				appraisal_items+="\"appraisal_item_name\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-appraisal_item_name").text()+"\",";
 				appraisal_items+="\"form_id\":\"2\",";
 				appraisal_items+="\"target_value\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-target").val()+"\",";
-				appraisal_items+="\"weight_percent\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-weight").val()+"\"";
-			
+				appraisal_items+="\"weight_percent\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-weight").val()+"\",";
+				
+
+				if($(this).prop("checked")==true){
+					appraisal_items+="\"select_flag\":\"1\"";	
+				}else{
+					appraisal_items+="\"select_flag\":\"0\"";	
+				}
+				
 				appraisal_items+="}";
 				countAppraisalItem++;
 			});
 			
 		}else if($("#form-"+$(structureEntry).val()).val()=="form3"){
 			
-			$.each($(".embed_appraisal_id-"+$(structureEntry).val()).get(),function(index2,appraisalItemEntry){
-				
+			//$.each($(".embed_appraisal_id-"+$(structureEntry).val()).get(),function(index2,appraisalItemEntry){
+			$.each($(".appraisalItem-checkbox-"+$(structureEntry).val()).get(),function(index2,appraisalItemEntry){
+
 			
 				if(countAppraisalItem==0){
 					appraisal_items+="{";	
@@ -531,8 +709,15 @@ var actionUpdateAssignmentFn = function(){
 				appraisal_items+="\"appraisal_item_name\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-appraisal_item_name").text()+"\",";
 				appraisal_items+="\"form_id\":\"3\",";
 				appraisal_items+="\"max_value\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-maxValue").val()+"\",";
-				appraisal_items+="\"deduct_score_unit\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-deductScoreUnit").val()+"\"";
-			    appraisal_items+="}";
+				appraisal_items+="\"deduct_score_unit\":\""+$("#id-"+$(appraisalItemEntry).val()+"-"+$(structureEntry).val()+"-deductScoreUnit").val()+"\",";
+
+				if($(this).prop("checked")==true){
+					appraisal_items+="\"select_flag\":\"1\"";	
+				}else{
+					appraisal_items+="\"select_flag\":\"0\"";	
+				}
+				
+				appraisal_items+="}";
 				
 			    countAppraisalItem++;
 				});
@@ -556,7 +741,7 @@ var actionUpdateAssignmentFn = function(){
 		data:{"head_params":
 			{
 			"appraisal_type_id":$("#embed_appraisal_type_id").val(),
-			"period_id":$("#assignTo").val(),
+			"period_id":$("#period_id_edit").val(),
 			"action_to":$("#actionAssign").val()
 			},
 			"appraisal_items":appraisal_itemsObj
@@ -569,7 +754,7 @@ var actionUpdateAssignmentFn = function(){
 				   //callFlashSlide("Updated."); 
 				   callFlashSlideInModal("Updated","#information");      
 			       getDataFn($("#pageNumber").val(),$("#rpp").val());
-				   //$("#ModalAssignment").modal('hide');
+				   $("#ModalAssignment").modal('hide');
 				   $("#action").val("add");
 				   
 				   
@@ -720,10 +905,12 @@ var actionAssignmentFn = function(param){
 		data:{"head_params":
 			{
 			"appraisal_type_id":$("#embed_appraisal_type_id").val(),
-			"period_id":$("#assignTo").val(),
+			"frequency_id":$("#embed_period_frequency").val() ,
+			"appraisal_year":$("#embed_year_list").val(),
+			"period_id":$("#embed_period_id").val(),
 			"action_to":$("#actionAssign").val(),
-			 "frequency_id":$("#embed_period_frequency").val() ,
-			 "appraisal_year":$("#embed_year_list").val()
+			 
+			 
 			},
 			"employees": employeesObj,
 			"appraisal_items":appraisal_itemsObj
@@ -745,6 +932,7 @@ var actionAssignmentFn = function(param){
 						getDataFn($("#pageNumber").val(),$("#rpp").val());
 						callFlashSlideInModal("Insert Data is Successfully.","#information");
 						$("#action").val("add");
+						clearFn();
 						
 					}
 				   
@@ -752,7 +940,7 @@ var actionAssignmentFn = function(param){
 			}else if(data['status']=="400"){
 				//callFlashSlideInModal(validationFn(data),"#information","error");  
 				callFlashSlideInModal(validationAssignmentFn(data),"#information","error");  
-				
+				return false;
 				
 			}
 			
@@ -777,15 +965,30 @@ var searchAdvanceFn = function() {
 	*/
 	var Position= $("#Position").val().split("-");
 	Position=Position[0];
+	
+
+	
+	var empNameCode= $("#empName").val().split("-");
+	empNameCode=empNameCode[0];
+	
+	
+	
 	$(".embed_param_search").remove();
+	
+
+	
+	
 	var embedParam="";
 	embedParam+="<input type='hidden' class='embed_param_search' id='embed_appraisal_level_id' name='embed_appraisal_level_id' value='"+$("#appraisalLevel").val()+"'>";
 	embedParam+="<input type='hidden' class='embed_param_search' id='embed_appraisal_type_id' name='embed_appraisal_type_id' value='"+$("#appraisalType").val()+"'>";
-	embedParam+="<input type='hidden' class='embed_param_search' id='embed_period_id' name='embed_period_id' value='"+$("#period").val()+"'>";
+	embedParam+="<input type='hidden' class='embed_param_search' id='embed_period_id' name='embed_period_id' value='"+$("#period_id").val()+"'>";
 	embedParam+="<input type='hidden' class='embed_param_search' id='embed_position_code' name='embed_position_code' value='"+Position+"'>";
-	embedParam+="<input type='hidden' class='embed_param_search' id='embed_emp_code' name='embed_emp_code' value='"+$("#empName").val()+"'>";
+	embedParam+="<input type='hidden' class='embed_param_search' id='embed_emp_code' name='embed_emp_code' value='"+empNameCode+"'>";
 	embedParam+="<input type='hidden' class='embed_param_search' id='embed_period_frequency' name='embed_period_frequency' value='"+$("#periodFrequency").val()+"'>";
 	embedParam+="<input type='hidden' class='embed_param_search' id='embed_year_list' name='embed_year_list' value='"+$("#YearList").val()+"'>";
+	embedParam+="<input type='hidden' class='embed_param_search' id='embed_department_list' name='embed_department_list' value='"+$("#Department").val()+"'>";
+	
+	
 	
 	$("#embedParamSearch").append(embedParam);
 	
@@ -801,7 +1004,8 @@ var appraisalLevelListFn = function(nameArea,id){
 	}
 	
 	$.ajax({
-		url:restfulURL+"/tyw_api/public/appraisal_item/al_list",
+		//url:restfulURL+"/tyw_api/public/appraisal_item/al_list",
+		url:restfulURL+"/kpi_api/public/appraisal/al_list",
 		type:"get",
 		dataType:"json",
 		async:false,
@@ -903,12 +1107,10 @@ var periodFrequencyFn = function(nameArea){
 			//var data=['ทดลองงาน','ประจำปี','รักษาการ'];
 			var htmlOption="";
 			$.each(data,function(index,indexEntry){
-				if(id==indexEntry['frequency_month_value']){
-					htmlOption+="<option selected='selected' value="+indexEntry['frequency_month_value']+">"+indexEntry['frequency_name']+"</option>";
-				}else{
-					htmlOption+="<option value="+indexEntry['frequency_month_value']+">"+indexEntry['frequency_name']+"</option>";
+			
+					htmlOption+="<option value="+indexEntry['frequency_id']+">"+indexEntry['frequency_name']+"</option>";
 					
-				}
+			
 			});
 			$("#periodFrequency"+nameArea).html(htmlOption);
 		}
@@ -916,22 +1118,82 @@ var periodFrequencyFn = function(nameArea){
 	
 	
 }
+var dropDrowDepartmentFn = function(id){
+
+	$.ajax({
+		//url:restfulURL+"/tyw_api/public/appraisal_item/department_list",
+		url:restfulURL+"/kpi_api/public/appraisal/dep_list",
+		type:"get",
+		dataType:"json",
+		async:false,
+		headers:{Authorization:"Bearer "+tokenID.token},
+		success:function(data){
+			var htmlOption="";
+		
+			$.each(data,function(index,indexEntry){
+				if(id==indexEntry['department_code']){
+					htmlOption+="<option selected='selected' value="+indexEntry['department_code']+">"+indexEntry['department_name']+"</option>";
+				}else{
+					htmlOption+="<option value="+indexEntry['department_code']+">"+indexEntry['department_name']+"</option>";
+				}
+			});
+			$("#Department").html(htmlOption);
+		}
+	});
+}
 var dropDrowPeriodFn = function(paramPeriod,paramAssignFrequency){
 	
+//	var htmlOption="";
+//	
+//	var periodFrequency = parseInt(paramPeriod);
+//	var period = 12/periodFrequency;
+//	
+//	if(paramAssignFrequency==1){
+//
+//		htmlOption+="<option value=''>ทุกรอบการประเมิน</option>";
+//	}else{
+//		for(var i=1;i<=period;i++){	
+//			htmlOption+="<option value="+i+">รอบการประเมินที่ "+i+"</option>";
+//		}
+//	}
+//	$("#period").html(htmlOption);
 	var htmlOption="";
 	
-	var periodFrequency = parseInt(paramPeriod);
-	var period = 12/periodFrequency;
 	
 	if(paramAssignFrequency==1){
-
-		htmlOption+="<option value=''>ทุกรอบการประเมิน</option>";
+		htmlOption+="<option value=''></option>";
 	}else{
-		for(var i=1;i<=period;i++){	
-			htmlOption+="<option value="+i+">รอบการประเมินที่ "+i+"</option>";
-		}
+		$("#period").removeAttr("disabled");
 	}
-	$("#period").html(htmlOption);
+	
+	$.ajax({
+		url:restfulURL+"/tyw_api/public/appraisal_assignment/period_list",
+		type:"get",
+		dataType:"json",
+		async:false,
+		headers:{Authorization:"Bearer "+tokenID.token},
+		data:{"appraisal_year":$("#YearList").val(),"frequency_id":$("#periodFrequency").val()},
+		success:function(data){
+			//var data=['ทดลองงาน','ประจำปี','รักษาการ'];
+			
+			$.each(data,function(index,indexEntry){
+				if(id==indexEntry['period_id']){
+					htmlOption+="<option selected='selected' value="+indexEntry['period_id']+">"+indexEntry['appraisal_period_desc']+"</option>";
+				}else{
+					htmlOption+="<option value="+indexEntry['period_id']+">"+indexEntry['appraisal_period_desc']+"</option>";
+				}
+			});
+			$("#period_id").html(htmlOption);
+			
+			if(paramAssignFrequency==1){
+				$("#period_id").attr("disabled","disabled");
+			}else{
+				$("#period_id").removeAttr("disabled");
+			}
+			
+				
+		}
+	});
 	
 }
 
@@ -977,6 +1239,17 @@ var dropDrowAsignToEditFn = function(paramStageID){
 		data:{"stage_id":paramStageID},
 		success:function(data){
 			//var data=['ทดลองงาน','ประจำปี','รักษาการ'];
+			if(data=="" || data==null || data==[]){
+				
+				$("#btnSubmit").attr("disabled","disabled");	
+				$("#btnAddAnother").attr("disabled","disabled");
+
+				//return false;
+			}else{
+				$("#btnSubmit").removeAttr("disabled");
+				$("#btnAddAnother").removeAttr("disabled");
+			}
+			
 			var htmlOption="";
 			$.each(data,function(index,indexEntry){
 				if(id==indexEntry['to_appraisal_level_id']){
@@ -1101,28 +1374,29 @@ var assignTemplateQualityFn = function(structureName,data){
 
 	
 	htmlTemplateQuality+="<div class='titlePanel'>"+structureName+"</div>";
-		htmlTemplateQuality+="<div class='totalWeight'>Total Weight "+data['total_weight']+"%</div>";
+		htmlTemplateQuality+="<div class='totalWeight'><span  class='displayWeightOnMobile' id='weigth_total_quality_moblie_percentage-"+data['structure_id']+"'></span><span  class='checkWeigthOver' id='weigth_total_quality_percentage-"+data['structure_id']+"'></span>Total Weight <span id='weigth_total_quality_percentage_target-"+data['structure_id']+"'>"+data['total_weight']+"%<span></div>";
+		
 	htmlTemplateQuality+="</div>";
 	htmlTemplateQuality+="<div class=\"ibox-content\">";
-	htmlTemplateQuality+="<div class=\"table-responsive scrollbar-inner\">";
-	htmlTemplateQuality+="<table id=\"tablethreshould\" class=\"table table-striped\">";
+	htmlTemplateQuality+="<div class=\"table-responsive scrollbar-inner\"  style='overflow:auto;'>";
+	htmlTemplateQuality+="<table id=\"tableQuality\" style='top: -37px;'  class=\"table table-striped tableQuality fixedHeader\">";
 	htmlTemplateQuality+="<thead>";
 		htmlTemplateQuality+="<tr>";
-			htmlTemplateQuality+="<th style=\"width:3%\">Select</th>";
-			htmlTemplateQuality+="<th style=\"width:67%\">Appraisal Item Name</th>";
-			htmlTemplateQuality+="<th style=\"width:15%\">Target </th>";
-			htmlTemplateQuality+="<th style=\"width:15%\">%Weight</th>  ";      
+			htmlTemplateQuality+="<th style=\"width:3%\"><b>Select</b></th>";
+			htmlTemplateQuality+="<th style=\"width:67%\"><b>Appraisal Item Name</b></th>";
+			htmlTemplateQuality+="<th style=\"width:15%\"><b>Target </b></th>";
+			htmlTemplateQuality+="<th style=\"width:15%\"><b>%Weight</b></th>  ";      
 			htmlTemplateQuality+="</tr>";
 				htmlTemplateQuality+="</thead>";
 					htmlTemplateQuality+="<tbody id=\"listthreshould\">";
 					
 					$.each(data['items'],function(index,indexEntry){
 					htmlTemplateQuality+="<tr>";
-						htmlTemplateQuality+="<td class='object-center'><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-checkbox' class='appraisalItem-checkbox' type='checkbox'></td>";
-						htmlTemplateQuality+="<td style='padding-top:7px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-appraisal_item_name' class='id-"+indexEntry['structure_id']+"-appraisal_item_name'>"+indexEntry['appraisal_item_name']+"</td>";
-						htmlTemplateQuality+="<td><input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-target' class='id-"+indexEntry['structure_id']+"-target input form-control input-sm-small numberOnly' type='text'></td>";
-						htmlTemplateQuality+="<td><input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-weight' class='id-"+indexEntry['structure_id']+"-weight weight_sum input form-control input-sm-small numberOnly' type='text'></td>";
-						htmlTemplateQuality+="<input  style='width:47px;'id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-appraisal_item_result_id' class='id-"+indexEntry['structure_id']+"-appraisal_item_result_id input form-control input-sm-small numberOnly' type='hidden' value=\"\">";
+						htmlTemplateQuality+="<td style=\"width:3%;text-align:center;\" class='object-center'  ><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-checkbox' class='appraisalItem-checkbox appraisalItem-checkbox-"+indexEntry['structure_id']+"' type='checkbox' value='"+indexEntry['appraisal_item_id']+"'></td>";
+						htmlTemplateQuality+="<td style=\"width:67%\" style='padding-top:7px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-appraisal_item_name' class='id-"+indexEntry['structure_id']+"-appraisal_item_name'>"+indexEntry['appraisal_item_name']+"</td>";
+						htmlTemplateQuality+="<td style=\"width:15%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-target' class='id-"+indexEntry['structure_id']+"-target input form-control input-sm-small numberOnly' type='text'></td>";
+						htmlTemplateQuality+="<td style=\"width:15%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-weight' class='id-"+indexEntry['structure_id']+"-weight weight_sum total_weigth_quality input form-control input-sm-small numberOnly' type='text'></td>";
+						htmlTemplateQuality+="<input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-appraisal_item_result_id' class='id-"+indexEntry['structure_id']+"-appraisal_item_result_id input form-control input-sm-small numberOnly' type='hidden' value=\"\">";
 						
 					htmlTemplateQuality+="</tr>";
 					});
@@ -1150,30 +1424,31 @@ var assignTemplateDeductFn = function(structureName,data){
 	htmlTemplateDeduct+="<div class=\"span12\">";
 	htmlTemplateDeduct+="<div class=\"ibox-title2\">";
 	htmlTemplateDeduct+="<div class='titlePanel'>"+structureName+"</div>";
-	htmlTemplateDeduct+="<div class='totalWeight'>Total Weight "+data['total_weight']+"%</div>";
+	htmlTemplateDeduct+="<div class='totalWeight'><span class='sum_d' style='display:none;' id='weigth_total_deduct_percentage-"+data['structure_id']+"'>"+data['total_weight']+"</span>Total Weight <span class='weigth_total_deduct_percentage_target' id='weigth_total_deduct_percentage_target-"+data['structure_id']+"'>"+data['total_weight']+"%</span></div>";
+	
 	htmlTemplateDeduct+="</div>";
 		
 		htmlTemplateDeduct+="<div class=\"ibox-content\">";
-		htmlTemplateDeduct+="<div class=\"table-responsive scrollbar-inner\">";
-		htmlTemplateDeduct+="<table id=\"tablethreshould\" class=\"table table-striped\">";
+		htmlTemplateDeduct+="<div class=\"table-responsive scrollbar-inner\"  style='overflow:auto;'>";
+		htmlTemplateDeduct+="<table id=\"tableDeduct\"  style='top: -37px;' class=\"table table-striped tableDeduct fixedHeader\">";
               		
 		htmlTemplateDeduct+="<thead>";
 			htmlTemplateDeduct+="<tr>";
 				htmlTemplateDeduct+="<th style=\"width:3%\"><b>Select</b></th>";
-				htmlTemplateDeduct+="<th style=\"width:67%\"><b>Appraisal Item Name</b></th>";
+				htmlTemplateDeduct+="<th style=\"width:67%\"><b>Appraisal checkWeigthOverItem Name</b></th>";
 				htmlTemplateDeduct+="<th style=\"width:15%\"><b>Max Value </b></th>";
-				htmlTemplateDeduct+="<th style=\"width:15%\"><b>Deduct Score/Unit</b> </th>";
+				htmlTemplateDeduct+="<th style=\"width:15%\"><b>Deduct Score/Unit </b></th>";
 				htmlTemplateDeduct+="</tr>";
 					htmlTemplateDeduct+="</thead>";
 					htmlTemplateDeduct+="<tbody id=\"\">";
 					
 					$.each(data['items'],function(index,indexEntry){
 					htmlTemplateDeduct+="<tr>";
-							htmlTemplateDeduct+="<td class='object-center'><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-checkbox' class='appraisalItem-checkbox' type='checkbox'></td>";
-							htmlTemplateDeduct+="<td style='padding-top:7px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-appraisal_item_name' class='id-"+indexEntry['structure_id']+"-appraisal_item_name'>"+indexEntry['appraisal_item_name']+"</td>";
-							htmlTemplateDeduct+="<td><input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-maxValue' class='id-"+indexEntry['structure_id']+"-maxValue  input form-control input-sm-small numberOnly' type='text'></td>";
-							htmlTemplateDeduct+="<td><input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-deductScoreUnit' class='id-"+indexEntry['structure_id']+"-deductScoreUnit  input form-control input-sm-small numberOnly' type='text'></td>";
-							htmlTemplateDeduct+="<input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-appraisal_item_result_id' class='id-"+indexEntry['structure_id']+"-appraisal_item_result_id input form-control input-sm-small numberOnly' type='hidden' value=\"\">";
+							htmlTemplateDeduct+="<td style=\"width:3%;text-align:center;\" class='object-center' ><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-checkbox' class='appraisalItem-checkbox notCal appraisalItem-checkbox-"+indexEntry['structure_id']+"' type='checkbox' value='"+indexEntry['appraisal_item_id']+"'></td>";
+							htmlTemplateDeduct+="<td style=\"width:67%\" style='padding-top:7px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-appraisal_item_name' class='id-"+indexEntry['structure_id']+"-appraisal_item_name'>"+indexEntry['appraisal_item_name']+"</td>";
+							htmlTemplateDeduct+="<td style=\"width:15%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-maxValue' class='id-"+indexEntry['structure_id']+"-maxValue  input form-control input-sm-small numberOnly' type='text' value='"+indexEntry['max_value']+"'></td>";
+							htmlTemplateDeduct+="<td style=\"width:15%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-deductScoreUnit' class='id-"+indexEntry['structure_id']+"-deductScoreUnit    input form-control input-sm-small numberOnly' type='text' value='"+indexEntry['unit_deduct_score']+"'></td>";
+							htmlTemplateDeduct+="<input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-appraisal_item_result_id' class='id-"+indexEntry['structure_id']+"-appraisal_item_result_id input form-control input-sm-small numberOnly' type='hidden' value=\"\">";
 							
 					htmlTemplateDeduct+="</tr>";
 					});
@@ -1194,6 +1469,10 @@ var assignTemplateDeductFn = function(structureName,data){
 };
 
 var assignTemplateQuantityFn = function(structureName,data){
+	
+	//console.log(structureName);
+	//console.log(data['structure_id']);
+	
 	var appraisal_item_id_array=[];
 	var htmlTemplateQuantity = "";
 	htmlTemplateQuantity+="<div class=\"row-fluid\">";
@@ -1201,27 +1480,27 @@ var assignTemplateQuantityFn = function(structureName,data){
 	htmlTemplateQuantity+="  <div class=\"ibox-title2\">";
 	
 	htmlTemplateQuantity+="      <div class='titlePanel'>"+structureName+"</div>";
-	htmlTemplateQuantity+="      <div class='totalWeight'>Total Weight "+data['total_weight']+"%</div>";
+	htmlTemplateQuantity+="      <div class='totalWeight'><span  class='displayWeightOnMobile' id='weigth_total_quantity_moblie_percentage-"+data['structure_id']+"'></span><span class='checkWeigthOver weigth_total_quantity_percentage' id='weigth_total_quantity_percentage-"+data['structure_id']+"'></span>Total Weight <span id='weigth_total_quantity_percentage_target-"+data['structure_id']+"'>"+data['total_weight']+"%</span></div>";
 	htmlTemplateQuantity+="  </div>";
 	htmlTemplateQuantity+="	<div class=\"ibox-content\">";
-	htmlTemplateQuantity+=" <div class=\"table-responsive scrollbar-inner\">";
-	htmlTemplateQuantity+="<table id=\"tableAppraisalAssignment\" class=\"table table-striped\">";
+	htmlTemplateQuantity+=" <div class=\"table-responsive scrollbar-inner\"  style='overflow:auto;'>";
+	htmlTemplateQuantity+="<table style='width:100%; top: -58px;' id=\"tableQauntity\" class=\"table table-striped tableQauntity fixedHeader\">";
 	htmlTemplateQuantity+="<thead>";
 		htmlTemplateQuantity+="<tr>";
-			htmlTemplateQuantity+="<th style=\"width:3%; text-align:center;\" class=''><b>Select</b></th>";
-			htmlTemplateQuantity+="<th style=\"width:25%; text-align:center;\" class=''><b>Appraisal Item Name</b></th>";
-			htmlTemplateQuantity+="<th style=\"width:5%; text-align:center;\" class=''><b>Target</b> </th>";
-			htmlTemplateQuantity+="<th style=\"width:5%; text-align:center;\" class=''><b>Score1 Start</b> </th>";
-			htmlTemplateQuantity+="<th style=\"width:5%; text-align:center;\" class=''><b>Score1 End</b> </th>";
-			htmlTemplateQuantity+="<th style=\"width:5%; text-align:center;\" class=''><b>Score2 Start </b></th>";
-			htmlTemplateQuantity+="<th style=\"width:5%; text-align:center;\" class=''><b>Score2 End </b></th>";
-			htmlTemplateQuantity+="<th style=\"width:5%; text-align:center;\" class=''><b>Score3 Start </b></th>";
-			htmlTemplateQuantity+="<th style=\"width:5%; text-align:center;\" class=''><b>Score3 End </b></th>";
-			htmlTemplateQuantity+="<th style=\"width:5%; text-align:center;\" class=''><b>Score4 Start </b></th>";
-			htmlTemplateQuantity+="<th style=\"width:5%; text-align:center;\" class=''><b>Score4 End </b></th>";
-			htmlTemplateQuantity+="<th style=\"width:5%; text-align:center;\" class=''><b>Score5 Start </b></th>";
-			htmlTemplateQuantity+="<th style=\"width:5%; text-align:center;\" class=''><b>Score5 End </b></th>";
-			htmlTemplateQuantity+="<th style=\"width:5%; text-align:center;\" class=''><b>%Weight</b></th>";
+			htmlTemplateQuantity+="<th style=\"width:3%\" class=''><b>Select</b></th>";
+			htmlTemplateQuantity+="<th style=\"width:25%\" class=''><b>Appraisal Item Name</b></th>";
+			htmlTemplateQuantity+="<th style=\"width:5%;  text-align:center;\" class=''><b>Target</b> </th>";
+			htmlTemplateQuantity+="<th style=\"width:5%;  text-align:center;\" class=''><b>Score1 Start</b> </th>";
+			htmlTemplateQuantity+="<th style=\"width:5%;  text-align:center;\" class=''><b>Score1 End</b> </th>";
+			htmlTemplateQuantity+="<th style=\"width:5%;  text-align:center;\" class=''><b>Score2 Start</b> </th>";
+			htmlTemplateQuantity+="<th style=\"width:5%;  text-align:center;\" class=''><b>Score2 End</b> </th>";
+			htmlTemplateQuantity+="<th style=\"width:5%;  text-align:center;\" class=''><b>Score3 Start</b> </th>";
+			htmlTemplateQuantity+="<th style=\"width:5%;  text-align:center;\" class=''><b>Score3 End</b> </th>";
+			htmlTemplateQuantity+="<th style=\"width:5%;  text-align:center;\" class=''><b>Score4 Start</b> </th>";
+			htmlTemplateQuantity+="<th style=\"width:5%;  text-align:center;\" class=''><b>Score4 End</b> </th>";
+			htmlTemplateQuantity+="<th style=\"width:5%;  text-align:center;\" class=''><b>Score5 Start</b> </th>";
+			htmlTemplateQuantity+="<th style=\"width:5%;  text-align:center;\" class=''><b>Score5 End</b> </th>";
+			htmlTemplateQuantity+="<th style=\"width:5%;  text-align:center;\" class=''><b>%Weight</b></th>";
 			htmlTemplateQuantity+="</tr>";
 			htmlTemplateQuantity+="</thead>";
 			htmlTemplateQuantity+="<tbody id=\"\">";
@@ -1240,28 +1519,35 @@ var assignTemplateQuantityFn = function(structureName,data){
 				weight_percent
 				*/
 				htmlTemplateQuantity+="<tr>";
-					htmlTemplateQuantity+="<td class='object-center'><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-checkbox' class='appraisalItem-checkbox' type='checkbox'></td>";
-					htmlTemplateQuantity+="<td class='id-"+indexEntry['structure_id']+"-appraisal_item_name' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-appraisal_item_name' style='padding-top:7px;'>"+indexEntry['appraisal_item_name']+"</td>";
-					htmlTemplateQuantity+="<td><input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-target' class='id-"+indexEntry['structure_id']+"-target input form-control input-sm-small numberOnly' type='text'>";
-					htmlTemplateQuantity+="<input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-nof_target_score' class='id-"+indexEntry['structure_id']+"-nof_target_score input form-control input-sm-small numberOnly' type='hidden' value="+indexEntry['nof_target_score']+">";
-					htmlTemplateQuantity+="<input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-appraisal_item_result_id' class='id-"+indexEntry['structure_id']+"-appraisal_item_result_id input form-control input-sm-small numberOnly' type='hidden' value=\"\">";
+					htmlTemplateQuantity+="<td style=\"width:3%; text-align:center;\" class='object-center'><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-checkbox' class='appraisalItem-checkbox appraisalItem-checkbox-"+indexEntry['structure_id']+"'  type='checkbox' value='"+indexEntry['appraisal_item_id']+"'></td>";
+					htmlTemplateQuantity+="<td style=\"width:25%\" class='id-"+indexEntry['structure_id']+"-appraisal_item_name' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-appraisal_item_name' style='padding-top:7px;'>"+indexEntry['appraisal_item_name']+"</td>";
+					htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-target' class='id-"+indexEntry['structure_id']+"-target input form-control input-sm-small numberOnly' type='text'>";
+					htmlTemplateQuantity+="<input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-nof_target_score' class='id-"+indexEntry['structure_id']+"-nof_target_score input form-control input-sm-small numberOnly' type='hidden' value="+indexEntry['nof_target_score']+">";
+					htmlTemplateQuantity+="<input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-appraisal_item_result_id' class='id-"+indexEntry['structure_id']+"-appraisal_item_result_id input form-control input-sm-small numberOnly' type='hidden' value=\"\">";
 					htmlTemplateQuantity+="</td>";
 					for(var i=1;i<=5;i++){
 						if(i<=data['nof_target_score']){
-							htmlTemplateQuantity+="<td><input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_start-"+i+"' class='id-"+indexEntry['structure_id']+"-score_start-"+i+" input form-control input-sm-small numberOnly' type='text'></td>";
-							htmlTemplateQuantity+="<td><input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_end-"+i+"'  class='id-"+indexEntry['structure_id']+"-score_end-"+i+" input form-control input-sm-small numberOnly' type='text'></td>";
+							htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_start-"+i+"' class='id-"+indexEntry['structure_id']+"-score_start-"+i+" input form-control input-sm-small numberOnly' type='text'></td>";
+							htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_end-"+i+"'  class='id-"+indexEntry['structure_id']+"-score_end-"+i+" input form-control input-sm-small numberOnly' type='text'></td>";
 						}else{
-							htmlTemplateQuantity+="<td><input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_start-"+i+"'  disabled class='id-"+indexEntry['structure_id']+"-score_start-"+i+" input form-control input-sm-small numberOnly' type='text'></td>";
-							htmlTemplateQuantity+="<td><input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_end-"+i+"'  disabled class='id-"+indexEntry['structure_id']+"-score_end-"+i+" input form-control input-sm-small numberOnly' type='text'></td>";
+							htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_start-"+i+"'  disabled class='id-"+indexEntry['structure_id']+"-score_start-"+i+" input form-control input-sm-small numberOnly' type='text'></td>";
+							htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_end-"+i+"'  disabled class='id-"+indexEntry['structure_id']+"-score_end-"+i+" input form-control input-sm-small numberOnly' type='text'></td>";
 						}
 					}
-					htmlTemplateQuantity+="<td><input style='width:47px;' id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-weight' class='id-"+indexEntry['structure_id']+"-weight weight_sum input form-control input-sm-small numberOnly' type='text'></td>";
+					//alert(sessionStorage.getItem("is_coporate_kpi")); 
+					if(sessionStorage.getItem("is_coporate_kpi")==1){
+						
+						htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-weight' class='id-"+indexEntry['structure_id']+"-weight weight_sum total_weigth_quantity input form-control input-sm-small numberOnly' disabled type='text' value='0.00'></td>";
+					}else{
+						htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-weight' class='id-"+indexEntry['structure_id']+"-weight weight_sum total_weigth_quantity input form-control input-sm-small numberOnly'  type='text'></td>";
+					}
+					
 				htmlTemplateQuantity+="</tr>";
 				
 			});
 			htmlTemplateQuantity+="</tbody>";
 			htmlTemplateQuantity+="</table>";
-			htmlTemplateQuantity+="<input type='hidden'  id='structure_id-"+data['structure_id']+"' class='structure_id' value="+data['structure_id']+">";
+			htmlTemplateQuantity+="<input type='hidden' id='structure_id-"+data['structure_id']+"' class='structure_id' value="+data['structure_id']+">";
 			htmlTemplateQuantity+="<input type='hidden' id='form-"+data['structure_id']+"' class='' value=\"form1\">";
 			htmlTemplateQuantity+="<input type='hidden' id='appraisal_item_id_array-"+data['structure_id']+"' class='appraisal_item_id_array' value=\""+appraisal_item_id_array+"\">";
 			
@@ -1281,35 +1567,175 @@ var assignTemplateQuantityFn = function(structureName,data){
 var calculationGrandTotalDefaultFn = function(id){
 	
 	var grandTotalWieght=0;
+	var deductTotalWieght=0;
 	$.each($(".weight_sum").get(),function(index,indexEntry){
 		
 		
 		if($(indexEntry).val().trim()!=""){
-			grandTotalWieght+=(parseInt($(indexEntry).val()));
-			//alert(grandTotalWieght);
-			$("#crandTotalWeight").html(grandTotalWieght);
-		}
-		
-	});
-}
-var calculationGrandTotalFn = function(id){
-	
-	var grandTotalWieght=0;
-	$.each($(".weight_sum").get(),function(index,indexEntry){
-		
-		var dataId=id.split("-");;
-		var apprailsal_item_id=dataId[1];
-		var structure_id=dataId[2];
-		if($(indexEntry).val().trim()!="" && $("#id-"+apprailsal_item_id+"-"+structure_id+"-checkbox").prop("checked")==true){
+			
 			grandTotalWieght+=(parseInt($(indexEntry).val()));
 			//alert(grandTotalWieght);
 			
 		}
 		
 	});
-	$("#crandTotalWeight").html(grandTotalWieght);
+	
+	$.each($(".weigth_total_deduct_percentage_target").get(),function(index,indexEntry){
+		//parseInt($("#weigth_total_deduct_percentage").text());
+		deductTotalWieght+=parseInt($(indexEntry).text());
+		
+	});
+	grandTotalWieghtTotal=(deductTotalWieght+grandTotalWieght);
+	$("#grandTotalWeight").html(grandTotalWieghtTotal);
+	//$("#grandTotalWeight").html(grandTotalWieght);
+	
 }
-alert("test");
+function getNum(val) {
+	   if (isNaN(val)) {
+	     return 0;
+	   }
+	   return val;
+	}
+var calculationGrandTotalFn = function(id){
+	
+	var grandTotalWieght=0;
+	var deductTotalWieght=0;
+	var grandTotalWieghtTotal=0;
+	
+	var globalDataId=id.split("-");
+	var globalApprailsal_item_id=globalDataId[1];
+	var globalStructure_id=globalDataId[2];
+	//Start Default weight form quantity is 0%
+	$("#weigth_total_quantity_percentage-"+globalStructure_id)
+	.html("Cannot Assignment Because Weight% not equal to "+parseInt($("#weigth_total_quantity_percentage_target-"+globalStructure_id).text())+"% [0%]")
+	.css({"color":"#FF0000"}).
+	addClass("weightIsOver");
+	//End Default weight form quantity is 0%
+	
+	
+	$.each($(".embed_appraisal_id").get(),function(index,indexEntry){
+		
+		var dataId=this.id.split("-");
+		var apprailsal_item_id=dataId[1];
+		var structure_id=dataId[2];
+		grandTotalWieght+=getNum(parseInt($("#id-"+apprailsal_item_id+"-"+structure_id+"-weight").val()));
+		
+	});
+			   
+	$.each($(".weigth_total_deduct_percentage_target").get(),function(index,indexEntry){
+		deductTotalWieght+=parseInt($(indexEntry).text());
+	});
+	grandTotalWieghtTotal=(deductTotalWieght+grandTotalWieght);
+	
+	console.log(grandTotalWieght);
+	console.log(grandTotalWieghtTotal);
+	
+	$("#grandTotalWeight").html(grandTotalWieghtTotal);
+	//weigth_total_quality_percentage_target
+	
+	//################ Calculation Quantity Start####################### 
+	var totalWeigthQuantity=0;
+	$.each($(".embed_appraisal_id").get(),function(index,indexEntry){
+		var dataId1=this.id.split("-");;
+		var apprailsal_item_id1=dataId1[1];
+		var structure_id1=dataId1[2];
+		
+		$.each($(".total_weigth_quantity").get(),function(index,indexEntry){
+			
+			var dataId=this.id.split("-");;
+			var apprailsal_item_id=dataId[1];
+			var structure_id=dataId[2];
+			if(apprailsal_item_id==apprailsal_item_id1 && structure_id==structure_id1){
+				//console.log(indexEntry);
+			
+			
+				if($(indexEntry).val().trim()!="" && $("#id-"+apprailsal_item_id+"-"+structure_id+"-checkbox").prop("checked")==true){
+					totalWeigthQuantity+=(parseInt($(indexEntry).val()));
+					//alert(grandTotalWieght);
+					if(totalWeigthQuantity != parseInt($("#weigth_total_quantity_percentage_target-"+structure_id).text())){
+						
+						$("#weigth_total_quantity_percentage-"+structure_id)
+						.html("Cannot Assignment Because Weight% not equal to "+parseInt($("#weigth_total_quantity_percentage_target-"+structure_id).text())+"% ["+totalWeigthQuantity+"%]")
+						.css({"color":"#FF0000"}).
+						addClass("weightIsOver");
+						
+						$("#weigth_total_quantity_moblie_percentage-"+structure_id).html("["+totalWeigthQuantity+"%]")
+						.css({"color":"#FF0000"});
+						
+						//var weightStructureHTML="<input type='hidden' name='weigth_quantity_over-"+structure_id+"' id='weigth_quantity_over-"+structure_id+"' class='weigth_quantity_over' value='"+totalWeigthQuantity+"'>";
+						
+					}else{
+						$("#weigth_total_quantity_percentage-"+structure_id)
+						.html("["+totalWeigthQuantity+"%]")
+						.css({"color":"#00CC00"})
+						.removeClass("weightIsOver");
+						
+						$("#weigth_total_quantity_moblie_percentage-"+structure_id).html("["+totalWeigthQuantity+"%]")
+						.css({"color":"#00CC00"});
+					}
+				}
+			
+			}
+		});
+		
+	});
+	//################ Calculation Quantity End####################### 
+	//################ Calculation Quality Start####################### 
+	//Start Default weight form Quality is 0%
+	$("#weigth_total_quality_percentage-"+globalStructure_id)
+	.html("Cannot Assignment Because Weight% not equal to "+parseInt($("#weigth_total_quality_percentage_target-"+globalStructure_id).text())+"% [0%]")
+	.css({"color":"#FF0000"}).
+	addClass("weightIsOver");
+	//End Default weight form Quality is 0%
+	var total_weigth_quality=0;
+	$.each($(".embed_appraisal_id").get(),function(index,indexEntry){
+		var dataId1=this.id.split("-");;
+		var apprailsal_item_id1=dataId1[1];
+		var structure_id1=dataId1[2];
+		
+		
+		
+			$.each($(".total_weigth_quality").get(),function(index,indexEntry){
+				
+				var dataId=this.id.split("-");;
+				var apprailsal_item_id=dataId[1];
+				var structure_id=dataId[2];
+				if(apprailsal_item_id==apprailsal_item_id1 && structure_id==structure_id1){
+					if($(indexEntry).val().trim()!="" && $("#id-"+apprailsal_item_id+"-"+structure_id+"-checkbox").prop("checked")==true){
+						total_weigth_quality+=(parseInt($(indexEntry).val()));
+						//alert(grandTotalWieght);
+						//$("#weigth_total_quality_percentage").html( "["+total_weigth_quality+"]");
+						
+						if(total_weigth_quality != parseInt($("#weigth_total_quality_percentage_target-"+structure_id).text())){
+							
+							$("#weigth_total_quality_percentage-"+structure_id)
+							.html("Cannot Assignment Because Weight% not equal to "+parseInt($("#weigth_total_quality_percentage_target-"+structure_id).text())+"% ["+total_weigth_quality+"%]")
+							.css({"color":"#FF0000"}).
+							addClass("weightIsOver");
+							
+							$("#weigth_total_quality_moblie_percentage-"+structure_id).html("["+total_weigth_quality+"%]")
+							.css({"color":"#FF0000"});
+							
+						}else{
+							
+							$("#weigth_total_quality_percentage-"+structure_id)
+							.html("["+total_weigth_quality+"%]")
+							.css({"color":"#00CC00"})
+							.removeClass("weightIsOver");
+							
+							$("#weigth_total_quality_moblie_percentage-"+structure_id).html("["+total_weigth_quality+"%]")
+							.css({"color":"#00CC00"});
+						}
+					}
+				}
+				
+			});
+		
+	});
+	//################ Calculation Quality End####################### 
+	
+}
+
 var createTemplateAssignmentFn = function(data){
 	$("#appraisal_template_area").empty();
 	$.each(data['group'],function(index,indexEntry){
@@ -1319,26 +1745,44 @@ var createTemplateAssignmentFn = function(data){
 			$("#appraisal_template_area").append(assignTemplateQuantityFn(index,indexEntry));
 		}else if(indexEntry['form_url']=='quality'){
 			$("#appraisal_template_area").append(assignTemplateQualityFn(index,indexEntry));
+			
 		}else if(indexEntry['form_url']=='deduct'){
 			$("#appraisal_template_area").append(assignTemplateDeductFn(index,indexEntry));
 		}
 		
-		//$('.scrollbar-inner').scrollbar();
-	    $('.scrollbar-inner').slimScroll({
-	        height: '200px',
-	        alwaysVisible: true,
-	        railVisible: true
-	    });
-		//console.log(index);
+		
+		
+		
+		
+//	    $('.scrollbar-inner').slimScroll({
+//	        height: '200px',
+//	        alwaysVisible: true,
+//	        railVisible: true
+//	    });
+	    
+	    jQuery('.numberOnly').keyup(function () { 
+		    this.value = this.value.replace(/[^0-9\.\-]/g,'');
+		});
+	    
+		
 	});
 	//sum grand total start
 	
+	
+	
 	$(".weight_sum").keyup(function(){
-		
 		calculationGrandTotalFn(this.id);
 	})
 	$(".appraisalItem-checkbox").click(function(){
-		calculationGrandTotalFn(this.id);
+		//alert("hello");
+		if($(this).hasClass('notCal')){
+			//console.log("notCal");
+			
+		}else{
+			//alert("11");
+			//calculationGrandTotalFn(this.id);
+		}
+		
 	})
 	
 	//sum grand total end
@@ -1351,17 +1795,62 @@ var getTemplateFn = function(){
 		type:"get",
 		dataType:"json",
 		async:false,
-		data:{'appraisal_level_id':$("#appraisalLevel").val()},
+		data:{
+			'appraisal_level_id':$("#appraisalLevel").val(),
+			'department_code':$("#embed_department_list").val()
+			},
 		headers:{Authorization:"Bearer "+tokenID.token},
 		success:function(data){
 			
 			//console.log(data);
 			createTemplateAssignmentFn(data);
+		
+			//SET FIXED HEADER 
+			var widthScreen= $(".fht-table-wrapper").width();
+		
+			$('table.fixedHeader').fixedHeaderTable({ height: '250', fixedColumn: false})
+			.css({"width":"auto","position":"absolute"});
+			//$(".fht-tbody table.fixedHeader thead").hide();
+			$(".fht-tbody table.fixedHeader thead").css({"opacity":"0"});
+			$(".fht-table-wrapper").css({"height":"310px"," overflow":"hidden","min-width":"1100px"});
 			
+			//$(".tableQauntity thead tr th:eq(1)").css({"width":"40%"});
 		}
 	});
 };
+ 
 
+//var connectionServiceFn = function(username,password){
+//	$.ajax({
+//		
+//		url:restfulURL+"/tyw_api/public/session",
+//		//url:"http://localhost/tyw_api/public/session",
+//		type:"POST",
+//		dataType:"text",
+//		data:{"username":username,"password":password},
+//		//data:{"username":"2015019","password":"2015019"},
+//		error: function(jqXHR, textStatus, errorThrown) {
+//			console.log("error login");
+//		},
+//		success:function(data){
+//			//console.log(data);
+//			localStorage.setItem("tokenID",data);
+//			console.log("Login is Success");
+//			
+//		}
+//	})			
+//}
+//function getParamValue(paramName)
+//{
+//    var url = window.location.search.substring(1); //get rid of "?" in querystring
+//    var qArray = url.split('&'); //get key-value pairs
+//    for (var i = 0; i < qArray.length; i++) 
+//    {
+//        var pArr = qArray[i].split('='); //split key and value
+//        if (pArr[0] == paramName) 
+//            return pArr[1]; //return value
+//    }
+//}
 
 /*#########################  Custom Function Data #######################*/
 
@@ -1369,31 +1858,53 @@ var getTemplateFn = function(){
 //Ready to call Function.
 $(document).ready(function(){
 	
-	//Number Only Text Fields.
-	$(document).on("keydown",".numberOnly",function(e){	
-	//$(".numberOnly").keydown(function (e) {
-		        // Allow: backspace, delete, tab, escape, enter and .
+	//alert(is_hr);
+	
+var username = $('#user_portlet').val();
+var password = $('#pass_portlet').val();
+
+/*Fixed for Test.*/
+ username = "1";
+ password =	"11";
+	
+if(username!="" && username!=null & username!=[] && username!=undefined ){
+	
+	if(connectionServiceFn(username,password)==true){
 			
-		        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-		             // Allow: Ctrl+A, Command+A
-		            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
-		             // Allow: home, end, left, right, down, up
-		            (e.keyCode >= 35 && e.keyCode <= 40)) {
-		                 // let it happen, don't do anything
-		                 return;
-		        }
-		        // Ensure that it is a number and stop the keypress
-		        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-		            e.preventDefault();
-		        }
+		
+	//Default start
+	$("#btnSubmit").removeAttr("disabled");
+	$("#btnAssignment").removeAttr("disabled");
+	$("#btnAddAnother").removeAttr("disabled");
+	$("#btnSubmit").removeAttr("disabled");
+	//Default end
+	if(is_hr==0){
+	
+		$("#btnAssignment").attr("disabled","disabled");
+		$("#btnAddAnother").attr("disabled","disabled");
+		$("#btnSubmit").attr("disabled","disabled");
+		
+	}else{
+		//alert(is_hr);
+		$("#btnAssignment").removeAttr("disabled");
+		$("#btnAddAnother").removeAttr("disabled");
+		$("#btnSubmit").removeAttr("disabled");
+	}
+	
+		
+		jQuery('.numberOnly').keyup(function () { 
+		    this.value = this.value.replace(/[^0-9\.\-]/g,'');
 		});
 	
+
+		dropDrowDepartmentFn();
+		appraisalLevelListFn();
+		appraisalTypeFn('','1');
+		periodFrequencyFn();
+		yearListFn();
+		
 	
 	
-	appraisalLevelListFn();
-	appraisalTypeFn('','1');
-	periodFrequencyFn();
-	yearListFn();
 	
 	$("#periodFrequency").change(function(){
 		
@@ -1455,8 +1966,8 @@ $(document).ready(function(){
 				 success:function(data){
 						response($.map(data, function (item) {
                             return {
-                                label: item.emp_name,
-                                value: item.emp_name
+                                label: item.emp_code+"-"+item.emp_name,
+                                value: item.emp_code+"-"+item.emp_name,
                             };
                         }));
 				},
@@ -1475,49 +1986,90 @@ $(document).ready(function(){
 	$("#btnSearchAdvance").click(function(){
 		
 		searchAdvanceFn();
-		
+		$(".countPagination").val(10);
+		$("#rpp").remove();
 		$(".search_result").show();
 	});
 	
 	//btn assignment start
 	$("#btnAssignment").click(function(){
+		
+		
 		empldoyees_code=[];
 		$(".information").hide();
 		$("#btnAddAnother").show();
 		$(".embed_appraisal_id").remove();
-		
+		$("#grandTotalWeight").html("0.00");
 			$.each($(".asign_emp").get(),function(index,indexEntry){
 				if($(indexEntry).is(":checked")){
 					empldoyees_code.push($(indexEntry).val());
 				}
-				
-				
 			});
 		//console.log(empldoyees_code);
 		if(empldoyees_code.length==0){
-			callFlashSlide("Please choose Employee for Assignment.");
+			callFlashSlide("Please choose Employees for Assignment.");
 			return false;
 		}else{
+			
+			//console.log(empldoyees_code[0]);
+			//console.log($("#is_coporate_kpi-"+empldoyees_code[0]).val());
+			sessionStorage.setItem('is_coporate_kpi',$("#is_coporate_kpi-"+empldoyees_code[0]).val());
+			
+			
+			
 			$(".cus_information_area").hide();
 			$("#action").val("add");
+			//Default start
+			$("#btnSubmit").removeAttr("disabled");
+			$("#btnAddAnother").removeAttr("disabled");
+			//Default end
 			getTemplateFn();
 			dropDrowAsignToFn();
 			
 			$("#assignTo").off("change");
 			$("#assignTo").change(function(){
-				//alert($(this).val());
 				dropDrowActionFn($(this).val());
-				
 			});
 			$("#assignTo").change();
+			
+			$(window).scrollTop(0);
+			setTimeout(function(){
+				$(".modal-body").scrollTop(0);
+				$(".fht-tbody").scrollTop(0);
+			
+			});
+			
+			
 		}
-		
-
-		
 	});
 	//btn assignment end
 	//btn action assign start
 		$("#btnSubmit").click(function(){
+			
+		if(sessionStorage.getItem("is_coporate_kpi")==0){	
+			
+				if($(".checkWeigthOver").hasClass('weightIsOver')==true){
+					
+					callFlashSlideInModal("<b>Cannot Assign Structure not equal to Weight Total<b>","#information","error");
+					
+				}else if(parseInt($("#grandTotalWeight").text())!=100){
+					callFlashSlideInModal("<b>Grand Total Weight is Not 100%.<b>","#information","error");
+					
+				}else{
+					
+					if($(".embed_appraisal_id").get().length>0){
+						if($("#action").val()=="add"){
+							actionAssignmentFn("saveOnly");
+						}else{
+							actionUpdateAssignmentFn();
+						}
+					}else{
+						callFlashSlideInModal("Please choose Appraisal item ID.","#information","error");
+					}
+				}
+		}else{
+			
+
 			
 			if($(".embed_appraisal_id").get().length>0){
 				if($("#action").val()=="add"){
@@ -1528,14 +2080,30 @@ $(document).ready(function(){
 			}else{
 				callFlashSlideInModal("Please choose Appraisal item ID.","#information","error");
 			}
-			//alert("hello jquery");
+			
+		}
 			
 		});
 		$(document).on("click","#btnAddAnother",function(){
-			if($(".embed_appraisal_id").get().length>0){
-				actionAssignmentFn("saveAndAnother");	
+			
+
+
+			//clearFn();
+			
+			if($(".checkWeigthOver").hasClass('weightIsOver')==true){
+				
+				callFlashSlideInModal("<b>Cannot Assign Structure not equal to Weight Total<b>","#information","error");
+				
+			}else if(parseInt($("#grandTotalWeight").text())!=100){
+				callFlashSlideInModal("<b>Grand Total Weight is Not 100%.</b>","#information","error");
+			
 			}else{
-				callFlashSlideInModal("Please choose Appraisal item ID.","#information","error");
+			
+				if($(".embed_appraisal_id").get().length>0){
+					actionAssignmentFn("saveAndAnother");	
+				}else{
+					callFlashSlideInModal("Please choose Appraisal item ID.","#information","error");
+				}
 			}
 		});
 	//btn action assign end
@@ -1552,8 +2120,47 @@ $(document).ready(function(){
 			}else{
 				removeEmbedParamCheckboxAppraisalItem(this.id);
 			}
+			
+			if(sessionStorage.getItem("is_coporate_kpi")==0){
+				calculationGrandTotalFn(this.id);
+			}
 		});
 		
 		
+		
+		}
+		
+		
+	}
+
+//check Orientation Start
+var getBrowserWidth = function(){
+	if(window.innerWidth < 768){
+		// Extra Small Device
+		
+		
+	} else if(window.innerWidth < 991){
+		// Small Device
+		
+		
+	} else if(window.innerWidth < 1199){
+		// Medium Device
+		
 	
+	} else {
+		// Large Device
+		
+
+	}
+};
+
+getBrowserWidth();
+$(window).on('resize',function(){
+	getBrowserWidth();
+});
+//check Orientation End
+
+
+
+
 });

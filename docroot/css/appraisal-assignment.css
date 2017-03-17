@@ -7,7 +7,7 @@
   
   /*  desktop Start#########################################*/
  @media (min-width: 980px) and (max-width: 1199px) {
-  
+
  	
   }
  /*  desktop End############################################*/
@@ -66,7 +66,7 @@
 }
 #ui-datepicker-div ,.ui-datepicker { z-index: 99999 !important; }
 
-.control-label{
+.ibox-title .control-label{
 	margin-bottom: 0;
     padding-top: 7px;
     text-align: right;
@@ -82,8 +82,9 @@
     font-weight: bold;
     margin-right: 5px;
     padding-top: 5px;
-    width:200px;
+    /*width:200px;*/
     float:left;
+    position: absolute;
 }
 
 .totalWeight{
@@ -93,7 +94,7 @@
     margin-right: 5px;
     padding-top: 5px;
     text-align: right;
-    width: 200px;
+    /*width: 200px;*/
 }
 
 .titlePanel2{
@@ -209,8 +210,8 @@
 	float:right;
 }
 .btnAssignment{
-	float:right;
-	margin-right:10px;
+	float:left;
+	margin-right:0px;
 }
 .crandTotalWeight{
 	padding:15px;
