@@ -39,7 +39,7 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 			<div class="modal-content bounceInRight">
 				<div class="modal-header">
 					<button data-dismiss="modal" class="close" type="button" style="padding-top:5px">
-						<span aria-hidden="true">Ã</span><span class="sr-only" style="display:none;"></span>
+						<span aria-hidden="true">×</span><span class="sr-only" style="display:none;"></span>
 					</button>
 					<!-- <i class="fa fa-laptop modal-icon"></i> -->
 					<h4 class="modal-title" id="">Appraisal Criteria</h4>

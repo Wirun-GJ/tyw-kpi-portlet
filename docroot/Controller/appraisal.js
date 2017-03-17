@@ -92,11 +92,11 @@ var assignTemplateQualityFn = function(structureName,data){
 	htmlTemplateQuality+="<table id=\"tablethreshould\" class=\"table table-striped\">";
 	htmlTemplateQuality+="<thead>";
 		htmlTemplateQuality+="<tr>";
-			htmlTemplateQuality+="<th style=\"width:25%\">Appraisal Item Name</th>";
-			htmlTemplateQuality+="<th style=\"width:15%\">Target</th>";
-			htmlTemplateQuality+="<th style=\"width:15%\">Score</th>  ";      
-			htmlTemplateQuality+="<th style=\"width:15%\">%Weight</th>  ";   
-			htmlTemplateQuality+="<th style=\"width:15%\">Weight Score</th>  ";   
+			htmlTemplateQuality+="<th style=\"width:35%\"><b>Appraisal Item Name</b></th>";
+			htmlTemplateQuality+="<th style=\"width:15%\"><b>Target</b></th>";
+			htmlTemplateQuality+="<th style=\"width:15%\"<b>Score</b></th>  ";      
+			htmlTemplateQuality+="<th style=\"width:15%\"><b>%Weight</b></th>  ";   
+			htmlTemplateQuality+="<th style=\"width:15%\"><b>Weight Score</b></th>  ";   
 			htmlTemplateQuality+="</tr>";
 				htmlTemplateQuality+="</thead>";
 					htmlTemplateQuality+="<tbody id=\"\" class='appraisal_result'>";
@@ -112,7 +112,7 @@ var assignTemplateQualityFn = function(structureName,data){
 						htmlTemplateQuality+="<td class='' ><div data-toggle=\"tooltip\" data-placement=\"left\" title=\""+hintHtml+"\">"+notNullFn(indexEntry['target_value'])+"</div></td>";
 						
 						htmlTemplateQuality+="<td class=''>";
-						htmlTemplateQuality+="<select style='width:50px' id='competencyScore-"+indexEntry['appraisal_item_result_id']+"' class='competencyScore input form-control input-sm-small numberOnly'>";
+						htmlTemplateQuality+="<select style='width:50px; height: 25px;padding: 0 0 0 5px;' id='competencyScore-"+indexEntry['appraisal_item_result_id']+"' class='competencyScore input form-control input-sm-small numberOnly'>";
 							htmlTemplateQuality+=dropdownDeductScoreFn(notNullFn(indexEntry['score']));
 						htmlTemplateQuality+="<select>";
 						//htmlTemplateQuality+="<input style='width:80px;' id='competencyScore-"+indexEntry['appraisal_item_result_id']+"' class='competencyScore input form-control input-sm-small numberOnly' type='text' value="+notNullFn(indexEntry['score'])+">";
@@ -167,12 +167,12 @@ var assignTemplateDeductFn = function(structureName,data){
               		
 		htmlTemplateDeduct+="<thead>";
 			htmlTemplateDeduct+="<tr>";
-				htmlTemplateDeduct+="<th style=\"width:25%\">Appraisal Item Name</th>";
-				htmlTemplateDeduct+="<th style=\"width:15%\">Max Value</th>";
-				htmlTemplateDeduct+="<th style=\"width:15%\">Actual Value</th>";
-				htmlTemplateDeduct+="<th style=\"width:15%\">Over Value</th>";
-				htmlTemplateDeduct+="<th style=\"width:15%\">Deduct Score/Unit </th>";
-				htmlTemplateDeduct+="<th style=\"width:15%\">Weight Score </th>";
+				htmlTemplateDeduct+="<th style=\"width:35%\"><b>Appraisal Item Name</b></th>";
+				htmlTemplateDeduct+="<th style=\"width:15%\"><b>Max Value</b></th>";
+				htmlTemplateDeduct+="<th style=\"width:15%\"><b>Actual Value</b></th>";
+				htmlTemplateDeduct+="<th style=\"width:15%\"><b>Over Value</b></th>";
+				htmlTemplateDeduct+="<th style=\"width:15%\"><b>Deduct Score/Unit</b> </th>";
+				htmlTemplateDeduct+="<th style=\"width:15%\"><b>Weight Score </b></th>";
 			htmlTemplateDeduct+="</tr>";
 			htmlTemplateDeduct+="</thead>";
 					htmlTemplateDeduct+="<tbody id=\"\" class='appraisal_result'>";
@@ -239,13 +239,13 @@ var assignTemplateQuantityFn = function(structureName,data){
 	htmlTemplateQuantity+="<table id=\"tableAppraisalAssignment\" class=\"table table-striped\">";
 	htmlTemplateQuantity+="<thead>";
 		htmlTemplateQuantity+="<tr>";
-			htmlTemplateQuantity+="<th style=\"width:10%\" class=''>Perspective </th>";
-			htmlTemplateQuantity+="<th style=\"width:25%\" class=''>Appraisal Item Name</th>";
-			htmlTemplateQuantity+="<th style=\"width:5%\" class=''>Target </th>";
-			htmlTemplateQuantity+="<th style=\"width:5%\" class=''>Actual </th>";
-			htmlTemplateQuantity+="<th style=\"width:5%\" class=''>Score </th>";
-			htmlTemplateQuantity+="<th style=\"width:5%\" class=''>%Weight </th>";
-			htmlTemplateQuantity+="<th style=\"width:5%\" class=''>Weight Score </th>";
+			htmlTemplateQuantity+="<th style=\"width:10%\" class=''><b>Perspective</b> </th>";
+			htmlTemplateQuantity+="<th style=\"width:25%\" class=''><b>Appraisal Item Name</b></th>";
+			htmlTemplateQuantity+="<th style=\"width:5%\" class=''><b>Target </b></th>";
+			htmlTemplateQuantity+="<th style=\"width:5%\" class=''><b>Actual </b></th>";
+			htmlTemplateQuantity+="<th style=\"width:5%\" class=''><b>Score </b></th>";
+			htmlTemplateQuantity+="<th style=\"width:5%\" class=''><b>%Weight </b></th>";
+			htmlTemplateQuantity+="<th style=\"width:5%\" class=''><b>Weight Score</b> </th>";
 			
 		htmlTemplateQuantity+="</tr>";
 		htmlTemplateQuantity+="</thead>";

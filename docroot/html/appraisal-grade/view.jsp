@@ -14,7 +14,7 @@ String pwd = (String) portletSession1.getAttribute("password", PortletSession.AP
 out.print(pwd);
 String password=PortalUtil.getUser(request).getPassword();
 */
-
+ 
 String username = themeDisplay.getUser().getScreenName();
 String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWORD);
 //out.print(username);

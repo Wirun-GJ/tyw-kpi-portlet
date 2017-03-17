@@ -7,7 +7,7 @@
 <liferay-theme:defineObjects />
 <portlet:defineObjects />
 <%
-/*
+/* 
 PortletSession portletSession1 = renderRequest.getPortletSession();
 portletSession1.setAttribute("password", "authenticated", PortletSession.APPLICATION_SCOPE);
 String pwd = (String) portletSession1.getAttribute("password", PortletSession.APPLICATION_SCOPE);

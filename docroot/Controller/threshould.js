@@ -17,7 +17,7 @@
     			           
     			          ],
     			"form":[{
-    	    				"label":"Structure Name","inputType":"dropdown","default":"All",
+    	    				"label":"Structure Name","inputType":"dropdown",
     	    				"id":"structure_id","width":"200px","url":""+restfulURL+"/tyw_api/public/threshold/structure_list"
     	    				},
     	    			    {

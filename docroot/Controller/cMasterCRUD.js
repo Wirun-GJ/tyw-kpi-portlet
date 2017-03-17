@@ -397,7 +397,7 @@ var getDataFn = function(page,rpp,options,search){
 
 var createInputTypeFn  = function(object,tokenID){
 	
-	var initValue =(object['initValue'] == undefined  ? false : object['initValue']);
+	//var initValue =(object['initValue'] == undefined  ? false : object['initValue']);
 	
 	var inputType="";
 /*
@@ -416,16 +416,15 @@ var createInputTypeFn  = function(object,tokenID){
 			async:false,
 			headers:{Authorization:"Bearer "+tokenID.token},
 			success:function(data){
-				inputType="<select class='span12 m-b-n' id="+object['id']+" name=\""+object['id']+"\" style='width:"+object['width']+"'>";			
+				inputType="<select class=\"span12 m-b-n\" id=\""+object['id']+"\" name=\""+object['id']+"\" style=\"width:"+object['width']+"\">";			
 				//initValue
 				if(object['initValue']!=undefined){
 					inputType+="<option value=''>"+object['initValue']+"</option>";
 				}
 				
 				$.each(data,function(index,indexEntry){
+				
 					
-					//console.log(Object.keys(indexEntry)[0]);
-					//inputType+="<option value="+index+">"+indexEntry+"</option>";
 					if(dataSearch==indexEntry[Object.keys(indexEntry)[0]]){
 						
 						inputType+="<option selected value="+indexEntry[Object.keys(indexEntry)[0]]+">"+indexEntry[Object.keys(indexEntry)[1]]+"</option>";
@@ -433,7 +432,8 @@ var createInputTypeFn  = function(object,tokenID){
 						inputType+="<option value="+indexEntry[Object.keys(indexEntry)[0]]+">"+indexEntry[Object.keys(indexEntry)[1]]+"</option>";
 					}
 				});
-				inputType+="<select>";
+				inputType+="</select>";
+				//alert(inputType);
 			}
 		})
 		
@@ -751,8 +751,7 @@ var createDataTableFn = function(options){
 	    		$(".countPagination").val(10);
 	    		$("#rpp").remove();
 	    		getDataFn($("#pageNumber").val(),$("#rpp").val(),options,dataSearch);
-	    		
-	    		
+
 	    		return false;
 	    	});
 	    	

@@ -1,15 +1,4 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
-
-<portlet:defineObjects />
-
-<input type="hidden" id="url_portlet" name="url_portlet" value="<%= renderRequest.getContextPath() %>">
-
-<div class='container'>	
-	<div id="mainContent">
-	</div>
-</div>
-		
-<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 <%@ taglib uri="http://alloy.liferay.com/tld/aui" prefix="aui"%>
 <%@ page import="javax.portlet.*"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
@@ -47,7 +36,7 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 
 					<div class='col-xs-12'>
 						<div id="slide_status">
-							<div id="btnCloseSlide">Ã</div>
+							<div id="btnCloseSlide">×</div>
 							<div id="slide_status_area"></div>
 						</div>
 					</div>
@@ -130,8 +119,8 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 									
 									<div class="span1">
 	                					<select data-toggle="tooltip" title="TypeDatabase" class="input form-control input-sm"  id="bonusprorateSystem" name="flag_2">
-											<option value="à¸à¸´à¸à¸ªà¸±à¸à¸ªà¹à¸§à¸à¸à¸²à¸¡à¸à¸µ">à¸à¸´à¸à¸ªà¸±à¸à¸ªà¹à¸§à¸à¸à¸²à¸¡à¸à¸µ</option>
-											<option value="à¸à¸´à¸à¸ªà¸±à¸à¸ªà¹à¸§à¸à¸à¸²à¸¡à¸£à¸­à¸à¸à¹à¸²à¸¢à¹à¸à¸à¸±à¸ª">à¸à¸´à¸à¸ªà¸±à¸à¸ªà¹à¸§à¸à¸à¸²à¸¡à¸£à¸­à¸à¸à¹à¸²à¸¢à¹à¸à¸à¸±à¸ª</option>								
+											<option value="คิดสัดส่วนตามปี">คิดสัดส่วนตามปี</option>
+											<option value="คิดสัดส่วนตามรอบจ่ายโบนัส">คิดสัดส่วนตามรอบจ่ายโบนัส</option>								
 										</select>
 									 	 
 									</div>

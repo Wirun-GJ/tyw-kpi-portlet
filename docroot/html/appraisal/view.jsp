@@ -106,6 +106,7 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
     color: #8d8d8d;
     font-weight: 200;
     margin-bottom: 0;
+    
 }
 .aui #breadcrumbs {
     margin-bottom: 0;
@@ -122,7 +123,8 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 	width:94%;
 }
 .aui select, .aui textarea, .aui input[type="text"], .aui input[type="password"], .aui input[type="datetime"], .aui input[type="datetime-local"], .aui input[type="date"], .aui input[type="month"], .aui input[type="time"], .aui input[type="week"], .aui input[type="number"], .aui input[type="email"], .aui input[type="url"], .aui input[type="search"], .aui input[type="tel"], .aui input[type="color"], .aui .uneditable-input{
-padding: 5px;
+padding:5px;
+padding-top:0px;
 }
 .aui .p-t-xxs{
  padding-top: 5px;
@@ -152,6 +154,24 @@ padding: 5px;
 }
 .aui #actionToAssign{
 	width:100%;
+}
+
+.aui .row-fluid [class*="span"]{
+min-height: auto;
+margin-bottom:1px;
+}
+
+.textInfo{
+	font-wieght:bold;
+}
+/*
+.aui label {
+    color: #555;
+    font-size: 16px;
+}
+*/
+.aui #btnSearchAdvance{
+	left:4px; position:relative;
 }
 	
 </style>
@@ -406,7 +426,7 @@ padding: 5px;
 			<div class="modal-content animated bounceInRight">
 				<div class="modal-header">
 					<button data-dismiss="modal" class="close" type="button">
-						<span aria-hidden="true">×</span><span class="sr-only">Close</span>
+						<span aria-hidden="true">×</span><span class="sr-only"></span>
 					</button>
 					<!-- <i class="fa fa-laptop modal-icon"></i> -->
 					<h4 class="modal-title" id="modalTitleRole">Appraisal</h4>
@@ -416,12 +436,13 @@ padding: 5px;
 				</div>
 				<div class="modal-body">
 					<!-- content start -->
+					<!-- 
 					<h2>
 						<i class="fa fa fa-pencil-square-o icon-title"></i> <span
 							id="modalDescription">Appraisal</span>
 					</h2>
 					<hr>
-					
+					 -->
 					
 					<!-- -------------From Employee Start------------- -->
 					<div class="row-fluid">
@@ -432,29 +453,37 @@ padding: 5px;
 							</div>
 							<!-- ibox-content-radius -->
 							<div class="ibox-content ">
-								<div class="row-fluid">
-									<div class="span5">
+								<div class="container-fluid">
+									<div class="span10 ">
+											<div class="row-fluid">
 											
-											<label class="span5 span6 ">Employee code:</label>
-											<label class="span7 span6 " id="txtEmpCode"></label>
-											<label class="span5 span6 ">Employee Name:</label>
-											<label class="span7 span6 " id="txtEmpName"></label>
-											<label class="span5 span6 ">Position:</label>
-											<label class="span7 span6 " id="txtPosition"></label>
-											<label class="span5 span6 ">Department:</label>
-											<label class="span7 span6 " id="txtDepartment"></label>
-											<label class="span5 span6 ">Section:</label>
-											<label class="span7 span6 " id="txtSection"></label>
-									</div>
-									<div class="span5">
-											<label class="span5 span6 ">Chief Employee Code:</label>
-											<label class="span7 span6 " id="txtChiefEmpCode"></label>
-											<label class="span5 span6 ">Chief Employee Name:</label>
-											<label class="span7 span6 " id="txtChiefEmpName"></label>
-											<label class="span5 span6 ">Appraisal Type:</label>
-											<label class="span7 span6 " id="txtAppraisalType"></label>
-											<label class="span5 span6 ">Period:</label>
-											<label class="span7 span6 " id="txtPeriod"></label>
+												<label class="span3 textInfo">Employee code:</label>
+												<label class="span3 textInfo" id="txtEmpCode"></label>
+												<label class="span3 textInfo">Employee Name:</label>
+												<label class="span3 textInfo" id="txtEmpName"></label>
+											</div>
+											<div class="row-fluid">
+												<label class="span3 textInfo">Position:</label>
+												<label class="span3 textInfo" id="txtPosition"></label>
+												<label class="span3 textInfo">Department:</label>
+												<label class="span3 textInfo" id="txtDepartment"></label>
+											</div>
+											<div class="row-fluid">
+												<label class="span3 textInfo">Section:</label>
+												<label class="span3 textInfo" id="txtSection"></label>
+												<label class="span3 textInfo">Chief Employee Code:</label>
+												<label class="span3 textInfo" id="txtChiefEmpCode"></label>
+											</div>
+											<div class="row-fluid">
+												<label class="span3 textInfo">Chief Employee Name:</label>
+												<label class="span3 textInfo" id="txtChiefEmpName"></label>
+												<label class="span3 textInfo">Appraisal Type:</label>
+												<label class="span3 textInfo" id="txtAppraisalType"></label>
+											</div>
+											<div class="row-fluid">
+												<label class="span3 textInfo">Period:</label>
+												<label class="span3 textInfo" id="txtPeriod"></label>
+											</div>
 									</div>
 									<div class="span2">
 											<label class="span12 p-t-xxs text-center ">Grand Total Weigh %</label>
@@ -505,7 +534,7 @@ padding: 5px;
 				<div class="modal-footer">
 				
 					<div class='row-fluid'>
-						<div class="span3"></div>
+						<div class="span4"></div>
 						<div class="span3">
 							 <div class="form-group p-xxs"> 
 								 <label class="span5 p-t-xxs"><b>Assign to:</b></label> 
@@ -528,7 +557,7 @@ padding: 5px;
 							 </div> 
 						 </div>
 						 
-						  <div class="span3">
+						  <div class="span2">
 						  
 							  	<button class="btn btn-success" type="button" id="btnSubmit">Save</button>
 								<input type='hidden' id='emp_result_id' name='emp_result_id' value=''>
@@ -577,8 +606,9 @@ padding: 5px;
 
 	<!-- New Modal Appraisal Start -->
 	    <!-- Button to trigger modal -->
+	    <!-- 
     <a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
-     
+      -->
     <!-- Modal -->
     <div id="myModal" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	       <div class="modal-header">

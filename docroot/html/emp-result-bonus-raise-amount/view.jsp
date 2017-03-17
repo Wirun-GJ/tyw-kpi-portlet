@@ -6,7 +6,7 @@
 <%@ page import="com.liferay.portal.kernel.util.WebKeys" %>
 <liferay-theme:defineObjects />
 <portlet:defineObjects />
-<%
+<% 
 /*
 PortletSession portletSession1 = renderRequest.getPortletSession();
 portletSession1.setAttribute("password", "authenticated", PortletSession.APPLICATION_SCOPE);

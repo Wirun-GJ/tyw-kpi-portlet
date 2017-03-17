@@ -12,7 +12,7 @@
   },
   "repository": {
     "url": "https://github.com/house9/jquery-iframe-auto-height",
-    "type": "git"
+    "type": "git" 
   },
   "license": "MIT",
   "dependencies": {},
