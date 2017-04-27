@@ -76,8 +76,8 @@ var assignTemplateQualityFn = function(structureName,data){
 		}
 		hintCount++;
 	});
-	
-	
+	 
+	 
 	htmlTemplateQuality+="";
 	htmlTemplateQuality+="<div class=\"row-fluid\">";
 	htmlTemplateQuality+="<div class=\"span12\">";
