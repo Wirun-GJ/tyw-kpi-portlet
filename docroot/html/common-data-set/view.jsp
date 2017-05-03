@@ -399,9 +399,9 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 										<div class="form-group p-xxs ">
 											<div class="form-group pull-right  m-b-none  p-b-xxs">
 
-
+											<!-- data-target="#ModalCopy" data-toggle="modal" -->
 											<button id="btn_copy" type="button"
-												data-target="#ModalCopy" data-toggle="modal"
+												
 												class="btn btn-primary btn-sm " style="margin-left: 5px">
 												&nbsp;<i class="fa fa-plus-square"></i>&nbsp;Copy&nbsp;&nbsp;
 											</button>
@@ -562,7 +562,7 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 						<span aria-hidden="true">×</span><span class="sr-only">Close</span>
 					</button>
 					<!-- <i class="fa fa-laptop modal-icon"></i> -->
-					<h4 class="modal-title" id="modalTitleRole">Copy</h4>
+					<h4 class="modal-title" id="">Copy</h4>
 					<!-- 
                 <small class="font-bold">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
                  -->
@@ -611,8 +611,8 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 					<button class="btn btn-success" type="button" id="btnCopySubmit">Save</button>
 					<button data-dismiss="modal" class="btn btn-danger btnCancle"
 						type="button">Cancel</button>
-<!-- 					<div class="alert alert-warning" id="information" -->
-<!-- 						style="display: none;"></div> -->
+ 					<div class="alert alert-warning" id="information3"
+ 						style="display: none;"></div> 
 				</div>
 			</div>
 		</div>
