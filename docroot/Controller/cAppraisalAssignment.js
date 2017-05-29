@@ -4,8 +4,6 @@
 var globalData=[];
 var empldoyees_code = [];
 
-
-
 //var is_hr = 0;
 var clearFn = function(){
 	$(':input')
@@ -167,7 +165,14 @@ var setDataToTemplateFn = function(data,actionType){
 	}else{
 //		$(".btnAssignment").show();
 //		$("#btnSubmit").show();
-		$("#ModalAssignment").find('input[type="text"]').removeAttr('disabled'); 
+		
+		//Check TEXT Disabled Start
+		if($("#ModalAssignment").find('input[class="disabledInputText"]')){
+		}else{
+			$("#ModalAssignment").find('input[type="text"]').removeAttr('disabled'); 
+		}
+		//Check TEXT Disabled End
+		
 		$("#ModalAssignment").find('input[type="checkbox"]').removeAttr('disabled'); 
 		
 		if(sessionStorage.getItem("is_coporate_kpi")==1){
@@ -1005,7 +1010,7 @@ var appraisalLevelListFn = function(nameArea,id){
 	
 	$.ajax({
 		//url:restfulURL+"/tyw_api/public/appraisal_item/al_list",
-		url:restfulURL+"/kpi_api/public/appraisal/al_list",
+		url:restfulURL+"/tyw_api/public/appraisal/al_list",
 		type:"get",
 		dataType:"json",
 		async:false,
@@ -1122,7 +1127,7 @@ var dropDrowDepartmentFn = function(id){
 
 	$.ajax({
 		//url:restfulURL+"/tyw_api/public/appraisal_item/department_list",
-		url:restfulURL+"/kpi_api/public/appraisal/dep_list",
+		url:restfulURL+"/tyw_api/public/appraisal/dep_list",
 		type:"get",
 		dataType:"json",
 		async:false,
@@ -1530,8 +1535,8 @@ var assignTemplateQuantityFn = function(structureName,data){
 							htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_start-"+i+"' class='id-"+indexEntry['structure_id']+"-score_start-"+i+" input form-control input-sm-small numberOnly' type='text'></td>";
 							htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_end-"+i+"'  class='id-"+indexEntry['structure_id']+"-score_end-"+i+" input form-control input-sm-small numberOnly' type='text'></td>";
 						}else{
-							htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_start-"+i+"'  disabled class='id-"+indexEntry['structure_id']+"-score_start-"+i+" input form-control input-sm-small numberOnly' type='text'></td>";
-							htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_end-"+i+"'  disabled class='id-"+indexEntry['structure_id']+"-score_end-"+i+" input form-control input-sm-small numberOnly' type='text'></td>";
+							htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_start-"+i+"'  disabled class='id-"+indexEntry['structure_id']+"-score_start-"+i+" input form-control input-sm-small numberOnly disabledInputText' type='text'></td>";
+							htmlTemplateQuantity+="<td style=\"width:5%\"><input id='id-"+indexEntry['appraisal_item_id']+"-"+indexEntry['structure_id']+"-score_end-"+i+"'  disabled class='id-"+indexEntry['structure_id']+"-score_end-"+i+" input form-control input-sm-small numberOnly disabledInputText' type='text'></td>";
 						}
 					}
 					//alert(sessionStorage.getItem("is_coporate_kpi")); 
@@ -1627,25 +1632,27 @@ var calculationGrandTotalFn = function(id){
 	});
 	grandTotalWieghtTotal=(deductTotalWieght+grandTotalWieght);
 	
-	console.log(grandTotalWieght);
-	console.log(grandTotalWieghtTotal);
+	//console.log(grandTotalWieght);
+	//console.log(grandTotalWieghtTotal);
 	
 	$("#grandTotalWeight").html(grandTotalWieghtTotal);
 	//weigth_total_quality_percentage_target
 	
 	//################ Calculation Quantity Start####################### 
-	var totalWeigthQuantity=0;
+	//var totalWeigthQuantity=0;
 	$.each($(".embed_appraisal_id").get(),function(index,indexEntry){
-		var dataId1=this.id.split("-");;
+		var dataId1=this.id.split("-");
 		var apprailsal_item_id1=dataId1[1];
 		var structure_id1=dataId1[2];
+		var totalWeigthQuantity=0;
 		
-		$.each($(".total_weigth_quantity").get(),function(index,indexEntry){
+		//$.each($(".total_weigth_quantity").get(),function(index,indexEntry){
+		$.each($(".id-"+structure_id1+"-weight").get(),function(index,indexEntry){
 			
-			var dataId=this.id.split("-");;
+			var dataId=this.id.split("-");
 			var apprailsal_item_id=dataId[1];
 			var structure_id=dataId[2];
-			if(apprailsal_item_id==apprailsal_item_id1 && structure_id==structure_id1){
+			//if(apprailsal_item_id==apprailsal_item_id1 && structure_id==structure_id1){
 				//console.log(indexEntry);
 			
 			
@@ -1675,7 +1682,7 @@ var calculationGrandTotalFn = function(id){
 					}
 				}
 			
-			}
+			//}
 		});
 		
 	});
@@ -1687,20 +1694,20 @@ var calculationGrandTotalFn = function(id){
 	.css({"color":"#FF0000"}).
 	addClass("weightIsOver");
 	//End Default weight form Quality is 0%
-	var total_weigth_quality=0;
+	//var total_weigth_quality=0;
 	$.each($(".embed_appraisal_id").get(),function(index,indexEntry){
 		var dataId1=this.id.split("-");;
 		var apprailsal_item_id1=dataId1[1];
 		var structure_id1=dataId1[2];
+		var total_weigth_quality=0;
 		
 		
-		
-			$.each($(".total_weigth_quality").get(),function(index,indexEntry){
-				
+			//$.each($(".total_weigth_quality").get(),function(index,indexEntry){
+			$.each($(".id-"+structure_id1+"-weight").get(),function(index,indexEntry){
 				var dataId=this.id.split("-");;
 				var apprailsal_item_id=dataId[1];
 				var structure_id=dataId[2];
-				if(apprailsal_item_id==apprailsal_item_id1 && structure_id==structure_id1){
+				//if(apprailsal_item_id==apprailsal_item_id1 && structure_id==structure_id1){
 					if($(indexEntry).val().trim()!="" && $("#id-"+apprailsal_item_id+"-"+structure_id+"-checkbox").prop("checked")==true){
 						total_weigth_quality+=(parseInt($(indexEntry).val()));
 						//alert(grandTotalWieght);
@@ -1727,7 +1734,7 @@ var calculationGrandTotalFn = function(id){
 							.css({"color":"#00CC00"});
 						}
 					}
-				}
+				//}
 				
 			});
 		
