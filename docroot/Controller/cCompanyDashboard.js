@@ -443,7 +443,7 @@ getDataYTDGrowthFn = function(appraisal_year,appraisal_item_id){
 					}else{
 						objFormat+=",[";
 					}
-						objFormat+="\""+indexEntry2['period_desc']+"\",\""+indexEntry[Object.keys(indexEntry)]+"\",\""+indexEntry2[Object.keys(indexEntry)[0]]+"\"";
+						objFormat+="\""+indexEntry2['month_name']+"\",\""+indexEntry[Object.keys(indexEntry)]+"\",\""+indexEntry2[Object.keys(indexEntry)[0]]+"\"";
 					objFormat+="]";
 				});
 				
@@ -451,7 +451,7 @@ getDataYTDGrowthFn = function(appraisal_year,appraisal_item_id){
 				
 			objFormat+="]";
 			
-			//console.log(objFormat);
+			console.log(objFormat);
 			var objJsonFormat = eval("("+objFormat+")");
 			createGraphYTDGrowthFn(objJsonFormat);
 			
@@ -516,7 +516,8 @@ getDataYTDVarianceFn = function(appraisal_year,appraisal_item_id){
 				
 			objFormat+="]";
 			
-			//console.log(objFormat);
+			console.log(objFormat);
+			console.log("----------------------------- \n");
 			var objJsonFormat = eval("("+objFormat+")");
 			createGraphYTDVarianceFn(objJsonFormat);
 			
