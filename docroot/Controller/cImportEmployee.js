@@ -478,6 +478,7 @@ var updateFn = function () {
 
 //-------- Insert Role Start
 var insertRoleFn = function () {
+	var chackSelect =  false;
 	var emp =[];
 	var role = [];
 	$.each($(".selectEmpCheckbox").get(),function(index,indexEntry){
@@ -488,9 +489,11 @@ var insertRoleFn = function () {
 	$.each($(".from_data_role").get(),function(index,indexEntry){
 		if($(indexEntry).is(":checked")){
 			role.push($(indexEntry).val());
+			chackSelect = true;
 		}
 	});
-	
+	if (chackSelect == false){callFlashSlideInModal("<font color='red'>*</font> Please Select Appraisal level !!!","#information3"); return false;}
+
 		$.ajax({
 			url : restfulURL+restfulPathImportEmployee+"/role",
 			type : "PATCH",
@@ -668,6 +671,23 @@ $(document).ready(function() {
 	$("#btn_add_role").click(function() {
 		clearFn();
 		$("#txtAssignEmpName").hide();
+		
+		var chackSelect =  false;
+		$(".btnModalClose").click();
+		$.each($(".selectEmpCheckbox").get(),function(index,indexEntry){
+			if($(indexEntry).is(":checked")){
+				chackSelect = true;
+				return false;
+			}
+		});
+		if (chackSelect == true){
+			listAppraisalLevel();
+			
+			$("#ModalRole").modal();
+			}
+		else{
+			callFlashSlide("Please Select Employee !!!");
+		}
 
 		//listAppraisalLevel();
 		

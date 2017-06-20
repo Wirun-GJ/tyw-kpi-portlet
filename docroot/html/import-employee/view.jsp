@@ -394,14 +394,14 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 									<div class="span4 form-horizontal  ">
 										<div class="form-group p-xxs ">
 											<label class="control-label">Department</label>
-											<div id="drop_down_department" class="controls"></div>
+											<div id="drop_down_department" class="controls"><select data-toggle="tooltip" title="Department" class="input span12 m-b-n" id="search_department" name="search_department"><option selected="" value="">All</option></select></div>
 
 										</div>
 									</div>
 									<div class="span4 form-horizontal  ">
 										<div class="form-group p-xxs ">
 											<label class="control-label">Section</label>
-											<div id="drop_down_section" class="controls"></div>
+											<div id="drop_down_section" class="controls"><select data-toggle="tooltip" title="Section" class="input span12 m-b-n" id="search_section" name="search_section"><option selected="" value="">All</option></select></div>
 
 										</div>
 									</div>
@@ -438,7 +438,7 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 
 										
 										<div class="pull-right ">
-											<button id="btn_add_role" type="submit" data-target="#ModalRole"
+											<button id="btn_add_role" type="submit" 
 											data-toggle="modal" class="btn btn-primary btn-sm "
 											style="margin-left: 5px;margin-bottom: 5px;">
 											&nbsp;<i class="fa fa-plus-square"></i>&nbsp;Role&nbsp;&nbsp;
@@ -720,8 +720,8 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 					<button class="btn btn-success" type="button" id="btnRoldSubmit">Save</button>
 					<button data-dismiss="modal" class="btn btn-danger btnCancle"
 						type="button">Cancel</button>
-<!-- 					<div class="alert alert-warning" id="information" -->
-<!-- 						style="display: none;"></div> -->
+					<div class="alert alert-warning" id="information3"
+						style="display: none;"></div>
 				</div>
 			</div>
 		</div>
