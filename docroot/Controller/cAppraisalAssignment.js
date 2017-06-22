@@ -374,25 +374,23 @@ var getDataFn = function(page,rpp) {
 };
 //Delete
 var deleteFn = function(id) {
-	 $.ajax({
-      url:restfulURL+"/tyw_api/public/appraisal_assignment/"+id,
-      type:"DELETE",
-      dataType:"json",
-	  headers:{Authorization:"Bearer "+tokenID.token},
-	  success:function(data){ 
+	$.ajax({
+	url:restfulURL+"/tyw_api/public/appraisal_assignment/"+id,
+	type:"DELETE",
+	dataType:"json",
+	headers:{Authorization:"Bearer "+tokenID.token},
+	success:function(data){ 
 		if(data['status']==200){
-			
-			   callFlashSlide("Delete Successfully.");       
-		       getDataFn($("#pageNumber").val(),$("#rpp").val());
-			   $("#confrimModal").modal('hide');
+			callFlashSlide("Delete Successfully.");
+			getDataFn($("#pageNumber").val(),$("#rpp").val());
+			$("#confrimModal").modal('hide');
 			   
 		}else if(data['status']=="400"){
 			
-			callFlashSlide(validationFn(data),"error");  
-			
+			callFlashSlide(validationFn(data),"error");
 		}
-     }
-   });
+		}
+	});
 };
 //Embed Parameter 
 var embedParam = function(id){
@@ -757,8 +755,8 @@ var actionUpdateAssignmentFn = function(){
 			if(data['status']==200){
 				
 				   //callFlashSlide("Updated."); 
-				   callFlashSlideInModal("Updated","#information");      
-			       getDataFn($("#pageNumber").val(),$("#rpp").val());
+				   callFlashSlideInModal("Updated","#information");
+				   getDataFn($("#pageNumber").val(),$("#rpp").val());
 				   $("#ModalAssignment").modal('hide');
 				   $("#action").val("add");
 				   
@@ -766,8 +764,7 @@ var actionUpdateAssignmentFn = function(){
 			}else if(data['status']=="400"){
 				
 				callFlashSlideInModal(validationAssignmentFn(data),"#information","error");
-				
-				  
+
 				
 			}
 			
@@ -929,7 +926,7 @@ var actionAssignmentFn = function(param){
 				   
 				   if(param !="saveAndAnother"){
 					   callFlashSlide("Insert Successfully.");
-				       getDataFn($("#pageNumber").val(),$("#rpp").val());
+					   getDataFn($("#pageNumber").val(),$("#rpp").val());
 					   $("#ModalAssignment").modal('hide');
 					   $("#action").val("add");		 	    
 					}else{
@@ -944,7 +941,7 @@ var actionAssignmentFn = function(param){
 				   
 			}else if(data['status']=="400"){
 				//callFlashSlideInModal(validationFn(data),"#information","error");  
-				callFlashSlideInModal(validationAssignmentFn(data),"#information","error");  
+				callFlashSlideInModal(validationAssignmentFn(data),"#information","error");
 				return false;
 				
 			}
@@ -1894,8 +1891,8 @@ var username = $('#user_portlet').val();
 var password = $('#pass_portlet').val();
 
 /*Fixed for Test.*/
- username = "1";
- password =	"11";
+ //username = "1";
+ //password =	"11";
 	
 if(username!="" && username!=null & username!=[] && username!=undefined ){
 	
