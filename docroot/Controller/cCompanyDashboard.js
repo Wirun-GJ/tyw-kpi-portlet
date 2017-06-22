@@ -164,7 +164,7 @@ createGraphMonthlyVarianceFn = function(data){
 	option['location']='n';
 	option['placement']='inside';
 	option['title']="Monthly Variance";
-	option['pointLabels']=true;
+	option['pointLabels']=false;
 	option['pointLabelsFont']='10px';
 	//show hide tooltip
 	option['tooltip']=true;
@@ -299,7 +299,7 @@ var createGraphMonthlyGrowthFn = function(data){
 //	option['location']='e';
 //	option['placement']='inside';
 //	option['title']="Month";
-//	option['pointLabels']=true;
+//	option['pointLabels']=false;
 //	option['pointLabelsFont']='13px';
 //	//show hide tooltip
 //	option['tooltip']=true;
@@ -314,7 +314,7 @@ var createGraphMonthlyGrowthFn = function(data){
 	option['location']='n';
 	option['placement']='inside';
 	option['title']="Monthly Growth";
-	option['pointLabels']=true;
+	option['pointLabels']=false;
 	option['pointLabelsFont']='10px';
 	//show hide tooltip
 	option['tooltip']=true;
@@ -387,7 +387,7 @@ var createGraphYTDGrowthFn = function(data){
 //	option['location']='e';
 //	option['placement']='inside';
 //	option['title']="Month";
-//	option['pointLabels']=true;
+//	option['pointLabels']=false;
 //	option['pointLabelsFont']='13px';
 //	//show hide tooltip
 //	option['tooltip']=true;
@@ -403,7 +403,7 @@ var createGraphYTDGrowthFn = function(data){
 	option['location']='n';
 	option['placement']='inside';
 	option['title']="YTD Growth";
-	option['pointLabels']=true;
+	option['pointLabels']=false;
 	option['pointLabelsFont']='10px';
 	//show hide tooltip
 	option['tooltip']=true;
@@ -468,7 +468,7 @@ var createGraphYTDVarianceFn = function(data){
 	option['location']='n';
 	option['placement']='inside';
 	option['title']="YTD Variance";
-	option['pointLabels']=true;
+	option['pointLabels']=false;
 	option['pointLabelsFont']='10px';
 	//show hide tooltip
 	option['tooltip']=true;

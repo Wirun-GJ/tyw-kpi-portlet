@@ -65,7 +65,7 @@ var validationSqlFn = function (data) {
 // --------  Clear Start 
 var clearFn = function() {
 	
-	$("#modalTitleRole").html("Add Common Data Set");
+	$("#modalTitleRole").html("Common Data Set");
 	$("#modalDescription").html("Common Data Set");
 	$("#f_cds_name").val("");
 	$("#f_cds_description").val("");
@@ -242,7 +242,7 @@ var listCommonDataSetFn = function(data) {
 			
 			findOneFn(this.id);
 			//alert($("#checkbox_is_sql:checked").is(":checked"));
-			$("#modalTitleRole").html("Edit Common Data Set");
+			$("#modalTitleRole").html("Common Data Set");
 			$("#id").val(this.id);
 			$("#action").val("edit");
 			$("#btnSubmit").val("Edit");		
@@ -778,7 +778,6 @@ var copyCdsFn = function () {
 					
 				}else if(data['duplicates'].length > 0){
 					var validate = "";
-					validate += "<font color='red'>* </font> Copy Successfully. <br>";
 					validate += "<font color='red'>* </font> The field is Duplicates  ↓ <br>";
 					$.each(data['duplicates'], function(index, indexEntry) {
 						
