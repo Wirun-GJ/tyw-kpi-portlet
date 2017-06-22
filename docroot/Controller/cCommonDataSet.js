@@ -268,7 +268,7 @@ var listCommonDataSetFn = function(data) {
 				    	 
 					     if(data['status']==200){
 					    	 
-					       callFlashSlide("Delete Successfully.");  
+					       callFlashSlide("Delete Successfully.");
 					       getDataFn($("#pageNumber").val(),$("#rpp").val());
 					       clearFn();
 					       $("#confrimModal").modal('hide');
@@ -379,8 +379,8 @@ var insertFn = function (param) {
 				   if(param !="saveAndAnother"){
 					   //alert("!saveAndAnother" );
 					   callFlashSlide("Insert Successfully.");
-				       getDataFn($(".pagination .active").attr( "data-lp" ),$("#rpp").val());
-				       clearFn();
+					   getDataFn($(".pagination .active").attr( "data-lp" ),$("#rpp").val());
+				       clearFn();
 				 	   $('#ModalCommonData').modal('hide');
 					}else{
 						//alert("saveAndAnother" );
@@ -769,10 +769,28 @@ var copyCdsFn = function () {
 			async:false,
 			data:{"cds":cds,"appraisal_level":appraisal},
 			success : function(data) {
-				if(data['status']==200){
+				console.log(data);
+				
+				if(data['status']==200 && data['duplicates'].length == 0 ){
 					callFlashSlide("Copy Successfully.");
 					getDataFn($("#pageNumber").val(),$("#rpp").val());
 					$('#ModalCopy').modal('hide');
+					
+				}else if(data['duplicates'].length > 0){
+					var validate = "";
+					validate += "<font color='red'>* </font> Copy Successfully. <br>";
+					validate += "<font color='red'>* </font> The field is Duplicates  ↓ <br>";
+					$.each(data['duplicates'], function(index, indexEntry) {
+						
+						if(indexEntry['cds_name']!=undefined){
+							validate+="<font color='red'>&nbsp&nbsp* </font> cds name: "+indexEntry['cds_name']+" ,";
+						}
+						if(indexEntry['appraisal_level']!=undefined){
+							validate+="<font color='red'>&nbsp</font> appraisal level: "+indexEntry['appraisal_level']+"<br>";
+						}
+					});
+					callFlashSlideInModal(validate,"#information3","error");
+					
 					
 				}
 			}
