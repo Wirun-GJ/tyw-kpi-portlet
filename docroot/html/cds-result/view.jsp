@@ -136,10 +136,21 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 }
 /* Large desktop */
 @media ( min-width : 1200px) {
+	.aui #confrimModal {
+		left: 55%;
+	}
 }
-
+/* Portrait tablet to landscape and desktop */
+@media ( min-width : 980px) and (max-width: 1199px) {
+	  .aui #confrimModal {
+		left: 57%;
+	}
+}
 /* Portrait tablet to landscape and desktop */
 @media ( min-width : 768px) and (max-width: 979px) {
+	.aui #confrimModal {
+		left: 58.5%;
+	}
 	.aui .ResultsPerPageTop {
 		position: absolute;
 		left: -20px;
@@ -193,6 +204,9 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 
 /* Landscape phone to portrait tablet */
 @media ( max-width : 767px) {
+	.aui #confrimModal {
+		left: 23.5%;
+	}
 	.aui .ResultsPerPageTop {
 		position: absolute;
 		left: -20px;
@@ -203,6 +217,9 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 		top: -40px;
 	}
 	@media ( min-width : 481px) and (max-width: 615px) {
+	 .aui #confrimModal {
+			left: 16.5%;
+		}
 		.aui .height-32-px {
 			height: 42px
 		}
@@ -254,9 +271,9 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 
 	/* Landscape phones and down */
 	@media ( max-width : 480px) {
-		.aui #confrimModal {
-			left: 1%;
-		}
+			.aui #confrimModal {
+		left: 1%;
+	}
 		.aui .ResultsPerPageBottom {
 			position: static;
 		}
@@ -473,6 +490,7 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 											<th style='width: auto'>Year&emsp;</th>
 											<th style='width: auto'>Month&emsp;</th>
 											<th style='width: auto'>CDS&nbsp;Value&emsp;</th>
+											<th style='width: auto; text-align: center;'>Manage</th>
 										</tr>
 									</thead>
 									<tbody id="listCdsResult">
@@ -599,3 +617,45 @@ String password = (String)request.getSession().getAttribute(WebKeys.USER_PASSWOR
 		</div>
 	</div>
 	<!-- Modal End  -->
+	<!-- Modal Confirm Start -->
+	<div aria-hidden="true" role="dialog" tabindex="-1" id="confrimModal"
+		class="modal inmodal in" style="width:400px;left:calc;display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content  bounceInRight">
+				<div class="modal-header">
+					<button data-dismiss="modal" class="close" type="button" style="padding-top:3px">
+						<span aria-hidden="true">×</span><span class="sr-only">Close</span>
+					</button>
+					<h5 class="modal-title">Confirm Dialog</h5>
+				</div>
+				<div class="modal-body">
+					<!-- content start -->
+					<!-- <h2><i class="fa fa fa-pencil-square-o icon-title"></i> ADD NEW GRADE</h2>
+                <hr>
+                 -->
+					<!-- form start -->
+					<div class="form-kpi-mangement">
+						<div class="form-kpi-label" align="center">
+
+							<label>Confirm to Delete Data?</label>
+						</div>
+					</div>
+
+					<!-- form start -->
+					<!-- content end -->
+				</div>
+				<div class="modal-footer">
+					<div align="center">
+						<button class="btn btn-success" id="btnConfirmOK" type="button">
+							&nbsp;&nbsp;<i class="fa fa-check-circle"></i>&nbsp;&nbsp;Yes&nbsp;&nbsp;
+						</button>
+						&nbsp;&nbsp;
+						<button data-dismiss="modal" class="btn btn-danger" type="button">
+							<i class="fa fa-times-circle"></i>&nbsp;Cancel
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal Confirm End -->
