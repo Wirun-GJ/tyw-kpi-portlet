@@ -447,7 +447,7 @@ var createInputTypeFn  = function(object,tokenID){
 		
 	}else if(object['inputType']=="text" || object['inputType']=="autoComplete"){
 
-		var dataTypeInput =(object['dataTypeInput'] == 'number' ? "numberOnly" : "");
+		var dataTypeInput =(object['dataTypeInput'] == 'number' ? "numberOnly" : object['dataTypeInput'] == 'ip' ? "ip_address" : "");
 		if(object['placeholder']!=undefined){
 			
 			inputType+="<input type=\"text\" style='width:"+object['width']+"' class=\"span12 m-b-n "+dataTypeInput+"\" placeholder=\""+object['placeholder']+"\" id=\""+object['id']+"\" name=\""+object['id']+"\">";
@@ -705,6 +705,29 @@ var createDataTableFn = function(options){
 				    return false;
 				 }
 				 return true;
+			});
+			$.getScript($("#url_portlet").val()+"/js/plugins/jquery_mask/jquery.mask.min.js", function(){
+
+				  $('.ip_address').mask('0ZZ.0ZZ.0ZZ.0ZZ', {
+					    translation: {
+					      'Z': {
+					        pattern: /[0-9]/, optional: true
+					      }
+					    },
+					    onChange: function(cep, event, currentField, options){
+					        if(cep){
+					            var ipArray = cep.split(".");
+					            for (i in ipArray){
+					                if(ipArray[i] != "" && parseInt(ipArray[i]) > 255){
+					                    ipArray[i] =  '255';
+					                }
+					            }
+					            var resultingValue = ipArray.join(".");
+					            $(currentField).val(resultingValue);
+					        }
+					    }
+					  });
+
 			});
 //			jQuery('.numberOnly').keyup(function () { 
 //			    this.value = this.value.replace(/[^0-9\.]/g,'');
