@@ -58,7 +58,7 @@ var dropDrowBonusPeriodFn = function(){
 		success:function(data){
 			var htmlOption="";
 			$.each(data,function(index,indexEntry){
-				htmlOption+="<option value='"+indexEntry['param_end_date']+"'>"+indexEntry['param_bonus_period_desc']+"</option>";
+				htmlOption+="<option value='"+indexEntry['param_end_date']+"_"+indexEntry['period_id']+"'>"+indexEntry['bonus_period_desc']+"</option>";
 			});
 			$("#dorpDownBonusPeriod").html(htmlOption);
 		}
@@ -74,7 +74,7 @@ var dropDrowSalaryPeriodFn = function(){
 		success:function(data){
 			var htmlOption="";
 			$.each(data,function(index,indexEntry){
-				htmlOption+="<option value='"+indexEntry['param_salary_period_desc']+"'>"+indexEntry['param_salary_period_desc']+"</option>";
+				htmlOption+="<option value='"+indexEntry['period_id']+"'>"+indexEntry['salary_period_desc']+"</option>";
 			});
 			$("#dorpDownSalaryPeriod").html(htmlOption);
 		}
@@ -84,6 +84,12 @@ var dropDrowSalaryPeriodFn = function(){
 var callStoredCalBonusFn = function(){
 
 	//$("#confrimModal").modal();
+	var param_period_id="";
+	var param_end_date="";
+	var param="";
+	param = $("#dorpDownBonusPeriod").val().split("_");;
+	param_period_id=param[1];
+	param_end_date=param[0];
 	$.ajax({
 		url:restfulURL+"/tyw_api/public/result_bonus/result_bonus",
 		type:"post",
@@ -93,7 +99,8 @@ var callStoredCalBonusFn = function(){
 		data:{
 			"param_appraisal_year":$("#dorpDownAppraisalYear").val(),
 			"param_bonus_period_desc":$("#dorpDownBonusPeriod  option:selected").text(),
-			"param_end_date":$("#dorpDownBonusPeriod").val()
+			"param_end_date":param_end_date,
+			"param_period_id":param_period_id
 			},
 		success:function(data){
 			console.log(data);
@@ -116,7 +123,8 @@ var callStoredCalRaiseAmountFn = function(){
 		headers:{Authorization:"Bearer "+tokenID.token},
 		data:{
 			"param_appraisal_year":$("#dorpDownRaiseAppraisalYear").val(),
-			"param_salary_period_desc":$("#dorpDownSalaryPeriod").val(),
+			"param_salary_period_desc":$("#dorpDownSalaryPeriod  option:selected").text(),
+			"param_salary_period_id":$("#dorpDownSalaryPeriod").val(),
 			},
 		success:function(data){
 			console.log(data);
