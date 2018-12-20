@@ -3,6 +3,7 @@
 //Global variable
 var globalData=[];
 var empldoyees_code = [];
+var delResponse = [];
 
 //var is_hr = 0;
 var clearFn = function(){
@@ -375,20 +376,20 @@ var getDataFn = function(page,rpp) {
 //Delete
 var deleteFn = function(id) {
 	$.ajax({
-	url:restfulURL+"/tyw_api/public/appraisal_assignment/"+id,
-	type:"DELETE",
-	dataType:"json",
-	headers:{Authorization:"Bearer "+tokenID.token},
-	success:function(data){ 
-		if(data['status']==200){
-			callFlashSlide("Delete Successfully.");
-			getDataFn($("#pageNumber").val(),$("#rpp").val());
-			$("#confrimModal").modal('hide');
-			   
-		}else if(data['status']=="400"){
-			
-			callFlashSlide(validationFn(data),"error");
-		}
+		url:restfulURL+"/tyw_api/public/appraisal_assignment/"+id,
+		type:"DELETE",
+		dataType:"json",
+		headers:{Authorization:"Bearer "+tokenID.token},
+		success:function(response){ 
+			delResponse = response;
+			if(response.status == 200){
+				callFlashSlide("Delete Successfully.");
+				getDataFn($("#pageNumber").val(),$("#rpp").val());
+				$("#confrimModal").modal('hide');
+			}else if(response.status == 400){
+				callFlashSlide(response.data, "error");
+				$("#confrimModal").modal('hide');
+			}
 		}
 	});
 };
@@ -1772,6 +1773,7 @@ var createTemplateAssignmentFn = function(data){
 				return o.value.lastIndexOf(r.text)
 			} else return o.selectionStart
 		};
+		/*
 		jQuery('.numberOnly').keypress(function (evt) { 
 			 var charCode = (evt.which) ? evt.which : event.keyCode;
 			 var number = this.value.split('.');
@@ -1789,6 +1791,16 @@ var createTemplateAssignmentFn = function(data){
 			    return false;
 			 }
 			 return true;
+		});
+		*/
+		
+		$('.numberOnly').mask('Z9999999999.00', {
+			translation: {
+				'Z': {
+					pattern: /[-]/,
+					optional: true
+				}
+			}
 		});
 	    
 		
