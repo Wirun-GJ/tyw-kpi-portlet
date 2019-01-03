@@ -70,11 +70,11 @@
 	    
 		<css-class-wrapper>appraisal-item-portlet</css-class-wrapper>
 	</portlet>
+	
 	<portlet>
 		<portlet-name>appraisal-assignment</portlet-name>
 		<icon>/icon.png</icon>
-		       
-		   
+
 		<!-- include file  start-->
 		<header-portlet-css>/js/bootstrap2.3.2/css/bootstrap.min.css</header-portlet-css>
 		<header-portlet-css>/js/bootstrap2.3.2/css/bootstrap-responsive.min.css</header-portlet-css>
@@ -86,31 +86,22 @@
 	    <header-portlet-css>/css/appraisal-assignment.css</header-portlet-css>  
 	    <header-portlet-css>/js/Fixed-Header-Table-master/css/defaultTheme.css</header-portlet-css>  
  
-	         
 	    <footer-portlet-javascript>/js/jquery-2.1.1.js</footer-portlet-javascript>
 	    <footer-portlet-javascript>/js/bootstrap.min.2.3.2.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/jquery.bootpag.min.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/jquery-ui-1.10.4.min.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/plugins/slimscroll/jquery.slimscroll.min.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/jquery.mloading.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/plugins/jquery_mask/jquery.mask.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/Fixed-Header-Table-master/jquery.fixedheadertable.min.js</footer-portlet-javascript>
 	    <footer-portlet-javascript>/Controller/cConfig.js</footer-portlet-javascript>
-	    <footer-portlet-javascript>/Controller/cMain.js</footer-portlet-javascript> 
-	   
-	    
-   
-	      
+	    <footer-portlet-javascript>/Controller/cMain.js</footer-portlet-javascript>
 	    <footer-portlet-javascript>/Controller/cAppraisalAssignment.js</footer-portlet-javascript>
 	    <!-- include file  end-->   
-		
-		     
-		 
-		
+
 		<css-class-wrapper>
 			appraisal-assignment-portlet
-		</css-class-wrapper>
-		    
-		 
+		</css-class-wrapper> 
 	</portlet>
 	
 	
